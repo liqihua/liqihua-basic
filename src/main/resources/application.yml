@@ -1,0 +1,12 @@
+server:
+  port: 9001
+  servlet:
+    context-path: /liqihua
+
+
+
+jdbc:
+  driverClassName: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://127.0.0.1:3306/java?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Hongkong
+  username: root
+  password: 123
