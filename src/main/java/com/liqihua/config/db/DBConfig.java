@@ -1,4 +1,4 @@
-package com.liqihua.config.jdbc;
+package com.liqihua.config.db;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.annotation.DbType;
@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.SqlExplainInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -27,7 +26,7 @@ import java.util.List;
 
 @Configuration
 @MapperScan(basePackages = {"com.liqihua.**.dao*"},sqlSessionFactoryRef = "sqlSessionFactory")
-public class JDBCConfig {
+public class DBConfig {
     @Autowired
     Environment environment;
     /**
@@ -74,7 +73,6 @@ public class JDBCConfig {
         }
         //分页插件
         PaginationInterceptor pageInterceptor = new PaginationInterceptor();
-        //pageInterceptor.setLocalPage(true);
         pageInterceptor.setDialectType("mysql");
         //SQL 执行性能分析插件
         PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
@@ -88,7 +86,7 @@ public class JDBCConfig {
         config.setMetaObjectHandler(new MyBatisPlusObjectHandler());
         GlobalConfig.DbConfig dbConfig = new GlobalConfig.DbConfig();
         //主键策略
-        dbConfig.setIdType(IdType.UUID);
+        dbConfig.setIdType(IdType.AUTO);
         dbConfig.setDbType(DbType.MYSQL);
         config.setDbConfig(dbConfig);
         bean.setGlobalConfig(config);

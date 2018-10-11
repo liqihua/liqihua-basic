@@ -1,10 +1,9 @@
-package com.liqihua.config.jdbc;
+package com.liqihua.config.db;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 在插入和更新数据时设置相应时间值

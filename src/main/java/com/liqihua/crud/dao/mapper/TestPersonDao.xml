@@ -3,8 +3,8 @@
 <mapper namespace="com.liqihua.crud.dao.TestPersonDao">
 
     <!-- 通用查询映射结果 -->
-    <!--<resultMap id="BaseResultMap" type="com.liqihua.crud.entity.TestPersonEntity">
-        <result column="id" property="id" />
+    <resultMap id="BaseResultMap" type="com.liqihua.crud.entity.TestPersonEntity">
+        <id column="id" property="id" />
         <result column="name" property="name" />
         <result column="password" property="password" />
         <result column="age" property="age" />
@@ -14,8 +14,10 @@
         <result column="city_id" property="cityId" />
         <result column="district_id" property="districtId" />
         <result column="birthday" property="birthday" />
+        <result column="work_time" property="workTime" />
+        <result column="intro" property="intro" />
         <result column="create_date" property="createDate" />
         <result column="update_date" property="updateDate" />
-    </resultMap>-->
+    </resultMap>
 
 </mapper>

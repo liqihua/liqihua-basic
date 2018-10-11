@@ -1,9 +1,9 @@
 package com.liqihua.crud.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author liqihua
- * @since 2018-10-10
+ * @since 2018-10-11
  */
 @TableName("test_person")
 public class TestPersonEntity extends Model<TestPersonEntity> {
@@ -23,7 +23,8 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
     /**
      * 人员
      */
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     /**
      * 姓名
@@ -43,7 +44,7 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
     /**
      * 性别：0女 1男
      */
-    private String gender;
+    private Boolean gender;
 
     /**
      * 头像
@@ -68,7 +69,17 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
     /**
      * 出生时间
      */
-    private LocalDateTime birthday;
+    private LocalDate birthday;
+
+    /**
+     * 上班时间
+     */
+    private LocalTime workTime;
+
+    /**
+     * 个人简介
+     */
+    private String intro;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createDate;
@@ -76,11 +87,11 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateDate;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getName() {
@@ -104,11 +115,11 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
     public void setAge(Integer age) {
         this.age = age;
     }
-    public String getGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
     public String getAvatar() {
@@ -139,12 +150,26 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
     public void setDistrictId(String districtId) {
         this.districtId = districtId;
     }
-    public LocalDateTime getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDateTime birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+    public LocalTime getWorkTime() {
+        return workTime;
+    }
+
+    public void setWorkTime(LocalTime workTime) {
+        this.workTime = workTime;
+    }
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
     }
     public LocalDateTime getCreateDate() {
         return createDate;
@@ -163,7 +188,7 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
 
     @Override
     protected Serializable pkVal() {
-        return null;
+        return this.id;
     }
 
     @Override
@@ -179,6 +204,8 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
         ", cityId=" + cityId +
         ", districtId=" + districtId +
         ", birthday=" + birthday +
+        ", workTime=" + workTime +
+        ", intro=" + intro +
         ", createDate=" + createDate +
         ", updateDate=" + updateDate +
         "}";
