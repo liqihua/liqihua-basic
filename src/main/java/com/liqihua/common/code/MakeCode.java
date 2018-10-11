@@ -1,14 +1,18 @@
 package com.liqihua.common.code;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import com.baomidou.mybatisplus.generator.InjectionConfig;
+import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author liqihua
@@ -45,12 +49,14 @@ public class MakeCode {
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(false);// XML columList
-        gc.setAuthor(author);
+        gc.setAuthor(author);//设置作者
+        //gc.setSwagger2(true);//开启swagger注解
         /**
          * 设置各个层的类名
          */
         gc.setServiceName("%sService");
         gc.setControllerName("%sSysController");
+
         gc.setEntityName("%sEntity");
         gc.setMapperName("%sDao");
         gc.setXmlName("%sDao");
@@ -81,6 +87,35 @@ public class MakeCode {
         mpg.setDataSource(dsc);// 数据源配置
         mpg.setStrategy(strategy);// 策略配置
         mpg.setPackageInfo(pc);// 包配置
+
+
+
+
+
+
+        // 自定义配置
+        InjectionConfig cfg = new InjectionConfig() {
+            @Override
+            public void initMap() {
+                // to do nothing
+            }
+        };
+        List<FileOutConfig> focList = new ArrayList<>();
+        focList.add(new FileOutConfig("/templates/vo.java.ftl") {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                // 自定义输入文件名称
+
+                String fileName = dir  + pc.getParent().replace(".","/") +/* pc.getModuleName() +*/ "/" + pc.getEntity() + "/vo/" + tableInfo.getEntityName().replace("Entity","VO") + StringPool.DOT_JAVA;
+                System.out.println("---\n"+fileName+"\n---");
+                return fileName;
+            }
+        });
+        cfg.setFileOutConfigList(focList);
+
+
+        mpg.setCfg(cfg);
+
 
         // 执行生成
         mpg.execute();

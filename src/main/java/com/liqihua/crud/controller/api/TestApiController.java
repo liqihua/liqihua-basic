@@ -40,7 +40,7 @@ public class TestApiController extends BaseController{
 
     @ApiOperation(value = "testList")
     @RequestMapping(value = "/testList", method = RequestMethod.POST)
-    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
+    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = TestPersonEntity.class)})
     public WebResult testList(){
         return buildSuccessInfo(testPersonService.list(null));
     }
@@ -49,7 +49,7 @@ public class TestApiController extends BaseController{
 
     @ApiOperation(value = "testPage")
     @RequestMapping(value = "/testPage", method = RequestMethod.POST)
-    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
+    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = TestPersonEntity.class)})
     public WebResult testPage(@ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
                               @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize){
         IPage<TestPersonEntity> p = testPersonService.page(new Page<TestPersonEntity>(page,pageSize),null);
@@ -60,7 +60,7 @@ public class TestApiController extends BaseController{
 
     @ApiOperation(value = "makeData")
     @RequestMapping(value = "/makeData", method = RequestMethod.POST)
-    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
+    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = TestPersonEntity.class)})
     public WebResult makeData(){
         int num = (int)(Math.random()*1000);
         TestPersonEntity entity = new TestPersonEntity();
@@ -79,7 +79,7 @@ public class TestApiController extends BaseController{
 
     @ApiOperation(value = "testInsert")
     @RequestMapping(value = "/testInsert", method = RequestMethod.POST)
-    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
+    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = TestPersonEntity.class)})
     public WebResult testInsert(@ApiParam(value = "birthday",required = true) @RequestParam(value="birthday",required=true) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthday,
                               @ApiParam(value = "workTime",required = true) @RequestParam(value="workTime",required=true) @DateTimeFormat(pattern = "HH:mm:ss") LocalTime workTime){
         int num = (int)(Math.random()*1000);

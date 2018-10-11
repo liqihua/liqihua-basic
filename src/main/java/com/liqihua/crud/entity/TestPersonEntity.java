@@ -1,11 +1,15 @@
 package com.liqihua.crud.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.time.LocalDate;
+import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
@@ -16,75 +20,50 @@ import java.io.Serializable;
  * @since 2018-10-11
  */
 @TableName("test_person")
+@ApiModel(value="TestPersonEntity对象", description="")
 public class TestPersonEntity extends Model<TestPersonEntity> {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 人员
-     */
+    @ApiModelProperty(value = "人员")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 姓名
-     */
+    @ApiModelProperty(value = "姓名")
     private String name;
 
-    /**
-     * 密码
-     */
+    @ApiModelProperty(value = "密码")
     private String password;
 
-    /**
-     * 年龄
-     */
+    @ApiModelProperty(value = "年龄")
     private Integer age;
 
-    /**
-     * 性别：0女 1男
-     */
+    @ApiModelProperty(value = "性别：0女 1男")
     private Boolean gender;
 
-    /**
-     * 头像
-     */
+    @ApiModelProperty(value = "头像")
     private String avatar;
 
-    /**
-     * 省id
-     */
+    @ApiModelProperty(value = "省id")
     private String provinceId;
 
-    /**
-     * 市id
-     */
+    @ApiModelProperty(value = "市id")
     private String cityId;
 
-    /**
-     * 区id
-     */
+    @ApiModelProperty(value = "区id")
     private String districtId;
 
-    /**
-     * 出生时间
-     */
+    @ApiModelProperty(value = "出生时间")
     private LocalDate birthday;
 
-    /**
-     * 上班时间
-     */
+    @ApiModelProperty(value = "上班时间")
     private LocalTime workTime;
 
-    /**
-     * 个人简介
-     */
+    @ApiModelProperty(value = "个人简介")
     private String intro;
 
-    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createDate;
 
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateDate;
 
     public Long getId() {
