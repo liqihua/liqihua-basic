@@ -17,6 +17,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 
+/**
+ * 全局异常处理类
+ */
 @ControllerAdvice(basePackages = {"com"})
 public class SysControllerAdvice extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(SysControllerAdvice.class);
