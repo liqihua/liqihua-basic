@@ -22,19 +22,24 @@ public class MakeCode {
      */
     @Test
     public void make(){
+        String url = "jdbc:mysql://127.0.0.1:3306/java?characterEncoding=utf8&serverTimezone=Hongkong";
+        String username = "root";
+        String password = "123";
+        String dir = "H://";//代码生成在哪个位置，一般是项目工作目录以外的位置，以防错误覆盖
+
+
         String author = "liqihua";//作者
-        String tablePrefix = "";//表前缀，生成的java类名会去掉前缀
-        String tableName = "test_person";//表名，全称
         String parent = "com.liqihua";//父级路径
         String moduleName = "crud";//在哪个包下生成，代码最后会生成在 parent.moduleName 下，如：com.liqihua.project
-
+        String tablePrefix = "";//表前缀，生成的java类名会去掉前缀
+        String tableName = "test_person";//表名，全称
 
 
         AutoGenerator mpg = new AutoGenerator();
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("H://");//代码生成在哪个位置，一般是项目工作目录以外的位置，以防错误覆盖
+        gc.setOutputDir(dir);//代码生成在哪个位置，一般是项目工作目录以外的位置，以防错误覆盖
         gc.setFileOverride(true);
         gc.setActiveRecord(true);// 不需要ActiveRecord特性的请改为false
         gc.setEnableCache(false);// XML 二级缓存
@@ -54,9 +59,9 @@ public class MakeCode {
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setDbType(DbType.MYSQL);
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("123");
-        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/java?characterEncoding=utf8&serverTimezone=Hongkong");
+        dsc.setUsername(username);
+        dsc.setPassword(password);
+        dsc.setUrl(url);
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
