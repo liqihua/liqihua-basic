@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import net.sf.json.JSONObject;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class MakeCode {
                 // 自定义输入文件名称
 
                 String fileName = dir  + pc.getParent().replace(".","/") +/* pc.getModuleName() +*/ "/" + pc.getEntity() + "/vo/" + tableInfo.getEntityName().replace("Entity","VO") + StringPool.DOT_JAVA;
-                System.out.println("---\n"+fileName+"\n---");
+                //System.out.println("---\n"+ JSONObject.fromObject(tableInfo).toString()+"\n---");
                 return fileName;
             }
         });
