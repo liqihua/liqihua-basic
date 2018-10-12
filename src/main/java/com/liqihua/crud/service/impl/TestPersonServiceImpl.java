@@ -6,6 +6,8 @@ import com.liqihua.crud.service.TestPersonService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -17,4 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TestPersonServiceImpl extends ServiceImpl<TestPersonDao, TestPersonEntity> implements TestPersonService {
 
+    @Override
+    public List<TestPersonEntity> test1() {
+        return baseMapper.test1();
+    }
 }

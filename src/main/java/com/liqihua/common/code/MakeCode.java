@@ -1,21 +1,19 @@
 package com.liqihua.common.code;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.po.TableFill;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import net.sf.json.JSONObject;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author liqihua
@@ -53,13 +51,12 @@ public class MakeCode {
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(false);// XML columList
         gc.setAuthor(author);//设置作者
-        //gc.setSwagger2(true);//开启swagger注解
+
         /**
          * 设置各个层的类名
          */
         gc.setServiceName("%sService");
-        gc.setControllerName("%sSysController");
-
+        gc.setControllerName("%sApiController");
         gc.setEntityName("%sEntity");
         gc.setMapperName("%sDao");
         gc.setXmlName("%sDao");
@@ -74,6 +71,15 @@ public class MakeCode {
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
+        /**
+         * 自动填充字段
+         */
+        List<TableFill> tableFillList = new ArrayList<>();
+        tableFillList.add(new TableFill("create_date",FieldFill.INSERT));
+        tableFillList.add(new TableFill("update_date",FieldFill.INSERT_UPDATE));
+        strategy.setTableFillList(tableFillList);
+        strategy.setRestControllerStyle(true);//用@RestController代替@Controller
+        strategy.setSuperControllerClass("com.liqihua.common.basic.BaseController");//设置controller的父类
         strategy.setTablePrefix(new String[] { tablePrefix });// 表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategy.setInclude(new String[] { tableName });//生成哪个表的代码
@@ -84,7 +90,7 @@ public class MakeCode {
         pc.setModuleName(moduleName);////在哪个包下生成
         pc.setMapper("dao");
         pc.setXml("dao.mapper");
-        pc.setController("controller.sys");
+        pc.setController("controller.api");
 
         mpg.setGlobalConfig(gc);// 全局配置
         mpg.setDataSource(dsc);// 数据源配置
@@ -100,7 +106,7 @@ public class MakeCode {
             @Override
             public void initMap() {
                 /*Map<String, Object> map = new HashMap<>();
-                map.put("voName","3333");
+                map.put("aaa","3333");
                 setMap(map);*/
             }
         };
@@ -111,19 +117,18 @@ public class MakeCode {
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
                 String fileName = dir  + pc.getParent().replace(".","/") +/* pc.getModuleName() +*/ "/" + pc.getEntity() + "/vo/" + tableInfo.getEntityName().replace("Entity","VO") + StringPool.DOT_JAVA;
-                //System.out.println("---\n"+ JSONObject.fromObject(tableInfo).toString()+"\n---");
                 return fileName;
             }
         });
 
         cfg.setFileOutConfigList(focList);
-
-
-
         //添加自定义生成配置
         mpg.setCfg(cfg);
         // 执行生成
         mpg.execute();
+
+
+
     }
 
 }

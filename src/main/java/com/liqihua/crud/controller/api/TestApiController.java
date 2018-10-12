@@ -38,6 +38,15 @@ public class TestApiController extends BaseController{
     private TestPersonService testPersonService;
 
 
+    @ApiOperation(value = "testXML")
+    @RequestMapping(value = "/testXML", method = RequestMethod.POST)
+    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = TestPersonEntity.class)})
+    public WebResult testXML(){
+        return buildSuccessInfo(testPersonService.test1());
+    }
+
+
+
     @ApiOperation(value = "testList")
     @RequestMapping(value = "/testList", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = TestPersonEntity.class)})
