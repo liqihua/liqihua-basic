@@ -8,13 +8,17 @@ import com.liqihua.common.constant.ApiConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -69,7 +73,7 @@ public class SysControllerAdvice extends BaseController {
      * 400错误->json参数格式有误
      */
     @ExceptionHandler({JsonParseException.class})
-    public WebResult jsonParamError(JsonParseException ex){
+    public WebResult jsonParamError1(JsonParseException ex){
         return buildFailedInfo(ApiConstant.PARAM_JSON_ERROR);
     }
 
@@ -77,8 +81,16 @@ public class SysControllerAdvice extends BaseController {
      * 400错误->json参数格式有误
      */
     @ExceptionHandler({HttpMessageNotReadableException.class})
+    @ResponseBody
     public WebResult jsonParseError1(HttpMessageNotReadableException ex){
-        return buildFailedInfo(ApiConstant.getMessage(ApiConstant.PARAM_JSON_ERROR)+":"+ex.getCause());
+        String message = ex.getMessage();
+        String rgex = "Unrecognized field \"(.*?)\" ";
+        Pattern pattern = Pattern.compile(rgex);// 匹配的模式
+        Matcher m = pattern.matcher(ex.getMessage());
+        if(m.find()){
+            message = "非法参数 -> "+m.group(1);
+        }
+        return buildFailedInfo(ApiConstant.getMessage(ApiConstant.PARAM_JSON_ERROR)+" : "+message);
     }
 
 

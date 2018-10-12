@@ -1,4 +1,4 @@
-package com.liqihua.crud.entity;
+package com.liqihua.crud.entity.vo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -9,6 +9,10 @@ import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+
 /**
  * <p>
  * 
@@ -17,80 +21,52 @@ import java.io.Serializable;
  * @author liqihua
  * @since 2018-10-12
  */
-@TableName("test_person")
-public class TestPersonEntity extends Model<TestPersonEntity> {
 
-    private static final long serialVersionUID = 1L;
 
-    /**
-     * 人员
-     */
-    @TableId(value = "id", type = IdType.AUTO)
+@ApiModel(value="TestPersonVO")
+public class TestPersonVO {
+
+
+    @ApiModelProperty(value = "人员")
     private Long id;
 
-    /**
-     * 姓名
-     */
+    @ApiModelProperty(value = "姓名")
     private String name;
 
-    /**
-     * 密码
-     */
+    @ApiModelProperty(value = "密码")
     private String password;
 
-    /**
-     * 年龄
-     */
+    @ApiModelProperty(value = "年龄")
     private Integer age;
 
-    /**
-     * 性别：0女 1男
-     */
+    @ApiModelProperty(value = "性别：0女 1男")
     private Boolean gender;
 
-    /**
-     * 头像
-     */
+    @ApiModelProperty(value = "头像")
     private String avatar;
 
-    /**
-     * 省id
-     */
+    @ApiModelProperty(value = "省id")
     private String provinceId;
 
-    /**
-     * 市id
-     */
+    @ApiModelProperty(value = "市id")
     private String cityId;
 
-    /**
-     * 区id
-     */
+    @ApiModelProperty(value = "区id")
     private String districtId;
 
-    /**
-     * 出生时间
-     */
+    @ApiModelProperty(value = "出生时间")
     private LocalDate birthday;
 
-    /**
-     * 上班时间
-     */
+    @ApiModelProperty(value = "上班时间")
     private LocalTime workTime;
 
-    /**
-     * 个人简介
-     */
+    @ApiModelProperty(value = "个人简介")
     private String intro;
 
-    /**
-     * 创建时间
-     */
+    @ApiModelProperty(value = "创建时间")
     private LocalDateTime createDate;
 
-    /**
-     * 更新时间
-     */
+    @ApiModelProperty(value = "更新时间")
     private LocalDateTime updateDate;
 
     public Long getId() {
@@ -192,10 +168,7 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
         this.updateDate = updateDate;
     }
 
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
+
 
     @Override
     public String toString() {

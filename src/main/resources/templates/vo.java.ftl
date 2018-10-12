@@ -3,10 +3,10 @@ package ${package.Entity};
 <#list table.importPackages as pkg>
 import ${pkg};
 </#list>
-<#if swagger2>
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-</#if>
+
 <#if entityLombokModel>
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,14 +30,11 @@ import lombok.experimental.Accessors;
     </#if>
 @Accessors(chain = true)
 </#if>
-<#--<#if table.convert>
-@TableName("${table.name}")
-</#if>-->
 
-@ApiModel(value="${entity}VO")
-public class ${entity}VO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+@ApiModel(value="${entity?replace('Entity','VO')}")
+public class ${entity?replace('Entity','VO')} {
+
 <#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
     <#if field.keyFlag>
@@ -45,23 +42,17 @@ public class ${entity}VO implements Serializable {
     </#if>
 
     <#if field.comment!?length gt 0>
-    <#if swagger2>
     @ApiModelProperty(value = "${field.comment}")
-    <#else>
-    /**
-     * ${field.comment}
-     */
-    </#if>
     </#if>
     <#if field.keyFlag>
     <#-- 主键 -->
-        <#if field.keyIdentityFlag>
+        <#--<#if field.keyIdentityFlag>
     @TableId(value = "${field.name}", type = IdType.AUTO)
         <#elseif idType??>
     @TableId(value = "${field.name}", type = IdType.${idType})
         <#elseif field.convert>
     @TableId("${field.name}")
-        </#if>
+        </#if>-->
     <#-- 普通字段 -->
     <#elseif field.fill??>
     <#-- -----   存在字段填充设置   ----->
@@ -115,17 +106,8 @@ public class ${entity}VO implements Serializable {
 
     </#list>
 </#if>
-<#if activeRecord>
-    @Override
-    protected Serializable pkVal() {
-    <#if keyPropertyName??>
-        return this.${keyPropertyName};
-    <#else>
-        return null;
-    </#if>
-    }
 
-</#if>
+
 <#if !entityLombokModel>
     @Override
     public String toString() {

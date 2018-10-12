@@ -13,7 +13,9 @@ import net.sf.json.JSONObject;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author liqihua
@@ -93,31 +95,33 @@ public class MakeCode {
 
 
 
-
         // 自定义配置
         InjectionConfig cfg = new InjectionConfig() {
             @Override
             public void initMap() {
-                // to do nothing
+                /*Map<String, Object> map = new HashMap<>();
+                map.put("voName","3333");
+                setMap(map);*/
             }
         };
+
         List<FileOutConfig> focList = new ArrayList<>();
         focList.add(new FileOutConfig("/templates/vo.java.ftl") {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
-
                 String fileName = dir  + pc.getParent().replace(".","/") +/* pc.getModuleName() +*/ "/" + pc.getEntity() + "/vo/" + tableInfo.getEntityName().replace("Entity","VO") + StringPool.DOT_JAVA;
                 //System.out.println("---\n"+ JSONObject.fromObject(tableInfo).toString()+"\n---");
                 return fileName;
             }
         });
+
         cfg.setFileOutConfigList(focList);
 
 
+
+        //添加自定义生成配置
         mpg.setCfg(cfg);
-
-
         // 执行生成
         mpg.execute();
     }
