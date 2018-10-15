@@ -1,5 +1,6 @@
 package com.liqihua.crud.controller.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -38,12 +39,6 @@ public class TestApiController extends BaseController{
     private TestPersonService testPersonService;
 
 
-    @ApiOperation(value = "testXML")
-    @RequestMapping(value = "/testXML", method = RequestMethod.POST)
-    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = TestPersonEntity.class)})
-    public WebResult testXML(){
-        return buildSuccessInfo(testPersonService.test1());
-    }
 
 
 
@@ -51,7 +46,13 @@ public class TestApiController extends BaseController{
     @RequestMapping(value = "/testList", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = TestPersonEntity.class)})
     public WebResult testList(){
-        return buildSuccessInfo(testPersonService.list(null));
+        TestPersonEntity _q = new TestPersonEntity();
+        _q.setName("333");
+        _q.setGender(null);
+        _q.setIntro("");
+        _q.setCityId(null);
+        QueryWrapper wrapper = new QueryWrapper(_q);
+        return buildSuccessInfo(testPersonService.list(wrapper));
     }
 
 

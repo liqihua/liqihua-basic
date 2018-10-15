@@ -17,7 +17,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author liqihua
- * @since 2018-10-12
+ * @since 2018-10-15
  */
 @TableName("test_person")
 public class TestPersonEntity extends Model<TestPersonEntity> {
