@@ -79,7 +79,7 @@ public class TestApiController extends BaseController{
         entity.setAge(num);
         entity.setGender((num % 2 == 0) ? true : false);
         entity.setBirthday(LocalDate.now());
-        entity.setWorkTime(LocalTime.now());
+        entity.setWorkTime(LocalDateTime.now());
         entity.setIntro("intro_"+num);
         testPersonService.save(entity);
         return buildSuccessInfo(entity);
@@ -90,7 +90,7 @@ public class TestApiController extends BaseController{
     @RequestMapping(value = "/testInsert", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = TestPersonEntity.class)})
     public WebResult testInsert(@ApiParam(value = "birthday",required = true) @RequestParam(value="birthday",required=true) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthday,
-                              @ApiParam(value = "workTime",required = true) @RequestParam(value="workTime",required=true) @DateTimeFormat(pattern = "HH:mm:ss") LocalTime workTime){
+                              @ApiParam(value = "workTime",required = true) @RequestParam(value="workTime",required=true) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime workTime){
         int num = (int)(Math.random()*1000);
         TestPersonEntity entity = new TestPersonEntity();
         entity.setName("name_"+num);

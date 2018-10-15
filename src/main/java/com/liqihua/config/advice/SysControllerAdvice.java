@@ -8,12 +8,12 @@ import com.liqihua.common.constant.ApiConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -35,6 +35,7 @@ public class SysControllerAdvice extends BaseController {
      * @return
      */
     @ExceptionHandler({RuntimeException.class})
+    @ResponseBody
     public WebResult runtimeException(RuntimeException ex){
         StringWriter sw = new StringWriter();
         ex.printStackTrace(new PrintWriter(sw,true));
@@ -47,6 +48,7 @@ public class SysControllerAdvice extends BaseController {
      * 400错误->缺少参数异常
      */
     @ExceptionHandler({MissingServletRequestParameterException.class})
+    @ResponseBody
     public WebResult requestMissingServletRequest(MissingServletRequestParameterException ex){
         return buildFailedInfo(ApiConstant.PARAM_IS_NULL,"："+ex.getParameterName());
     }
@@ -56,14 +58,18 @@ public class SysControllerAdvice extends BaseController {
      *400错误->参数类型异常
      */
     @ExceptionHandler({TypeMismatchException.class})
-    public WebResult requestTypeMismatch(TypeMismatchException ex){
-    	return buildFailedInfo(ApiConstant.PARAM_TYPE_ERROR," "+ex.getValue()+"："+ex.getRequiredType().getName());
+    @ResponseBody
+    public WebResult paramTypeError(TypeMismatchException ex){
+        return buildFailedInfo(ApiConstant.PARAM_TYPE_ERROR," "+ex.getValue()+"："+ex.getRequiredType().getName());
     }
+
+
 
     /**
      * 400错误->参数格式有误
      */
     @ExceptionHandler({InvalidFormatException.class})
+    @ResponseBody
     public WebResult invalidFormatException(InvalidFormatException ex){
         return buildFailedInfo(ApiConstant.PARAM_FORMAT_ERROR);
     }
@@ -73,6 +79,7 @@ public class SysControllerAdvice extends BaseController {
      * 400错误->json参数格式有误
      */
     @ExceptionHandler({JsonParseException.class})
+    @ResponseBody
     public WebResult jsonParamError1(JsonParseException ex){
         return buildFailedInfo(ApiConstant.PARAM_JSON_ERROR);
     }
