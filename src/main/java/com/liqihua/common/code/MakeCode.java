@@ -29,7 +29,7 @@ public class MakeCode {
      */
     @Test
     public void make(){
-        String url = "jdbc:mysql://127.0.0.1:3306/java?characterEncoding=utf8&serverTimezone=Hongkong";
+        String url = "jdbc:mysql://127.0.0.1:3306/liqihua_basic?characterEncoding=utf8&serverTimezone=Hongkong";
         String username = "root";
         String password = "123";
         String dir = "H://";//代码生成在哪个位置，一般是项目工作目录以外的位置，以防错误覆盖

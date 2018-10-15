@@ -50,7 +50,6 @@ public class TestApiController extends BaseController{
         _q.setName("333");
         _q.setGender(null);
         _q.setIntro("");
-        _q.setCityId(null);
         QueryWrapper wrapper = new QueryWrapper(_q);
         return buildSuccessInfo(testPersonService.list(wrapper));
     }
@@ -124,7 +123,7 @@ public class TestApiController extends BaseController{
         System.out.println(birthday.toString());
         System.out.println(workTime.toString());
         System.out.println(sleepTime.toString());
-        return buildSuccessInfo(sleepTime);
+        return buildSuccessInfo(birthday);
     }
 
 

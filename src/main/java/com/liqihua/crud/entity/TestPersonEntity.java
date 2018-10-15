@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalTime;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -56,21 +55,6 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
     private String avatar;
 
     /**
-     * 省id
-     */
-    private String provinceId;
-
-    /**
-     * 市id
-     */
-    private String cityId;
-
-    /**
-     * 区id
-     */
-    private String districtId;
-
-    /**
      * 出生时间
      */
     private LocalDate birthday;
@@ -78,7 +62,7 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
     /**
      * 上班时间
      */
-    private LocalTime workTime;
+    private LocalDateTime workTime;
 
     /**
      * 个人简介
@@ -139,27 +123,6 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
-    public String getProvinceId() {
-        return provinceId;
-    }
-
-    public void setProvinceId(String provinceId) {
-        this.provinceId = provinceId;
-    }
-    public String getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(String cityId) {
-        this.cityId = cityId;
-    }
-    public String getDistrictId() {
-        return districtId;
-    }
-
-    public void setDistrictId(String districtId) {
-        this.districtId = districtId;
-    }
     public LocalDate getBirthday() {
         return birthday;
     }
@@ -167,11 +130,11 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
-    public LocalTime getWorkTime() {
+    public LocalDateTime getWorkTime() {
         return workTime;
     }
 
-    public void setWorkTime(LocalTime workTime) {
+    public void setWorkTime(LocalDateTime workTime) {
         this.workTime = workTime;
     }
     public String getIntro() {
@@ -210,9 +173,6 @@ public class TestPersonEntity extends Model<TestPersonEntity> {
         ", age=" + age +
         ", gender=" + gender +
         ", avatar=" + avatar +
-        ", provinceId=" + provinceId +
-        ", cityId=" + cityId +
-        ", districtId=" + districtId +
         ", birthday=" + birthday +
         ", workTime=" + workTime +
         ", intro=" + intro +

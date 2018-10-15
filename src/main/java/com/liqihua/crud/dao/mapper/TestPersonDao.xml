@@ -10,9 +10,6 @@
         <result column="age" property="age" />
         <result column="gender" property="gender" />
         <result column="avatar" property="avatar" />
-        <result column="province_id" property="provinceId" />
-        <result column="city_id" property="cityId" />
-        <result column="district_id" property="districtId" />
         <result column="birthday" property="birthday" />
         <result column="work_time" property="workTime" />
         <result column="intro" property="intro" />

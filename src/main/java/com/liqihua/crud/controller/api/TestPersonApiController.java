@@ -12,6 +12,7 @@ import io.swagger.annotations.*;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
 import org.springframework.beans.BeanUtils;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,17 +46,14 @@ public class TestPersonApiController extends BaseController {
     @ApiOperation(value = "保存")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = TestPersonVO.class)})
-    public WebResult save(@ApiParam(value = "name",required = true) @RequestParam(value="name",required = true) String name,
-                          @ApiParam(value = "password",required = true) @RequestParam(value="password",required = true) String password,
-                          @ApiParam(value = "age",required = true) @RequestParam(value="age",required = true) Integer age,
-                          @ApiParam(value = "gender",required = true) @RequestParam(value="gender",required = true) Boolean gender,
-                          @ApiParam(value = "avatar",required = true) @RequestParam(value="avatar",required = true) String avatar,
-                          @ApiParam(value = "provinceId",required = true) @RequestParam(value="provinceId",required = true) String provinceId,
-                          @ApiParam(value = "cityId",required = true) @RequestParam(value="cityId",required = true) String cityId,
-                          @ApiParam(value = "districtId",required = true) @RequestParam(value="districtId",required = true) String districtId,
-                          @ApiParam(value = "birthday",required = true) @RequestParam(value="birthday",required = true) LocalDate birthday,
-                          @ApiParam(value = "workTime",required = true) @RequestParam(value="workTime",required = true) LocalTime workTime,
-                          @ApiParam(value = "intro",required = true) @RequestParam(value="intro",required = true) String intro
+    public WebResult save(@ApiParam(value = "name",required = true) @RequestParam(value="name",required = true)  String name,
+                          @ApiParam(value = "password",required = true) @RequestParam(value="password",required = true)  String password,
+                          @ApiParam(value = "age",required = true) @RequestParam(value="age",required = true)  Integer age,
+                          @ApiParam(value = "gender",required = true) @RequestParam(value="gender",required = true)  Boolean gender,
+                          @ApiParam(value = "avatar",required = true) @RequestParam(value="avatar",required = true)  String avatar,
+                          @ApiParam(value = "birthday",required = true) @RequestParam(value="birthday",required = true) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthday,
+                          @ApiParam(value = "workTime",required = true) @RequestParam(value="workTime",required = true) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime workTime,
+                          @ApiParam(value = "intro",required = true) @RequestParam(value="intro",required = true)  String intro
                           ){
         TestPersonEntity entity = new TestPersonEntity();
         entity.setName(name);
@@ -63,9 +61,6 @@ public class TestPersonApiController extends BaseController {
         entity.setAge(age);
         entity.setGender(gender);
         entity.setAvatar(avatar);
-        entity.setProvinceId(provinceId);
-        entity.setCityId(cityId);
-        entity.setDistrictId(districtId);
         entity.setBirthday(birthday);
         entity.setWorkTime(workTime);
         entity.setIntro(intro);
@@ -106,26 +101,20 @@ public class TestPersonApiController extends BaseController {
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = TestPersonVO.class)})
     public WebResult page(@ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
                           @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize,
-                          @ApiParam(value = "name",required = false) @RequestParam(value="name",required = false) String name,
-                          @ApiParam(value = "password",required = false) @RequestParam(value="password",required = false) String password,
-                          @ApiParam(value = "age",required = false) @RequestParam(value="age",required = false) Integer age,
-                          @ApiParam(value = "gender",required = false) @RequestParam(value="gender",required = false) Boolean gender,
-                          @ApiParam(value = "avatar",required = false) @RequestParam(value="avatar",required = false) String avatar,
-                          @ApiParam(value = "provinceId",required = false) @RequestParam(value="provinceId",required = false) String provinceId,
-                          @ApiParam(value = "cityId",required = false) @RequestParam(value="cityId",required = false) String cityId,
-                          @ApiParam(value = "districtId",required = false) @RequestParam(value="districtId",required = false) String districtId,
-                          @ApiParam(value = "birthday",required = false) @RequestParam(value="birthday",required = false) LocalDate birthday,
-                          @ApiParam(value = "workTime",required = false) @RequestParam(value="workTime",required = false) LocalTime workTime,
-                          @ApiParam(value = "intro",required = false) @RequestParam(value="intro",required = false) String intro){
+                          @ApiParam(value = "name",required = false) @RequestParam(value="name",required = false)  String name,
+                          @ApiParam(value = "password",required = false) @RequestParam(value="password",required = false)  String password,
+                          @ApiParam(value = "age",required = false) @RequestParam(value="age",required = false)  Integer age,
+                          @ApiParam(value = "gender",required = false) @RequestParam(value="gender",required = false)  Boolean gender,
+                          @ApiParam(value = "avatar",required = false) @RequestParam(value="avatar",required = false)  String avatar,
+                          @ApiParam(value = "birthday",required = false) @RequestParam(value="birthday",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthday,
+                          @ApiParam(value = "workTime",required = false) @RequestParam(value="workTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime workTime,
+                          @ApiParam(value = "intro",required = false) @RequestParam(value="intro",required = false)  String intro){
         TestPersonEntity entity = new TestPersonEntity();
         entity.setName(name);
         entity.setPassword(password);
         entity.setAge(age);
         entity.setGender(gender);
         entity.setAvatar(avatar);
-        entity.setProvinceId(provinceId);
-        entity.setCityId(cityId);
-        entity.setDistrictId(districtId);
         entity.setBirthday(birthday);
         entity.setWorkTime(workTime);
         entity.setIntro(intro);
