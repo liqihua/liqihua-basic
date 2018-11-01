@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>4.1.17</version>
+			<version>4.1.16</version>
 		</dependency>
 
 	</dependencies>
@@ -136,6 +136,8 @@
             </plugin>
 		</plugins>
 	</build>
+
+
 
 
 </project>
