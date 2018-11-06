@@ -61,7 +61,6 @@ public class DBConfig {
         return new DataSourceTransactionManager(dataSource);
     }
 
-
     @Bean(name = "sqlSessionFactory")
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         MybatisSqlSessionFactoryBean bean = new MybatisSqlSessionFactoryBean();
@@ -72,13 +71,13 @@ public class DBConfig {
             bean.setMapperLocations(resources);
         }
         //分页插件
-        PaginationInterceptor pageInterceptor = new PaginationInterceptor();
-        pageInterceptor.setDialectType("mysql");
+        /*PaginationInterceptor pageInterceptor = new PaginationInterceptor();
+        pageInterceptor.setDialectType("mysql");*/
         //SQL 执行性能分析插件
         PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
         performanceInterceptor.setMaxTime(10000);
         performanceInterceptor.setFormat(true);
-        Interceptor[] interceptors = {pageInterceptor,performanceInterceptor};
+        Interceptor[] interceptors = {/*pageInterceptor,*/performanceInterceptor};
         bean.setPlugins(interceptors);
 
         GlobalConfig config = new GlobalConfig();
@@ -95,6 +94,18 @@ public class DBConfig {
         //支持驼峰模式
         bean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
         return bean.getObject();
+    }
+
+
+    /**
+     * 分页插件
+     * @return
+     */
+    @Bean
+    public PaginationInterceptor paginationInterceptor(){
+        PaginationInterceptor pageInterceptor = new PaginationInterceptor();
+        pageInterceptor.setDialectType("mysql");
+        return pageInterceptor;
     }
 
     /**
