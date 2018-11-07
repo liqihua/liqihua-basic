@@ -38,8 +38,7 @@ public class CodeGenerator {
         String parent = "com.liqihua";//父级路径
         String moduleName = "crud";//在哪个包下生成，代码最后会生成在 parent.moduleName 下，如：com.liqihua.project
         String tablePrefix = "";//表前缀，生成的java类名会去掉前缀
-        String tableName = "test_person";//表名，全称
-
+        String[] tables = new String[] { "test_person" };//生成哪些表
 
         AutoGenerator mpg = new AutoGenerator();
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
@@ -86,7 +85,7 @@ public class CodeGenerator {
         strategy.setSuperControllerClass("com.liqihua.common.basic.BaseController");//设置controller的父类
         strategy.setTablePrefix(new String[] { tablePrefix });// 表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[] { tableName });//生成哪个表的代码
+        strategy.setInclude(tables);//生成哪些表的代码
 
         // 包配置
         PackageConfig pc = new PackageConfig();
