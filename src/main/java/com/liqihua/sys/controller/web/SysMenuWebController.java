@@ -1,4 +1,4 @@
-package com.liqihua.sys.controller.api;
+package com.liqihua.sys.controller.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
