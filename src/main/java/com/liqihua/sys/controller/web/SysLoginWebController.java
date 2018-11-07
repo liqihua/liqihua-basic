@@ -50,6 +50,22 @@ public class SysLoginWebController extends BaseController {
     }
 
 
+    @RequestMapping(value = "/getInfo", method = RequestMethod.GET)
+    public WebResult getInfo(@RequestParam(required = true) String token){
+        LOG.info("--- getInfo token:"+token);
+        SysUserVO vo = new SysUserVO();
+        vo.setUsername("liqihua");
+        vo.setAvatar("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541589629203&di=b4d4bbc8c7f642e1ab277515681e1bb3&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D3841743209%2C952064471%26fm%3D214%26gp%3D0.jpg");
+        vo.setNickname("周杰伦");
+        return buildSuccessInfo(vo);
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public WebResult logout(){
+        return buildSuccessInfo(null);
+    }
+
+
 
 
 }

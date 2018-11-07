@@ -68,7 +68,7 @@ public class SysUserEntity extends Model<SysUserEntity> {
     /**
      * 1：冻结，0：正常
      */
-    private Boolean lock;
+    private Boolean locked;
 
     /**
      * 创建时间
@@ -145,13 +145,15 @@ public class SysUserEntity extends Model<SysUserEntity> {
     public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
-    public Boolean getLock() {
-        return lock;
+
+    public Boolean getLocked() {
+        return locked;
     }
 
-    public void setLock(Boolean lock) {
-        this.lock = lock;
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
     }
+
     public LocalDateTime getCreateDate() {
         return createDate;
     }
@@ -184,7 +186,7 @@ public class SysUserEntity extends Model<SysUserEntity> {
         ", avatar=" + avatar +
         ", mobile=" + mobile +
         ", remarks=" + remarks +
-        ", lock=" + lock +
+        ", locked=" + locked +
         ", createDate=" + createDate +
         ", updateDate=" + updateDate +
         "}";

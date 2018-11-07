@@ -54,7 +54,7 @@ public class SysUserVO {
     private String remarks;
 
     @ApiModelProperty(value = "1：冻结，0：正常")
-    private Boolean lock;
+    private Boolean locked;
 
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)
@@ -127,13 +127,15 @@ public class SysUserVO {
     public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
-    public Boolean getLock() {
-        return lock;
+
+    public Boolean getLocked() {
+        return locked;
     }
 
-    public void setLock(Boolean lock) {
-        this.lock = lock;
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
     }
+
     public LocalDateTime getCreateDate() {
         return createDate;
     }
@@ -163,7 +165,7 @@ public class SysUserVO {
         ", avatar=" + avatar +
         ", mobile=" + mobile +
         ", remarks=" + remarks +
-        ", lock=" + lock +
+        ", locked=" + locked +
         ", createDate=" + createDate +
         ", updateDate=" + updateDate +
         "}";

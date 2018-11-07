@@ -58,7 +58,7 @@ public class SysUserWebController extends BaseController {
         entity.setAvatar(avatar);
         entity.setMobile(mobile);
         entity.setRemarks(remarks);
-        entity.setLock(lock);
+        entity.setLocked(lock);
         sysUserService.saveOrUpdate(entity);
         SysUserVO vo = new SysUserVO();
         BeanUtils.copyProperties(entity,vo);
@@ -87,7 +87,7 @@ public class SysUserWebController extends BaseController {
 
 
 
-    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
     public WebResult page(@ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
                           @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize,
                           @ApiParam(value = "username",required = false) @RequestParam(value="username",required = false)  String username,
@@ -108,7 +108,7 @@ public class SysUserWebController extends BaseController {
         entity.setAvatar(avatar);
         entity.setMobile(mobile);
         entity.setRemarks(remarks);
-        entity.setLock(lock);
+        entity.setLocked(lock);
         QueryWrapper queryWrapper = new QueryWrapper<SysUserEntity>(entity);
         IPage result = sysUserService.page(new Page<SysUserEntity>(page,pageSize),queryWrapper);
         List<SysUserVO> voList = Tool.copyList(result.getRecords(),SysUserVO.class);
