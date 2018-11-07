@@ -7,15 +7,15 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "BaseResult", description = "返回集合")
 public class WebResult {
 	
-	@ApiModelProperty(notes = "返回码，0表示成功，非0表示失败")
-	private Integer resultCode;
+	@ApiModelProperty(notes = "返回码，10000表示成功，非10000表示失败")
+	private Integer code;
 
 	@ApiModelProperty(notes = "返回消息，成功为\"success\",失败为具体失败信息")
-	private String resultMessage;
+	private String message;
 
 	// 返回数据
 	@ApiModelProperty(notes = "返回的具体数据")
-	private Object resultData;
+	private Object data;
 	
 	public WebResult() {
 		super();
@@ -23,51 +23,49 @@ public class WebResult {
 	
 	public WebResult(Integer resultCode) {
 		super();
-		this.resultCode = resultCode;
+		this.code = resultCode;
 	}
 
-	public WebResult(Object resultData) {
+	public WebResult(Object data) {
 		super();
-		this.resultData = resultData;
+		this.data = data;
 	}
 	
 
-	public WebResult(Integer resultCode, String resultMessage) {
+	public WebResult(Integer code, String message) {
 		super();
-		this.resultCode = resultCode;
-		this.resultMessage = resultMessage;
+		this.code = code;
+		this.message = message;
 	}
 
-	public WebResult(Integer resultCode, String resultMessage, Object resultData) {
+	public WebResult(Integer code, String message, Object data) {
 		super();
-		this.resultCode = resultCode;
-		this.resultMessage = resultMessage;
-		this.resultData = resultData;
+		this.code = code;
+		this.message = message;
+		this.data = data;
 	}
 
-	public Integer getResultCode() {
-		return resultCode;
+	public Integer getCode() {
+		return code;
 	}
 
-	public void setResultCode(Integer resultCode) {
-		this.resultCode = resultCode;
+	public void setCode(Integer code) {
+		this.code = code;
 	}
 
-	public String getResultMessage() {
-		return resultMessage;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setResultMessage(String resultMessage) {
-		this.resultMessage = resultMessage;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
-	public Object getResultData() {
-		return resultData;
+	public Object getData() {
+		return data;
 	}
 
-	public void setResultData(Object resultData) {
-		this.resultData = resultData;
+	public void setData(Object data) {
+		this.data = data;
 	}
-	
-	
 }
