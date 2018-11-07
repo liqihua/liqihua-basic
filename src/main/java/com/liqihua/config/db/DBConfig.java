@@ -71,13 +71,13 @@ public class DBConfig {
             bean.setMapperLocations(resources);
         }
         //分页插件
-        /*PaginationInterceptor pageInterceptor = new PaginationInterceptor();
-        pageInterceptor.setDialectType("mysql");*/
+        PaginationInterceptor pageInterceptor = new PaginationInterceptor();
+        pageInterceptor.setDialectType("mysql");
         //SQL 执行性能分析插件
         PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
         performanceInterceptor.setMaxTime(10000);
         performanceInterceptor.setFormat(true);
-        Interceptor[] interceptors = {/*pageInterceptor,*/performanceInterceptor};
+        Interceptor[] interceptors = {pageInterceptor,performanceInterceptor};
         bean.setPlugins(interceptors);
 
         GlobalConfig config = new GlobalConfig();
@@ -89,24 +89,11 @@ public class DBConfig {
         dbConfig.setDbType(DbType.MYSQL);
         config.setDbConfig(dbConfig);
         bean.setGlobalConfig(config);
-
-
-        //支持驼峰模式
+        //字段下划线映射bean以驼峰模式
         bean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
         return bean.getObject();
     }
 
-
-    /**
-     * 分页插件
-     * @return
-     */
-    @Bean
-    public PaginationInterceptor paginationInterceptor(){
-        PaginationInterceptor pageInterceptor = new PaginationInterceptor();
-        pageInterceptor.setDialectType("mysql");
-        return pageInterceptor;
-    }
 
     /**
      * mapper的xml路径处理
