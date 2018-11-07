@@ -80,7 +80,7 @@ public class SysMenuWebController extends BaseController {
 
 
 
-    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
     public WebResult page(@ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
                           @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize,
                           @ApiParam(value = "pid",required = false) @RequestParam(value="pid",required = false)  Long pid,
