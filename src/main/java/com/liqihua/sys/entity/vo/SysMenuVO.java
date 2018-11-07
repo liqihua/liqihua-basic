@@ -38,6 +38,15 @@ public class SysMenuVO {
     @ApiModelProperty(value = "vue的路由名称")
     private String routerName;
 
+    @ApiModelProperty(value = "1：一级菜单，2：二级菜单，3：三级菜单，...")
+    private Integer level;
+
+    @ApiModelProperty(value = "1：隐藏，0：显示")
+    private Boolean hide;
+
+    @ApiModelProperty(value = "排序")
+    private Integer rank;
+
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createDate;
@@ -74,6 +83,27 @@ public class SysMenuVO {
     public void setRouterName(String routerName) {
         this.routerName = routerName;
     }
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+    public Boolean getHide() {
+        return hide;
+    }
+
+    public void setHide(Boolean hide) {
+        this.hide = hide;
+    }
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
     public LocalDateTime getCreateDate() {
         return createDate;
     }
@@ -98,6 +128,9 @@ public class SysMenuVO {
         ", pid=" + pid +
         ", title=" + title +
         ", routerName=" + routerName +
+        ", level=" + level +
+        ", hide=" + hide +
+        ", rank=" + rank +
         ", createDate=" + createDate +
         ", updateDate=" + updateDate +
         "}";
