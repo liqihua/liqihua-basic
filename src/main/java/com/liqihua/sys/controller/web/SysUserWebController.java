@@ -47,7 +47,7 @@ public class SysUserWebController extends BaseController {
                           @ApiParam(value = "avatar",required = true) @RequestParam(value="avatar",required = true)  String avatar,
                           @ApiParam(value = "mobile",required = true) @RequestParam(value="mobile",required = true)  String mobile,
                           @ApiParam(value = "remarks",required = true) @RequestParam(value="remarks",required = true)  String remarks,
-                          @ApiParam(value = "lock",required = true) @RequestParam(value="lock",required = true)  Boolean lock
+                          @ApiParam(value = "locked",required = true) @RequestParam(value="locked",required = true)  Boolean locked
                           ){
         SysUserEntity entity = new SysUserEntity();
         entity.setUsername(username);
@@ -58,7 +58,7 @@ public class SysUserWebController extends BaseController {
         entity.setAvatar(avatar);
         entity.setMobile(mobile);
         entity.setRemarks(remarks);
-        entity.setLocked(lock);
+        entity.setLocked(locked);
         sysUserService.saveOrUpdate(entity);
         SysUserVO vo = new SysUserVO();
         BeanUtils.copyProperties(entity,vo);

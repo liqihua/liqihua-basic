@@ -59,7 +59,7 @@ public class SysControllerAdvice extends BaseController {
     @ExceptionHandler({TypeMismatchException.class})
     @ResponseBody
     public WebResult paramTypeError(TypeMismatchException ex){
-        return buildFailedInfo(ApiConstant.PARAM_TYPE_ERROR," "+ex.getValue()+"："+ex.getRequiredType().getName());
+        return buildFailedInfo(ApiConstant.PARAM_TYPE_ERROR,"："+ex.getValue()+"，需要："+ex.getRequiredType().getName());
     }
 
 
