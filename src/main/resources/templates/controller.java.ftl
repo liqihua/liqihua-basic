@@ -63,7 +63,7 @@ public class ${table.controllerName} {
     @ApiOperation(value = "保存")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = ${entity?replace('Entity','VO')}.class)})
-    public WebResult save(<#list table.fields as field><#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>@ApiParam(value = "${field.propertyName}",required = true) @RequestParam(value="${field.propertyName}",required = true) <#if field.propertyType == 'LocalDateTime' >@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")</#if><#if field.propertyType == 'LocalDate' >@DateTimeFormat(pattern = "yyyy-MM-dd")</#if><#if field.propertyType == 'LocalTime' >@DateTimeFormat(pattern = "HH:mm:ss")</#if> ${field.propertyType} ${field.propertyName}<#if (field_index != table.fields?size-3)>,</#if>
+    public WebResult save(<#list table.fields as field><#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>@ApiParam(value = "${field.comment}",required = true) @RequestParam(value="${field.propertyName}",required = true) <#if field.propertyType == 'LocalDateTime' >@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")</#if><#if field.propertyType == 'LocalDate' >@DateTimeFormat(pattern = "yyyy-MM-dd")</#if><#if field.propertyType == 'LocalTime' >@DateTimeFormat(pattern = "HH:mm:ss")</#if> ${field.propertyType} ${field.propertyName}<#if (field_index != table.fields?size-3)>,</#if>
                           </#if></#list>){
         ${entity} entity = new ${entity}();
         <#list table.fields as field>
@@ -110,7 +110,7 @@ public class ${table.controllerName} {
                           @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize,
                           <#list table.fields as field>
                           <#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>
-                          @ApiParam(value = "${field.propertyName}",required = false) @RequestParam(value="${field.propertyName}",required = false) <#if field.propertyType == 'LocalDateTime' >@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")</#if><#if field.propertyType == 'LocalDate' >@DateTimeFormat(pattern = "yyyy-MM-dd")</#if><#if field.propertyType == 'LocalTime' >@DateTimeFormat(pattern = "HH:mm:ss")</#if> ${field.propertyType} ${field.propertyName}<#if (field_index != table.fields?size-3)>,<#else>){</#if>
+                          @ApiParam(value = "${field.comment}",required = false) @RequestParam(value="${field.propertyName}",required = false) <#if field.propertyType == 'LocalDateTime' >@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")</#if><#if field.propertyType == 'LocalDate' >@DateTimeFormat(pattern = "yyyy-MM-dd")</#if><#if field.propertyType == 'LocalTime' >@DateTimeFormat(pattern = "HH:mm:ss")</#if> ${field.propertyType} ${field.propertyName}<#if (field_index != table.fields?size-3)>,<#else>){</#if>
                           </#if>
                           </#list>
         ${entity} entity = new ${entity}();
