@@ -1,5 +1,6 @@
 package com.liqihua.crud.controller.api;
 
+import cn.hutool.core.io.FileUtil;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,15 +35,6 @@ public class TestApiController extends BaseController{
     @RequestMapping(value = "/test1", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
     public WebResult test1(@ApiParam(value = "aa",required = false) @RequestParam(value="aa",required = false) String aa){
-        return buildSuccessInfo(aa);
-    }
-
-
-    @ApiOperation(value = "logError")
-    @RequestMapping(value = "/logError", method = RequestMethod.POST)
-    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
-    public WebResult logError(@ApiParam(value = "aa",required = false) @RequestParam(value="aa",required = false) String aa){
-        LOG.error(aa);
         return buildSuccessInfo(aa);
     }
 
