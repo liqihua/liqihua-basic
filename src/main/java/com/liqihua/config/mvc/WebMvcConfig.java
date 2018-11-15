@@ -1,5 +1,6 @@
 package com.liqihua.config.mvc;
 
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -11,9 +12,11 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import com.liqihua.common.utils.SysFileUtil;
 import com.liqihua.config.mvc.interceptor.CorsInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -21,6 +24,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
+import javax.annotation.Resource;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,6 +40,8 @@ import java.util.TimeZone;
  */
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurationSupport {
+	@Resource
+	private Environment environment;
 
 	@Bean
 	CorsInterceptor corsInterceptor() {
@@ -131,6 +138,18 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+		String dirs = environment.getProperty("mvc.static.dirs");
+		if(StrUtil.isNotBlank(dirs)){
+			String[] arr = dirs.split(",");
+			if(arr != null && arr.length > 0){
+				String projectPath = SysFileUtil.getProjectPath();
+				for(String dir : arr){
+					if(StrUtil.isNotBlank(dir)){
+						registry.addResourceHandler( dir + "/**").addResourceLocations("file:" + projectPath + dir +"/");
+					}
+				}
+			}
+		}
 	}
 
 }

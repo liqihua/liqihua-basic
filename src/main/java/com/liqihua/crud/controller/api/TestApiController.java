@@ -7,6 +7,7 @@ import com.liqihua.common.utils.SysFileUtil;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -30,6 +33,8 @@ import java.time.LocalTime;
 public class TestApiController extends BaseController{
     private static final Logger LOG = LoggerFactory.getLogger(TestApiController.class);
 
+    @Resource
+    private Environment environment;
 
     @ApiOperation(value = "test1")
     @RequestMapping(value = "/test1", method = RequestMethod.POST)
@@ -38,12 +43,19 @@ public class TestApiController extends BaseController{
         return buildSuccessInfo(aa);
     }
 
-    @ApiOperation(value = "test2")
-    @RequestMapping(value = "/test2", method = RequestMethod.POST)
+
+    /**
+     * 文件上传
+     * @param file
+     * @return
+     */
+    @ApiOperation(value = "uploadFile")
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
-    public WebResult test2(MultipartFile file){
+    public WebResult uploadFile(MultipartFile file){
         String path = SysFileUtil.uploadFile(file,null);
-        return buildSuccessInfo(path);
+        String prefix = environment.getProperty("mvc.static.prefix");
+        return buildSuccessInfo(prefix + path);
     }
 
 

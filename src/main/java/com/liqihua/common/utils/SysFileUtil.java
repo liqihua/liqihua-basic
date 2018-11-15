@@ -6,6 +6,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 /**
  * 文件工具类
@@ -59,5 +63,6 @@ public class SysFileUtil {
             return null;
         }
     }
+
 
 }
