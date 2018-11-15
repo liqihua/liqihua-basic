@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * bean工具类
  * @author liqihua
  * @since 2018/11/15
  */

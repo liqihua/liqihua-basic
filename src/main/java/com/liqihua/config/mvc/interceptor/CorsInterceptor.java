@@ -2,7 +2,6 @@ package com.liqihua.config.mvc.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import sun.swing.StringUIClientPropertyKey;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

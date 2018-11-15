@@ -1,23 +1,23 @@
 package com.liqihua.sys.controller.web;
 
-import com.liqihua.common.utils.Tool;
-import java.util.List;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.*;
+import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
+import com.liqihua.common.utils.SysBeanUtil;
+import com.liqihua.sys.entity.SysPermMenuEntity;
+import com.liqihua.sys.entity.vo.SysPermMenuVO;
+import com.liqihua.sys.service.SysPermMenuService;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.annotation.Resource;
-import com.liqihua.sys.entity.SysPermMenuEntity;
-import com.liqihua.sys.entity.vo.SysPermMenuVO;
-import com.liqihua.sys.service.SysPermMenuService;
 import org.springframework.web.bind.annotation.RestController;
-import com.liqihua.common.basic.BaseController;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -83,7 +83,7 @@ public class SysPermMenuWebController extends BaseController {
         entity.setPermId(permId);
         QueryWrapper queryWrapper = new QueryWrapper<SysPermMenuEntity>(entity);
         IPage result = sysPermMenuService.page(new Page<SysPermMenuEntity>(page,pageSize),queryWrapper);
-        List<SysPermMenuVO> voList = Tool.copyList(result.getRecords(),SysPermMenuVO.class);
+        List<SysPermMenuVO> voList = SysBeanUtil.copyList(result.getRecords(),SysPermMenuVO.class);
         result.setRecords(voList);
         return buildSuccessInfo(result);
     }

@@ -1,23 +1,23 @@
 package com.liqihua.sys.controller.web;
 
-import com.liqihua.common.utils.Tool;
-import java.util.List;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.*;
+import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
+import com.liqihua.common.utils.SysBeanUtil;
+import com.liqihua.sys.entity.SysRoleMenuEntity;
+import com.liqihua.sys.entity.vo.SysRoleMenuVO;
+import com.liqihua.sys.service.SysRoleMenuService;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.annotation.Resource;
-import com.liqihua.sys.entity.SysRoleMenuEntity;
-import com.liqihua.sys.entity.vo.SysRoleMenuVO;
-import com.liqihua.sys.service.SysRoleMenuService;
 import org.springframework.web.bind.annotation.RestController;
-import com.liqihua.common.basic.BaseController;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -83,7 +83,7 @@ public class SysRoleMenuWebController extends BaseController {
         entity.setMenuId(menuId);
         QueryWrapper queryWrapper = new QueryWrapper<SysRoleMenuEntity>(entity);
         IPage result = sysRoleMenuService.page(new Page<SysRoleMenuEntity>(page,pageSize),queryWrapper);
-        List<SysRoleMenuVO> voList = Tool.copyList(result.getRecords(),SysRoleMenuVO.class);
+        List<SysRoleMenuVO> voList = SysBeanUtil.copyList(result.getRecords(),SysRoleMenuVO.class);
         result.setRecords(voList);
         return buildSuccessInfo(result);
     }

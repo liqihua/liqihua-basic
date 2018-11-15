@@ -1,28 +1,18 @@
 package com.liqihua.common.utils;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
+ * 文件工具类
  * @author liqihua
- * @since 2018/10/12
+ * @since 2018/11/15
  */
-public class Tool {
-
-
-
-
-
-
-
+public class SysFileUtil {
 
     /**
      * 获取项目绝对路径
@@ -43,7 +33,7 @@ public class Tool {
      * @param dir 默认/upload
      * @return
      */
-    public static String uploadFile(MultipartFile file,String dir){
+    public static String uploadFile(MultipartFile file, String dir){
         try {
             if (StrUtil.isBlank(dir)) {
                 dir = "/upload";
@@ -69,7 +59,5 @@ public class Tool {
             return null;
         }
     }
-
-
 
 }

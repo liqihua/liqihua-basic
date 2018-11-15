@@ -1,9 +1,9 @@
 package com.liqihua.crud.controller.api;
 
-import cn.hutool.core.io.FileUtil;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
+import com.liqihua.common.utils.SysFileUtil;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +38,13 @@ public class TestApiController extends BaseController{
         return buildSuccessInfo(aa);
     }
 
+    @ApiOperation(value = "test2")
+    @RequestMapping(value = "/test2", method = RequestMethod.POST)
+    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
+    public WebResult test2(MultipartFile file){
+        String path = SysFileUtil.uploadFile(file,null);
+        return buildSuccessInfo(path);
+    }
 
 
     /**

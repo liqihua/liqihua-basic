@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
-import com.liqihua.common.utils.Tool;
+import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.sys.entity.SysMenuEntity;
 import com.liqihua.sys.entity.vo.SysMenuVO;
 import com.liqihua.sys.service.SysMenuService;
@@ -98,7 +98,7 @@ public class SysMenuWebController extends BaseController {
         entity.setRank(rank);
         QueryWrapper queryWrapper = new QueryWrapper<SysMenuEntity>(entity);
         IPage result = sysMenuService.page(new Page<SysMenuEntity>(page,pageSize),queryWrapper);
-        List<SysMenuVO> voList = Tool.copyList(result.getRecords(),SysMenuVO.class);
+        List<SysMenuVO> voList = SysBeanUtil.copyList(result.getRecords(),SysMenuVO.class);
         result.setRecords(voList);
         return buildSuccessInfo(result);
     }
