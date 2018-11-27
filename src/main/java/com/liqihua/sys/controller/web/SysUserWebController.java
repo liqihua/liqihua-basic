@@ -1,20 +1,25 @@
 package com.liqihua.sys.controller.web;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
+import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.utils.SysBeanUtil;
+import com.liqihua.common.utils.SysFileUtil;
 import com.liqihua.sys.entity.SysUserEntity;
 import com.liqihua.sys.entity.vo.SysUserVO;
 import com.liqihua.sys.service.SysUserService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -30,6 +35,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/sys/sysUserWebController")
 public class SysUserWebController extends BaseController {
+
+
+    @Value("${mvc.static.prefix}")
+    private String prefix;
+
+
     @Resource
     private SysUserService sysUserService;
 
@@ -39,17 +50,28 @@ public class SysUserWebController extends BaseController {
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public WebResult save(@ApiParam(value = "username",required = true) @RequestParam(value="username",required = true)  String username,
+    public WebResult save(@ApiParam(value = "id",required = false) @RequestParam(value="id",required = false) Long id,
+                          @ApiParam(value = "username",required = true) @RequestParam(value="username",required = true)  String username,
                           @ApiParam(value = "password",required = true) @RequestParam(value="password",required = true)  String password,
                           @ApiParam(value = "nickname",required = true) @RequestParam(value="nickname",required = true)  String nickname,
                           @ApiParam(value = "realName",required = true) @RequestParam(value="realName",required = true)  String realName,
                           @ApiParam(value = "gender",required = true) @RequestParam(value="gender",required = true)  Boolean gender,
-                          @ApiParam(value = "avatar",required = true) @RequestParam(value="avatar",required = true)  String avatar,
+                          @ApiParam(value = "avatar",required = false) @RequestParam(value="avatar",required = false)  String avatar,
                           @ApiParam(value = "mobile",required = true) @RequestParam(value="mobile",required = true)  String mobile,
                           @ApiParam(value = "remarks",required = true) @RequestParam(value="remarks",required = true)  String remarks,
-                          @ApiParam(value = "locked",required = true) @RequestParam(value="locked",required = true)  Boolean locked
-                          ){
-        SysUserEntity entity = new SysUserEntity();
+                          @ApiParam(value = "locked",required = true) @RequestParam(value="locked",required = true)  Boolean locked){
+        SysUserEntity entity = null;
+        if(id != null){
+            entity = sysUserService.getById(id);
+            if(entity == null){
+                return buildFailedInfo(ApiConstant.USER_NOT_EXIST);
+            }
+        }else{
+            entity = new SysUserEntity();
+        }
+        if(StrUtil.isNotBlank(avatar)){
+            avatar = avatar.replace(prefix,"");
+        }
         entity.setUsername(username);
         entity.setPassword(password);
         entity.setNickname(nickname);
@@ -81,6 +103,9 @@ public class SysUserWebController extends BaseController {
         if(entity != null){
             vo = new SysUserVO();
             BeanUtils.copyProperties(entity,vo);
+            if(StrUtil.isNotBlank(vo.getAvatar()) && vo.getAvatar().startsWith("/")){
+                vo.setAvatar(prefix + vo.getAvatar());
+            }
         }
         return buildSuccessInfo(vo);
     }
@@ -116,6 +141,13 @@ public class SysUserWebController extends BaseController {
         return buildSuccessInfo(result);
     }
 
+
+
+    @RequestMapping(value = "/uploadAvatar", method = RequestMethod.POST)
+    public WebResult uploadAvatar(@RequestParam(required = true) MultipartFile avatar){
+        String path = SysFileUtil.uploadFile(avatar,null);
+        return buildSuccessInfo(prefix + path);
+    }
 
 
 
