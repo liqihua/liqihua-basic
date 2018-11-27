@@ -137,6 +137,11 @@ public class SysUserWebController extends BaseController {
         QueryWrapper queryWrapper = new QueryWrapper<SysUserEntity>(entity);
         IPage result = sysUserService.page(new Page<SysUserEntity>(page,pageSize),queryWrapper);
         List<SysUserVO> voList = SysBeanUtil.copyList(result.getRecords(),SysUserVO.class);
+        voList.forEach(vo -> {
+            if(StrUtil.isNotBlank(vo.getAvatar()) && vo.getAvatar().startsWith("/")){
+                vo.setAvatar(prefix + vo.getAvatar());
+            }
+        });
         result.setRecords(voList);
         return buildSuccessInfo(result);
     }
