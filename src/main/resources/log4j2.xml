@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration status="ERROR" monitorInterval="300">
-	<properties>  
-        <property name="PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} |-%-5level [%thread] %c [%L] -| %msg%n</property>
+	<properties>
+		<!-- 详细输出 -->
+        <property name="PATTERN_FULL">%d{yyyy-MM-dd HH:mm:ss.SSS} |-%-5level [%thread] %c [%L] -| %msg%n</property>
+		<!-- 精简输出 -->
+        <property name="PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} |-%-5level %c -| %msg%n</property>
         <property name="DIR">logs</property>
     </properties> 
     
