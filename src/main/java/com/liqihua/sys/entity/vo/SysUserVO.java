@@ -32,9 +32,6 @@ public class SysUserVO {
     @ApiModelProperty(value = "账号")
     private String username;
 
-    @ApiModelProperty(value = "密码-sha1")
-    private String password;
-
     @ApiModelProperty(value = "昵称")
     private String nickname;
 
@@ -77,13 +74,6 @@ public class SysUserVO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
     public String getNickname() {
         return nickname;
@@ -158,7 +148,6 @@ public class SysUserVO {
         return "SysUserEntity{" +
         "id=" + id +
         ", username=" + username +
-        ", password=" + password +
         ", nickname=" + nickname +
         ", realName=" + realName +
         ", gender=" + gender +
