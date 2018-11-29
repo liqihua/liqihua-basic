@@ -1,10 +1,10 @@
 package com.liqihua.config.aop;
 
-import com.alibaba.fastjson.JSON;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import io.swagger.annotations.ApiOperation;
+import com.liqihua.common.basic.WebResult;
+import com.liqihua.common.constant.ApiConstant;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -13,14 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.lang.reflect.Parameter;
+import java.util.Enumeration;
 
 /**
  * 
@@ -56,10 +56,11 @@ public class LogAspect {
         long startTime = System.currentTimeMillis();
         try {
             Class<?> target = joinPoint.getTarget().getClass();
-            Class<?>[] par = ((MethodSignature) joinPoint.getSignature()).getParameterTypes();
+            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+            Class<?>[] paramTypes = methodSignature.getParameterTypes();
             String methodName = joinPoint.getSignature().getName();
             //获取当前执行方法
-            Method currentMethod = target.getMethod(methodName, par);
+            Method currentMethod = target.getMethod(methodName, paramTypes);
             //拼接输出字符串
             classAndMethodName = target.getName() + " 的 " + currentMethod.getName() + " 方法";
             log.info("正在执行：{}", classAndMethodName);
@@ -71,22 +72,27 @@ public class LogAspect {
             }
 
 
-            log.info("getAnnotations:"+JSON.toJSONString(currentMethod.getClass().getAnnotation(ApiOperation.class)));
-            /*log.info("getAnnotations:"+JSON.toJSONString(currentMethod.getClass().getAnnotations()));
-            log.info("getAnnotatedInterfaces:"+JSON.toJSONString(currentMethod.getClass().getAnnotatedInterfaces()));
-            log.info("getDeclaredFields:"+JSON.toJSONString(currentMethod.getClass().getDeclaredFields()));
-            log.info("getFields:"+JSON.toJSONString(currentMethod.getClass().getFields()));
-            log.info("getTypeName:"+JSON.toJSONString(currentMethod.getClass().getTypeName()));
-            log.info("getTypeParameters:"+JSON.toJSONString(currentMethod.getClass().getTypeParameters()));*/
-
-            /*Object[] args = joinPoint.getArgs();
-            if(args != null && args.length > 0){
-                for(Object obj : args){
-                    //RequestParam requestParam = obj.getClass().getAnnotation(RequestParam.class);
-                    log.info("注解getAnnotations："+JSON.toJSONString(obj.getClass().getAnnotations()));
-                    log.info("注解getDeclaredAnnotations："+JSON.toJSONString(obj.getClass().getDeclaredAnnotations()));
+            Parameter[] params = currentMethod.getParameters();
+            if(params != null && params.length > 0){
+                Object[] args = joinPoint.getArgs();
+                for(int i=0; i< params.length; i++){
+                    Annotation[] annos = params[i].getDeclaredAnnotations();
+                    if(annos != null && annos.length > 0){
+                        for(Annotation anno : annos){
+                            if(anno instanceof RequestParam){
+                                RequestParam annoObj = (RequestParam)anno;
+                                if(annoObj.required()){
+                                    if(args[i] == null || (args[i] instanceof String && StrUtil.isBlank(args[i]+""))){
+                                        log.info("参数 "+methodSignature.getParameterNames()[i]+" 要求非空，参数值："+(args[i]==null?"":args[i].toString()));
+                                        WebResult webResult = new WebResult(ApiConstant.PARAM_IS_NULL, ApiConstant.getMessage(ApiConstant.PARAM_IS_NULL)+":"+methodSignature.getParameterNames()[i]);
+                                        return webResult;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-            }*/
+            }
 
         } catch (Throwable e) {
             log.error("LogAspect发生异常:", e);
