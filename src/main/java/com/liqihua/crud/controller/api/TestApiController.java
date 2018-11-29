@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -40,6 +39,17 @@ public class TestApiController extends BaseController{
     @RequestMapping(value = "/test1", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
     public WebResult test1(@ApiParam(value = "aa",required = false) @RequestParam(value="aa",required = false) String aa){
+        return buildSuccessInfo(aa);
+    }
+
+
+    @ApiOperation(value = "test3")
+    @RequestMapping(value = "/test3", method = RequestMethod.POST)
+    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
+    public WebResult test3(@RequestParam(value="aa",required = true) String aa,
+                           @RequestParam(value="bb",required = true) Integer bb,
+                           @RequestParam(value="cc",required = false) Integer cc){
+        LOG.info(aa,bb);
         return buildSuccessInfo(aa);
     }
 

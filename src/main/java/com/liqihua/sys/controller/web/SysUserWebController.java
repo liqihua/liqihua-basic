@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -50,16 +51,16 @@ public class SysUserWebController extends BaseController {
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public WebResult save(@ApiParam(value = "id",required = false) @RequestParam(value="id",required = false) Long id,
-                          @ApiParam(value = "username",required = true) @RequestParam(value="username",required = true)  String username,
-                          @ApiParam(value = "password",required = true) @RequestParam(value="password",required = true)  String password,
-                          @ApiParam(value = "nickname",required = true) @RequestParam(value="nickname",required = true)  String nickname,
-                          @ApiParam(value = "realName",required = true) @RequestParam(value="realName",required = true)  String realName,
-                          @ApiParam(value = "gender",required = true) @RequestParam(value="gender",required = true)  Boolean gender,
-                          @ApiParam(value = "avatar",required = false) @RequestParam(value="avatar",required = false)  String avatar,
-                          @ApiParam(value = "mobile",required = true) @RequestParam(value="mobile",required = true)  String mobile,
-                          @ApiParam(value = "remarks",required = true) @RequestParam(value="remarks",required = true)  String remarks,
-                          @ApiParam(value = "locked",required = true) @RequestParam(value="locked",required = true)  Boolean locked){
+    public WebResult save(@RequestParam(required = false) Long id,
+                          @RequestParam(required = true) @NotBlank String username,
+                          @RequestParam(required = false)  String password,
+                          @RequestParam(required = true)  String nickname,
+                          @RequestParam(required = true)  String realName,
+                          @RequestParam(required = true)  Boolean gender,
+                          @RequestParam(required = false)  String avatar,
+                          @RequestParam(required = true)  String mobile,
+                          @RequestParam(required = true)  String remarks,
+                          @RequestParam(required = true)  Boolean locked){
         SysUserEntity entity = null;
         if(id != null){
             entity = sysUserService.getById(id);
