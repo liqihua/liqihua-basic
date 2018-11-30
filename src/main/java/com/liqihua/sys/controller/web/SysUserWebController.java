@@ -51,16 +51,16 @@ public class SysUserWebController extends BaseController {
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public WebResult save(@RequestParam(required = false) Long id,
-                          @RequestParam(required = true) @NotBlank String username,
-                          @RequestParam(required = false)  String password,
-                          @RequestParam(required = true)  String nickname,
-                          @RequestParam(required = true)  String realName,
-                          @RequestParam(required = true)  Boolean gender,
-                          @RequestParam(required = false)  String avatar,
-                          @RequestParam(required = true)  String mobile,
-                          @RequestParam(required = true)  String remarks,
-                          @RequestParam(required = true)  Boolean locked){
+    public WebResult save(Long id,
+                          @RequestParam String username,
+                          @RequestParam Boolean locked,
+                          String password,
+                          String nickname,
+                          String realName,
+                          Boolean gender,
+                          String avatar,
+                          String mobile,
+                          String remarks){
         SysUserEntity entity = null;
         if(id != null){
             entity = sysUserService.getById(id);

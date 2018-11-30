@@ -1,9 +1,12 @@
 package com.liqihua.crud.controller.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.utils.SysFileUtil;
+import com.liqihua.sys.entity.SysMenuEntity;
+import com.liqihua.sys.service.SysMenuService;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +22,7 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * @author liqihua
@@ -34,6 +38,8 @@ public class TestApiController extends BaseController{
 
     @Resource
     private Environment environment;
+    @Resource
+    private SysMenuService sysMenuService;
 
     @ApiOperation(value = "test1")
     @RequestMapping(value = "/test1", method = RequestMethod.POST)
@@ -43,12 +49,30 @@ public class TestApiController extends BaseController{
     }
 
 
+
+
+    @ApiOperation(value = "test2")
+    @RequestMapping(value = "/test2", method = RequestMethod.GET)
+    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
+    public WebResult test2(){
+        QueryWrapper<SysMenuEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",3);
+        queryWrapper.eq("title","aabb");
+        queryWrapper.select("pid");
+        List<SysMenuEntity> list = sysMenuService.list(queryWrapper);
+        return buildSuccessInfo(list);
+    }
+
+
     @ApiOperation(value = "test3")
     @RequestMapping(value = "/test3", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
-    public WebResult test3(@RequestParam(value="aa",required = true) String aa,
-                           @RequestParam(value="bb",required = true) Integer bb,
-                           @RequestParam(value="cc",required = false) Integer cc){
+    public WebResult test3(@RequestParam(required = true) String aa,
+                           @RequestParam(required = true) Integer bb,
+                           /*@RequestParam(required = false) LocalDateTime cc,
+                           @RequestParam(required = false) LocalDate dd,
+                           @RequestParam(required = false) LocalTime ee,*/
+                           @RequestParam(required = false) Boolean ff){
         LOG.info(aa,bb);
         return buildSuccessInfo(aa);
     }

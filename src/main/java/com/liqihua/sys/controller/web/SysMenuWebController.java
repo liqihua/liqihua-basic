@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
+import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.sys.entity.SysMenuEntity;
 import com.liqihua.sys.entity.vo.SysMenuVO;
 import com.liqihua.sys.service.SysMenuService;
 import io.swagger.annotations.ApiParam;
+import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,19 +41,47 @@ public class SysMenuWebController extends BaseController {
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public WebResult save(@ApiParam(value = "pid",required = true) @RequestParam(value="pid",required = true)  Long pid,
-                          @ApiParam(value = "title",required = true) @RequestParam(value="title",required = true)  String title,
-                          @ApiParam(value = "routerName",required = true) @RequestParam(value="routerName",required = true)  String routerName,
-                          @ApiParam(value = "level",required = true) @RequestParam(value="level",required = true)  Integer level,
-                          @ApiParam(value = "hide",required = true) @RequestParam(value="hide",required = true)  Boolean hide,
-                          @ApiParam(value = "rank",required = true) @RequestParam(value="rank",required = true)  Integer rank){
-        SysMenuEntity entity = new SysMenuEntity();
+    public WebResult save(@RequestParam  String title,
+                          @RequestParam String routerName,
+                          @RequestParam Boolean hide,
+                          Long id,
+                          Long pid,
+                          Integer rank){
+        SysMenuEntity entity = null;
+        if(id != null){
+            entity = sysMenuService.getById(id);
+            if(entity == null){
+                return buildFailedInfo(ApiConstant.PARAM_ERROR);
+            }
+        }else {
+            entity = new SysMenuEntity();
+        }
         entity.setPid(pid);
         entity.setTitle(title);
         entity.setRouterName(routerName);
-        entity.setLevel(level);
         entity.setHide(hide);
         entity.setRank(rank);
+
+        /**
+         * 计算菜单级别，默认一级菜单
+         */
+        int level = 1;
+        if(pid != null){
+            Long tempPid = pid;
+            while (tempPid != null){
+                level += 1;
+                QueryWrapper<SysMenuEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("id",tempPid);
+                queryWrapper.select("pid");
+                SysMenuEntity parent = sysMenuService.getOne(queryWrapper);
+                if(parent != null){
+                    tempPid = parent.getPid();
+                }else{
+                    tempPid = null;
+                }
+            }
+        }
+        entity.setLevel(level);
         sysMenuService.saveOrUpdate(entity);
         SysMenuVO vo = new SysMenuVO();
         BeanUtils.copyProperties(entity,vo);

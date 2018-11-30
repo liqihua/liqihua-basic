@@ -17,6 +17,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Console;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -95,6 +96,7 @@ public class ControllerAspect {
                                 if(annoObj.required()){
                                     if(args[i] == null || (args[i] instanceof String && StrUtil.isBlank(args[i]+""))){
                                         String paramName = methodSignature.getParameterNames()[i];
+                                        log.info(paramName+":"+args[i]);
                                         log.info("参数 "+paramName+" 要求非空，参数值："+(args[i]==null?"":args[i].toString()));
                                         WebResult webResult = new WebResult(ApiConstant.PARAM_IS_NULL, ApiConstant.getMessage(ApiConstant.PARAM_IS_NULL)+"->"+paramName);
                                         return webResult;

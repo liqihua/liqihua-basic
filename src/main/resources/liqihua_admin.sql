@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50521
 File Encoding         : 65001
 
-Date: 2018-11-20 17:33:20
+Date: 2018-11-30 17:56:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,16 +21,21 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `pid` bigint(20) unsigned NOT NULL COMMENT '父级id',
+  `pid` bigint(20) unsigned DEFAULT NULL COMMENT '父级id',
   `title` varchar(255) NOT NULL COMMENT '菜单标题',
   `router_name` varchar(255) NOT NULL COMMENT 'vue的路由名称',
   `level` tinyint(3) unsigned NOT NULL COMMENT '1：一级菜单，2：二级菜单，3：三级菜单，...',
   `hide` bit(1) NOT NULL COMMENT '1：隐藏，0：显示',
-  `rank` tinyint(3) unsigned DEFAULT NULL COMMENT '排序',
+  `rank` int(3) unsigned DEFAULT NULL COMMENT '排序',
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='菜单';
+
+-- ----------------------------
+-- Records of sys_menu
+-- ----------------------------
+INSERT INTO `sys_menu` VALUES ('4', null, '用户列表', 'sysUser-list', '1', '\0', '999', '2018-11-30 17:55:59', '2018-11-30 17:55:59');
 
 -- ----------------------------
 -- Table structure for sys_perm
@@ -47,6 +52,10 @@ CREATE TABLE `sys_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限';
 
 -- ----------------------------
+-- Records of sys_perm
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_perm_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_perm_menu`;
@@ -58,6 +67,10 @@ CREATE TABLE `sys_perm_menu` (
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='菜单权限树形关系';
+
+-- ----------------------------
+-- Records of sys_perm_menu
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -73,6 +86,10 @@ CREATE TABLE `sys_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色';
 
 -- ----------------------------
+-- Records of sys_role
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_role_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
@@ -84,6 +101,10 @@ CREATE TABLE `sys_role_menu` (
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色菜单树形关系';
+
+-- ----------------------------
+-- Records of sys_role_menu
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_role_perm
@@ -99,6 +120,10 @@ CREATE TABLE `sys_role_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色权限树形关系';
 
 -- ----------------------------
+-- Records of sys_role_perm
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_role_user
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_user`;
@@ -110,6 +135,10 @@ CREATE TABLE `sys_role_user` (
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户角色关系';
+
+-- ----------------------------
+-- Records of sys_role_user
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -129,7 +158,13 @@ CREATE TABLE `sys_user` (
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COMMENT=' 用户';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT=' 用户';
+
+-- ----------------------------
+-- Records of sys_user
+-- ----------------------------
+INSERT INTO `sys_user` VALUES ('4', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'ww', 'qq', '', '/upload/25-1.jpeg', '11', 'tt', '', '2018-11-13 09:49:52', '2018-11-30 17:01:01');
+INSERT INTO `sys_user` VALUES ('5', 'test', 'test', 'test', 'test', null, '/upload/12.jpg', '112233', '', '', '2018-11-30 14:44:50', '2018-11-30 14:44:50');
 
 -- ----------------------------
 -- Table structure for test_person
@@ -149,3 +184,7 @@ CREATE TABLE `test_person` (
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='test_person人员表';
+
+-- ----------------------------
+-- Records of test_person
+-- ----------------------------
