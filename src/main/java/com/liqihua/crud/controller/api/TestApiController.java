@@ -1,6 +1,5 @@
 package com.liqihua.crud.controller.api;
 
-import com.liqihua.common.annotation.TestParam;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
@@ -47,7 +46,7 @@ public class TestApiController extends BaseController{
     @ApiOperation(value = "test3")
     @RequestMapping(value = "/test3", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
-    public WebResult test3(@RequestParam(value="aa",required = true) @TestParam String aa,
+    public WebResult test3(@RequestParam(value="aa",required = true) String aa,
                            @RequestParam(value="bb",required = true) Integer bb,
                            @RequestParam(value="cc",required = false) Integer cc){
         LOG.info(aa,bb);

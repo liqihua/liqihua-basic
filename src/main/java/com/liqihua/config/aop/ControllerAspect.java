@@ -30,18 +30,27 @@ import java.util.Enumeration;
 
 @Aspect
 @Component
-public class LogAspect {
+public class ControllerAspect {
 
-    private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
+    private static final Logger log = LoggerFactory.getLogger(ControllerAspect.class);
 
+    /**
+     * 定义一个controller切点
+     */
     @Pointcut("execution (* com..*.*Controller.*(..))")
     public void controllerAspect() {
     }
 
+    /**
+     * controller层aop处理
+     * @param joinPoint
+     * @return
+     * @throws Throwable
+     */
 	@Around("controllerAspect()")
     public Object controllerAround(ProceedingJoinPoint joinPoint) throws Throwable{
         /**
-         * 接口增加日志
+         * 请求日志打印
          */
         String classAndMethodName = null;
         //获取当前请求属性集
@@ -71,7 +80,9 @@ public class LogAspect {
                 log.info("参数 " + param+" : "+request.getParameter(param));
             }
 
-
+            /**
+             * RequestParam注解参数非空参数拦截
+             */
             Parameter[] params = currentMethod.getParameters();
             if(params != null && params.length > 0){
                 Object[] args = joinPoint.getArgs();
@@ -83,8 +94,9 @@ public class LogAspect {
                                 RequestParam annoObj = (RequestParam)anno;
                                 if(annoObj.required()){
                                     if(args[i] == null || (args[i] instanceof String && StrUtil.isBlank(args[i]+""))){
-                                        log.info("参数 "+methodSignature.getParameterNames()[i]+" 要求非空，参数值："+(args[i]==null?"":args[i].toString()));
-                                        WebResult webResult = new WebResult(ApiConstant.PARAM_IS_NULL, ApiConstant.getMessage(ApiConstant.PARAM_IS_NULL)+":"+methodSignature.getParameterNames()[i]);
+                                        String paramName = methodSignature.getParameterNames()[i];
+                                        log.info("参数 "+paramName+" 要求非空，参数值："+(args[i]==null?"":args[i].toString()));
+                                        WebResult webResult = new WebResult(ApiConstant.PARAM_IS_NULL, ApiConstant.getMessage(ApiConstant.PARAM_IS_NULL)+"->"+paramName);
                                         return webResult;
                                     }
                                 }
@@ -93,9 +105,8 @@ public class LogAspect {
                     }
                 }
             }
-
         } catch (Throwable e) {
-            log.error("LogAspect发生异常:", e);
+            log.error("controllerAround 发生异常:", e);
         }
         Object object = joinPoint.proceed();
         log.info("返回: {}", object==null?"空":JSONObject.toJSONString(object));
@@ -103,4 +114,7 @@ public class LogAspect {
         log.info("响应时间 {} 毫秒", endTime-startTime);
         return object;
     }
+
+
+
 }
