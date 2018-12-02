@@ -1,5 +1,6 @@
 package com.liqihua.sys.controller.web;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import sun.applet.Main;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -35,6 +38,59 @@ public class SysMenuWebController extends BaseController {
     @Resource
     private SysMenuService sysMenuService;
 
+    /*public static void main(String[] args) {
+        SysMenuVO vo1 = new SysMenuVO();
+        SysMenuVO vo2 = new SysMenuVO();
+        SysMenuVO vo3 = new SysMenuVO();
+        SysMenuVO vo4 = new SysMenuVO();
+        vo1.setId(1L);
+        vo2.setId(2L);
+        vo3.setId(3L);
+        vo4.setId(4L);
+        vo2.setPid(1L);
+        vo3.setPid(2L);
+        vo4.setPid(3L);
+        vo1.setLevel(1);
+        vo2.setLevel(2);
+        vo3.setLevel(3);
+        vo4.setLevel(4);
+        vo1.setTitle("aa");
+        vo2.setTitle("bb");
+        vo3.setTitle("cc");
+        vo4.setTitle("dd");
+        List<SysMenuVO> voList = new LinkedList<>();
+        voList.add(vo1);
+        voList.add(vo2);
+        voList.add(vo3);
+        voList.add(vo4);
+
+        *//*List<Integer> levelList = voList.stream().map(SysMenuVO::getLevel).collect(Collectors.toList());
+        levelList.forEach(level -> {
+            System.out.println(level);
+        });
+        levelList = levelList.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(o -> o))), LinkedList::new));
+        levelList.forEach(level -> {
+            System.out.println(level);
+        });*//*
+
+        // List<SysMenuVO> newList = voList.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(o -> o.getLevel()))), ArrayList::new));
+        voList = new LinkedList<>();
+        List<SysMenuVO> tree = voList.stream().filter(vo -> 1 == vo.getLevel()).collect(Collectors.toList());
+        tree = makeTree(tree,voList);
+        System.out.println(JSON.toJSONString(tree));
+    }*/
+
+    @RequestMapping(value = "/getTree", method = RequestMethod.GET)
+    public WebResult getTree(){
+        List<SysMenuEntity> list = sysMenuService.list(null);
+        List<SysMenuVO> voList = SysBeanUtil.copyList(list,SysMenuVO.class);
+        List<SysMenuVO> tree = null;
+        if(voList != null){
+            tree = voList.stream().filter(vo -> 1 == vo.getLevel()).collect(Collectors.toList());
+            tree = makeTree(tree,voList);
+        }
+        return buildSuccessInfo(tree);
+    }
 
 
 
@@ -133,7 +189,21 @@ public class SysMenuWebController extends BaseController {
         return buildSuccessInfo(result);
     }
 
-
-
+    /**
+     * 递归组装树形菜单
+     * @param parentList
+     * @param voList
+     * @return
+     */
+    public List<SysMenuVO> makeTree(List<SysMenuVO> parentList,List<SysMenuVO> voList){
+        parentList.forEach(parent -> {
+            List<SysMenuVO> children = voList.stream().filter(vo -> parent.getId() == vo.getPid()).collect(Collectors.toList());
+            if(children != null){
+                children = makeTree(children,voList);
+                parent.setChildren(children);
+            }
+        });
+        return parentList;
+    }
 
 }

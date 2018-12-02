@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -48,12 +49,13 @@ public class SysMenuVO {
     private Integer rank;
 
     @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createDate;
 
     @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateDate;
+
+    private List<SysMenuVO> children;
+
 
     public Long getId() {
         return id;
@@ -119,7 +121,13 @@ public class SysMenuVO {
         this.updateDate = updateDate;
     }
 
+    public List<SysMenuVO> getChildren() {
+        return children;
+    }
 
+    public void setChildren(List<SysMenuVO> children) {
+        this.children = children;
+    }
 
     @Override
     public String toString() {
