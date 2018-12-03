@@ -30,30 +30,31 @@ public class SysMenuVO {
 
     private Long id;
 
-    @ApiModelProperty(value = "父级id")
+    @ApiModelProperty("父级id")
     private Long pid;
 
-    @ApiModelProperty(value = "菜单标题")
+    @ApiModelProperty("菜单标题")
     private String title;
 
-    @ApiModelProperty(value = "vue的路由名称")
+    @ApiModelProperty("vue的路由名称")
     private String routerName;
 
-    @ApiModelProperty(value = "1：一级菜单，2：二级菜单，3：三级菜单，...")
+    @ApiModelProperty("1：一级菜单，2：二级菜单，3：三级菜单，...")
     private Integer level;
 
-    @ApiModelProperty(value = "1：隐藏，0：显示")
+    @ApiModelProperty("1：隐藏，0：显示")
     private Boolean hide;
 
-    @ApiModelProperty(value = "排序")
+    @ApiModelProperty("排序")
     private Integer rank;
 
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty("创建时间")
     private LocalDateTime createDate;
 
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty("更新时间")
     private LocalDateTime updateDate;
 
+    @ApiModelProperty("子菜单 ")
     private List<SysMenuVO> children;
 
 

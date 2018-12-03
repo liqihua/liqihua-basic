@@ -42,7 +42,7 @@ public class ${entity?replace('Entity','VO')} {
     </#if>
 
     <#if field.comment!?length gt 0>
-    @ApiModelProperty(value = "${field.comment}")
+    @ApiModelProperty("${field.comment}")
     </#if>
     private ${field.propertyType} ${field.propertyName};
 </#list>

@@ -38,55 +38,13 @@ public class SysMenuWebController extends BaseController {
     @Resource
     private SysMenuService sysMenuService;
 
-    /*public static void main(String[] args) {
-        SysMenuVO vo1 = new SysMenuVO();
-        SysMenuVO vo2 = new SysMenuVO();
-        SysMenuVO vo3 = new SysMenuVO();
-        SysMenuVO vo4 = new SysMenuVO();
-        vo1.setId(1L);
-        vo2.setId(2L);
-        vo3.setId(3L);
-        vo4.setId(4L);
-        vo2.setPid(1L);
-        vo3.setPid(2L);
-        vo4.setPid(3L);
-        vo1.setLevel(1);
-        vo2.setLevel(2);
-        vo3.setLevel(3);
-        vo4.setLevel(4);
-        vo1.setTitle("aa");
-        vo2.setTitle("bb");
-        vo3.setTitle("cc");
-        vo4.setTitle("dd");
-        List<SysMenuVO> voList = new LinkedList<>();
-        voList.add(vo1);
-        voList.add(vo2);
-        voList.add(vo3);
-        voList.add(vo4);
-
-        *//*List<Integer> levelList = voList.stream().map(SysMenuVO::getLevel).collect(Collectors.toList());
-        levelList.forEach(level -> {
-            System.out.println(level);
-        });
-        levelList = levelList.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(o -> o))), LinkedList::new));
-        levelList.forEach(level -> {
-            System.out.println(level);
-        });*//*
-
-        // List<SysMenuVO> newList = voList.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(o -> o.getLevel()))), ArrayList::new));
-        voList = new LinkedList<>();
-        List<SysMenuVO> tree = voList.stream().filter(vo -> 1 == vo.getLevel()).collect(Collectors.toList());
-        tree = makeTree(tree,voList);
-        System.out.println(JSON.toJSONString(tree));
-    }*/
-
     @RequestMapping(value = "/getTree", method = RequestMethod.GET)
     public WebResult getTree(){
         List<SysMenuEntity> list = sysMenuService.list(null);
         List<SysMenuVO> voList = SysBeanUtil.copyList(list,SysMenuVO.class);
         List<SysMenuVO> tree = null;
         if(voList != null){
-            tree = voList.stream().filter(vo -> 1 == vo.getLevel()).collect(Collectors.toList());
+            tree = voList.stream().filter(vo -> 1 == vo.getLevel()).sorted((vo1,vo2) -> vo1.getRank() - vo2.getRank()).collect(Collectors.toList());
             tree = makeTree(tree,voList);
         }
         return buildSuccessInfo(tree);
@@ -147,14 +105,24 @@ public class SysMenuWebController extends BaseController {
 
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public WebResult delete(@ApiParam(value = "id",required = true) @RequestParam(value="id",required = true) Long id){
+    public WebResult delete(@RequestParam Long id){
+        SysMenuEntity menu = sysMenuService.getById(id);
+        if(menu == null){
+            return buildFailedInfo(ApiConstant.PARAM_ERROR);
+        }
+        List<SysMenuEntity> children = sysMenuService.list(new QueryWrapper<SysMenuEntity>().eq("pid",menu.getId()));
+        if(children != null){
+            deleteChildren(children);
+        }
         boolean delete = sysMenuService.removeById(id);
         return buildSuccessInfo(delete);
     }
 
 
+
+
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public WebResult get(@ApiParam(value = "id",required = true) @RequestParam(value="id",required = true) Long id){
+    public WebResult get(@RequestParam Long id){
         SysMenuEntity entity = sysMenuService.getById(id);
         SysMenuVO vo = null;
         if(entity != null){
@@ -167,14 +135,14 @@ public class SysMenuWebController extends BaseController {
 
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
-    public WebResult page(@ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
-                          @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize,
-                          @ApiParam(value = "pid",required = false) @RequestParam(value="pid",required = false)  Long pid,
-                          @ApiParam(value = "title",required = false) @RequestParam(value="title",required = false)  String title,
-                          @ApiParam(value = "routerName",required = false) @RequestParam(value="routerName",required = false)  String routerName,
-                          @ApiParam(value = "level",required = false) @RequestParam(value="level",required = false)  Integer level,
-                          @ApiParam(value = "hide",required = false) @RequestParam(value="hide",required = false)  Boolean hide,
-                          @ApiParam(value = "rank",required = false) @RequestParam(value="rank",required = false)  Integer rank){
+    public WebResult page(@RequestParam Integer page,
+                          @RequestParam Integer pageSize,
+                          Long pid,
+                          String title,
+                          String routerName,
+                          Integer level,
+                          Boolean hide,
+                          Integer rank){
         SysMenuEntity entity = new SysMenuEntity();
         entity.setPid(pid);
         entity.setTitle(title);
@@ -197,7 +165,7 @@ public class SysMenuWebController extends BaseController {
      */
     public List<SysMenuVO> makeTree(List<SysMenuVO> parentList,List<SysMenuVO> voList){
         parentList.forEach(parent -> {
-            List<SysMenuVO> children = voList.stream().filter(vo -> parent.getId() == vo.getPid()).collect(Collectors.toList());
+            List<SysMenuVO> children = voList.stream().filter(vo -> parent.getId().equals(vo.getPid())).sorted((vo1,vo2) -> vo1.getRank() - vo2.getRank()).collect(Collectors.toList());
             if(children != null){
                 children = makeTree(children,voList);
                 parent.setChildren(children);
@@ -205,5 +173,22 @@ public class SysMenuWebController extends BaseController {
         });
         return parentList;
     }
+
+    /**
+     * 递归删除所有子菜单
+     * @param list
+     */
+    public void deleteChildren(List<SysMenuEntity> list){
+        if(list != null){
+            list.forEach(menu -> {
+                List<SysMenuEntity> children = sysMenuService.list(new QueryWrapper<SysMenuEntity>().eq("pid",menu.getId()));
+                if(children != null){
+                    deleteChildren(children);
+                }
+                sysMenuService.removeById(menu);
+            });
+        }
+    }
+
 
 }
