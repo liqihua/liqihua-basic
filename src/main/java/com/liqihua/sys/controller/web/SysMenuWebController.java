@@ -1,6 +1,5 @@
 package com.liqihua.sys.controller.web;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,17 +10,14 @@ import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.sys.entity.SysMenuEntity;
 import com.liqihua.sys.entity.vo.SysMenuVO;
 import com.liqihua.sys.service.SysMenuService;
-import io.swagger.annotations.ApiParam;
-import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import sun.applet.Main;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -37,22 +33,6 @@ import java.util.stream.Collectors;
 public class SysMenuWebController extends BaseController {
     @Resource
     private SysMenuService sysMenuService;
-
-    @RequestMapping(value = "/getTree", method = RequestMethod.GET)
-    public WebResult getTree(){
-        List<SysMenuEntity> list = sysMenuService.list(null);
-        List<SysMenuVO> voList = SysBeanUtil.copyList(list,SysMenuVO.class);
-        List<SysMenuVO> tree = null;
-        if(voList != null){
-            tree = voList.stream().filter(vo -> 1 == vo.getLevel()).sorted((vo1,vo2) -> vo1.getRank() - vo2.getRank()).collect(Collectors.toList());
-            tree = makeTree(tree,voList);
-        }
-        return buildSuccessInfo(tree);
-    }
-
-
-
-
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public WebResult save(@RequestParam  String title,
@@ -156,6 +136,23 @@ public class SysMenuWebController extends BaseController {
         result.setRecords(voList);
         return buildSuccessInfo(result);
     }
+
+
+
+    @RequestMapping(value = "/getTree", method = RequestMethod.GET)
+    public WebResult getTree(){
+        List<SysMenuEntity> list = sysMenuService.list(null);
+        List<SysMenuVO> voList = SysBeanUtil.copyList(list,SysMenuVO.class);
+        List<SysMenuVO> tree = null;
+        if(voList != null){
+            tree = voList.stream().filter(vo -> 1 == vo.getLevel()).sorted((vo1,vo2) -> vo1.getRank() - vo2.getRank()).collect(Collectors.toList());
+            tree = makeTree(tree,voList);
+        }
+        return buildSuccessInfo(tree);
+    }
+
+
+
 
     /**
      * 递归组装树形菜单

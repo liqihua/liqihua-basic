@@ -12,7 +12,6 @@ import com.liqihua.common.utils.SysFileUtil;
 import com.liqihua.sys.entity.SysUserEntity;
 import com.liqihua.sys.entity.vo.SysUserVO;
 import com.liqihua.sys.service.SysUserService;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -91,14 +89,14 @@ public class SysUserWebController extends BaseController {
 
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public WebResult delete(@ApiParam(value = "id",required = true) @RequestParam(value="id",required = true) Long id){
+    public WebResult delete(@RequestParam Long id){
         boolean delete = sysUserService.removeById(id);
         return buildSuccessInfo(delete);
     }
 
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public WebResult get(@ApiParam(value = "id",required = true) @RequestParam(value="id",required = true) Long id){
+    public WebResult get(@RequestParam Long id){
         SysUserEntity entity = sysUserService.getById(id);
         SysUserVO vo = null;
         if(entity != null){
@@ -114,17 +112,17 @@ public class SysUserWebController extends BaseController {
 
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
-    public WebResult page(@ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
-                          @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize,
-                          @ApiParam(value = "username",required = false) @RequestParam(value="username",required = false)  String username,
-                          @ApiParam(value = "password",required = false) @RequestParam(value="password",required = false)  String password,
-                          @ApiParam(value = "nickname",required = false) @RequestParam(value="nickname",required = false)  String nickname,
-                          @ApiParam(value = "realName",required = false) @RequestParam(value="realName",required = false)  String realName,
-                          @ApiParam(value = "gender",required = false) @RequestParam(value="gender",required = false)  Boolean gender,
-                          @ApiParam(value = "avatar",required = false) @RequestParam(value="avatar",required = false)  String avatar,
-                          @ApiParam(value = "mobile",required = false) @RequestParam(value="mobile",required = false)  String mobile,
-                          @ApiParam(value = "remarks",required = false) @RequestParam(value="remarks",required = false)  String remarks,
-                          @ApiParam(value = "lock",required = false) @RequestParam(value="lock",required = false)  Boolean lock){
+    public WebResult page(@RequestParam Integer page,
+                          @RequestParam Integer pageSize,
+                          String username,
+                          String password,
+                          String nickname,
+                          String realName,
+                          Boolean gender,
+                          String avatar,
+                          String mobile,
+                          String remarks,
+                          Boolean lock){
         SysUserEntity entity = new SysUserEntity();
         entity.setUsername(username);
         entity.setPassword(password);
@@ -150,7 +148,7 @@ public class SysUserWebController extends BaseController {
 
 
     @RequestMapping(value = "/uploadAvatar", method = RequestMethod.POST)
-    public WebResult uploadAvatar(@RequestParam(required = true) MultipartFile avatar){
+    public WebResult uploadAvatar(@RequestParam MultipartFile avatar){
         String path = SysFileUtil.uploadFile(avatar,null);
         return buildSuccessInfo(prefix + path);
     }
