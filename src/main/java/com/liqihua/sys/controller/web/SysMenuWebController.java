@@ -61,6 +61,15 @@ public class SysMenuWebController extends BaseController {
          */
         int level = 1;
         if(pid != null){
+            if(id != null){
+                if(id.equals(pid)) {
+                    return buildFailedInfo("不能选当前菜单为父级菜单");
+                }
+                SysMenuEntity parent = sysMenuService.getById(pid);
+                if(parent.getLevel() > entity.getLevel()){
+                    return buildFailedInfo("父菜单级别不能低于当前菜单");
+                }
+            }
             Long tempPid = pid;
             while (tempPid != null){
                 level += 1;
