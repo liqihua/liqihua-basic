@@ -1,6 +1,5 @@
 package com.liqihua.sys.controller.web;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liqihua.common.basic.BaseController;
@@ -9,7 +8,6 @@ import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.sys.entity.SysRoleEntity;
 import com.liqihua.sys.entity.vo.SysRoleVO;
 import com.liqihua.sys.service.SysRoleService;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,9 +37,8 @@ public class SysRoleWebController extends BaseController {
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public WebResult save(@ApiParam(value = "name",required = true) @RequestParam(value="name",required = true)  String name,
-                          @ApiParam(value = "remarks",required = true) @RequestParam(value="remarks",required = true)  String remarks
-                          ){
+    public WebResult save(@RequestParam String name,
+                          String remarks){
         SysRoleEntity entity = new SysRoleEntity();
         entity.setName(name);
         entity.setRemarks(remarks);
@@ -54,14 +51,14 @@ public class SysRoleWebController extends BaseController {
 
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public WebResult delete(@ApiParam(value = "id",required = true) @RequestParam(value="id",required = true) Long id){
+    public WebResult delete(@RequestParam Long id){
         boolean delete = sysRoleService.removeById(id);
         return buildSuccessInfo(delete);
     }
 
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public WebResult get(@ApiParam(value = "id",required = true) @RequestParam(value="id",required = true) Long id){
+    public WebResult get(@RequestParam Long id){
         SysRoleEntity entity = sysRoleService.getById(id);
         SysRoleVO vo = null;
         if(entity != null){
@@ -73,16 +70,10 @@ public class SysRoleWebController extends BaseController {
 
 
 
-    @RequestMapping(value = "/page", method = RequestMethod.POST)
-    public WebResult page(@ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
-                          @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize,
-                          @ApiParam(value = "name",required = false) @RequestParam(value="name",required = false)  String name,
-                          @ApiParam(value = "remarks",required = false) @RequestParam(value="remarks",required = false)  String remarks){
-        SysRoleEntity entity = new SysRoleEntity();
-        entity.setName(name);
-        entity.setRemarks(remarks);
-        QueryWrapper queryWrapper = new QueryWrapper<SysRoleEntity>(entity);
-        IPage result = sysRoleService.page(new Page<SysRoleEntity>(page,pageSize),queryWrapper);
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    public WebResult page(@RequestParam Integer page,
+                          @RequestParam Integer pageSize){
+        IPage result = sysRoleService.page(new Page<SysRoleEntity>(page,pageSize),null);
         List<SysRoleVO> voList = SysBeanUtil.copyList(result.getRecords(),SysRoleVO.class);
         result.setRecords(voList);
         return buildSuccessInfo(result);
