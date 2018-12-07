@@ -7,8 +7,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.utils.SysBeanUtil;
+import com.liqihua.sys.entity.SysMenuEntity;
 import com.liqihua.sys.entity.SysPermEntity;
+import com.liqihua.sys.entity.SysPermMenuEntity;
+import com.liqihua.sys.entity.vo.SysMenuVO;
+import com.liqihua.sys.entity.vo.SysPermMenuVO;
 import com.liqihua.sys.entity.vo.SysPermVO;
+import com.liqihua.sys.service.SysMenuService;
+import com.liqihua.sys.service.SysPermMenuService;
 import com.liqihua.sys.service.SysPermService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,14 +38,17 @@ import java.util.List;
 public class SysPermWebController extends BaseController {
     @Resource
     private SysPermService sysPermService;
-
-
+    @Resource
+    private SysPermMenuService sysPermMenuService;
+    @Resource
+    private SysMenuService sysMenuService;
 
 
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public WebResult save(@RequestParam String name,
+    public WebResult save(@RequestParam Long menuId,
+                          @RequestParam String name,
                           @RequestParam String symbol,
                           String remarks){
         SysPermEntity entity = new SysPermEntity();
@@ -47,6 +56,9 @@ public class SysPermWebController extends BaseController {
         entity.setSymbol(symbol);
         entity.setRemarks(remarks);
         sysPermService.saveOrUpdate(entity);
+        sysPermMenuService.remove(new QueryWrapper<SysPermMenuEntity>().eq("perm_id",entity.getId()));
+        SysPermMenuEntity pm = new SysPermMenuEntity(menuId,entity.getId());
+        sysPermMenuService.save(pm);
         SysPermVO vo = new SysPermVO();
         BeanUtils.copyProperties(entity,vo);
         return buildSuccessInfo(vo);
@@ -57,6 +69,7 @@ public class SysPermWebController extends BaseController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
         boolean delete = sysPermService.removeById(id);
+        sysPermMenuService.remove(new QueryWrapper<SysPermMenuEntity>().eq("perm_id",id));
         return buildSuccessInfo(delete);
     }
 
@@ -74,20 +87,28 @@ public class SysPermWebController extends BaseController {
 
 
 
-    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
     public WebResult page(@RequestParam Integer page,
-                          @RequestParam Integer pageSize,
-                          String name,
-                          String symbol){
-        QueryWrapper queryWrapper = new QueryWrapper<SysPermEntity>();
-        if(StrUtil.isNotBlank(name)) {
-            queryWrapper.like("name", name);
+                          @RequestParam Integer pageSize){
+        IPage result = sysPermMenuService.page(new Page<SysPermMenuEntity>(page,pageSize),new QueryWrapper<SysPermMenuEntity>().orderByAsc("menu_id"));
+        List<SysPermMenuEntity> pmList = result.getRecords();
+        List<SysPermMenuVO> voList = SysBeanUtil.copyList(pmList,SysPermMenuVO.class);
+        if(voList != null){
+            voList.forEach(vo -> {
+                SysMenuEntity menu = sysMenuService.getById(vo.getMenuId());
+                SysPermEntity perm = sysPermService.getById(vo.getPermId());
+                SysMenuVO menuVO = new SysMenuVO();
+                SysPermVO permVO = new SysPermVO();
+                if(menu != null) {
+                    BeanUtils.copyProperties(menu, menuVO);
+                }
+                if(perm != null) {
+                    BeanUtils.copyProperties(perm, permVO);
+                }
+                vo.setMenu(menuVO);
+                vo.setPerm(permVO);
+            });
         }
-        if(StrUtil.isNotBlank(symbol)) {
-            queryWrapper.like("symbol", symbol);
-        }
-        IPage result = sysPermService.page(new Page<SysPermEntity>(page,pageSize),queryWrapper);
-        List<SysPermVO> voList = SysBeanUtil.copyList(result.getRecords(),SysPermVO.class);
         result.setRecords(voList);
         return buildSuccessInfo(result);
     }

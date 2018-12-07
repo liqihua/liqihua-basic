@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,22 +27,18 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value="SysPermMenuVO")
 public class SysPermMenuVO {
 
-
+    @ApiModelProperty("id")
     private Long id;
-
-    @ApiModelProperty(value = "菜单id")
+    @ApiModelProperty("菜单id")
     private Long menuId;
-
-    @ApiModelProperty(value = "权限id")
+    @ApiModelProperty("权限id")
     private Long permId;
+    @ApiModelProperty("菜单")
+    private SysMenuVO menu;
+    @ApiModelProperty("权限")
+    private SysPermVO perm;
 
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createDate;
 
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateDate;
 
     public Long getId() {
         return id;
@@ -64,31 +61,21 @@ public class SysPermMenuVO {
     public void setPermId(Long permId) {
         this.permId = permId;
     }
-    public LocalDateTime getCreateDate() {
-        return createDate;
+
+
+    public SysMenuVO getMenu() {
+        return menu;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-    public LocalDateTime getUpdateDate() {
-        return updateDate;
+    public void setMenu(SysMenuVO menu) {
+        this.menu = menu;
     }
 
-    public void setUpdateDate(LocalDateTime updateDate) {
-        this.updateDate = updateDate;
+    public SysPermVO getPerm() {
+        return perm;
     }
 
-
-
-    @Override
-    public String toString() {
-        return "SysPermMenuEntity{" +
-        "id=" + id +
-        ", menuId=" + menuId +
-        ", permId=" + permId +
-        ", createDate=" + createDate +
-        ", updateDate=" + updateDate +
-        "}";
+    public void setPerm(SysPermVO perm) {
+        this.perm = perm;
     }
 }

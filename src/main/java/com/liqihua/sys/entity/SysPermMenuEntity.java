@@ -47,6 +47,14 @@ public class SysPermMenuEntity extends Model<SysPermMenuEntity> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateDate;
 
+    public SysPermMenuEntity() {
+    }
+
+    public SysPermMenuEntity(Long menuId, Long permId) {
+        this.menuId = menuId;
+        this.permId = permId;
+    }
+
     public Long getId() {
         return id;
     }
