@@ -81,6 +81,15 @@ public class SysPermWebController extends BaseController {
         if(entity != null){
             vo = new SysPermVO();
             BeanUtils.copyProperties(entity,vo);
+            SysPermMenuEntity pm = sysPermMenuService.getOne(new QueryWrapper<SysPermMenuEntity>().eq("perm_id",entity.getId()));
+            if(pm != null){
+                SysMenuEntity menu = sysMenuService.getById(pm.getMenuId());
+                if(menu != null){
+                    SysMenuVO menuVO = new SysMenuVO();
+                    BeanUtils.copyProperties(menu,menuVO);
+                    vo.setMenu(menuVO);
+                }
+            }
         }
         return buildSuccessInfo(vo);
     }
