@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
+import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.sys.entity.*;
 import com.liqihua.sys.entity.vo.SysMenuVO;
@@ -107,12 +108,12 @@ public class SysRoleWebController extends BaseController {
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public WebResult get(@RequestParam Long id){
         SysRoleEntity entity = sysRoleService.getById(id);
-        SysRoleVO vo = null;
-        if(entity != null){
-            vo = new SysRoleVO();
-            BeanUtils.copyProperties(entity,vo);
-            vo = makeVO(vo);
+        if(entity == null){
+            return buildFailedInfo(ApiConstant.PARAM_ERROR);
         }
+        SysRoleVO vo = new SysRoleVO();
+        BeanUtils.copyProperties(entity,vo);
+        vo = makeVO(vo);
         return buildSuccessInfo(vo);
     }
 
