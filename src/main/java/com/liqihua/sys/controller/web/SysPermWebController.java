@@ -10,12 +10,14 @@ import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.sys.entity.SysMenuEntity;
 import com.liqihua.sys.entity.SysPermEntity;
 import com.liqihua.sys.entity.SysPermMenuEntity;
+import com.liqihua.sys.entity.SysRolePermEntity;
 import com.liqihua.sys.entity.vo.SysMenuVO;
 import com.liqihua.sys.entity.vo.SysPermMenuVO;
 import com.liqihua.sys.entity.vo.SysPermVO;
 import com.liqihua.sys.service.SysMenuService;
 import com.liqihua.sys.service.SysPermMenuService;
 import com.liqihua.sys.service.SysPermService;
+import com.liqihua.sys.service.SysRolePermService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -42,8 +45,33 @@ public class SysPermWebController extends BaseController {
     private SysPermMenuService sysPermMenuService;
     @Resource
     private SysMenuService sysMenuService;
+    @Resource
+    private SysRolePermService sysRolePermService;
 
 
+    @RequestMapping(value = "/getByMenuIds", method = RequestMethod.GET)
+    public WebResult getByMenuIds(@RequestParam String menuIds){
+        String[] arr = menuIds.split(",");
+        List<Long> menuIdList = new LinkedList<>();
+        if(arr != null && arr.length > 0){
+            for(String _menuId : arr) {
+                menuIdList.add(Long.valueOf(_menuId));
+            }
+        }
+        List<SysPermVO> voList = new LinkedList<>();
+        List<SysPermMenuEntity> pmList = sysPermMenuService.list(new QueryWrapper<SysPermMenuEntity>().in("menu_id",menuIdList).orderByAsc("menu_id"));
+        if(pmList != null){
+            pmList.forEach(pm -> {
+                SysPermEntity perm = sysPermService.getById(pm.getPermId());
+                if(perm != null){
+                    SysPermVO vo = new SysPermVO();
+                    BeanUtils.copyProperties(perm,vo);
+                    voList.add(vo);
+                }
+            });
+        }
+        return buildSuccessInfo(voList);
+    }
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -68,6 +96,10 @@ public class SysPermWebController extends BaseController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
+        int count = sysRolePermService.count(new QueryWrapper<SysRolePermEntity>().eq("perm_id",id));
+        if(count > 0){
+            return buildFailedInfo("有角色绑定了该权限，请先解绑");
+        }
         boolean delete = sysPermService.removeById(id);
         sysPermMenuService.remove(new QueryWrapper<SysPermMenuEntity>().eq("perm_id",id));
         return buildSuccessInfo(delete);

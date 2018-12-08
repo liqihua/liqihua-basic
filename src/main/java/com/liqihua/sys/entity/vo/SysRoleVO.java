@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,22 +27,22 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value="SysRoleVO")
 public class SysRoleVO {
 
-
+    @ApiModelProperty("id")
     private Long id;
-
-    @ApiModelProperty(value = "角色名称")
+    @ApiModelProperty("角色名称")
     private String name;
-
-    @ApiModelProperty(value = "备注")
+    @ApiModelProperty("备注")
     private String remarks;
-
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
+    @ApiModelProperty("创建时间")
     private LocalDateTime createDate;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @ApiModelProperty("更新时间")
     private LocalDateTime updateDate;
+    @ApiModelProperty("菜单列表")
+    private List<SysMenuVO> menuList;
+    @ApiModelProperty("权限列表")
+    private List<SysPermVO> permList;
+
+
 
     public Long getId() {
         return id;
@@ -80,6 +81,21 @@ public class SysRoleVO {
     }
 
 
+    public List<SysMenuVO> getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List<SysMenuVO> menuList) {
+        this.menuList = menuList;
+    }
+
+    public List<SysPermVO> getPermList() {
+        return permList;
+    }
+
+    public void setPermList(List<SysPermVO> permList) {
+        this.permList = permList;
+    }
 
     @Override
     public String toString() {

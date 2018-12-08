@@ -47,6 +47,15 @@ public class SysRolePermEntity extends Model<SysRolePermEntity> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateDate;
 
+
+    public SysRolePermEntity() {
+    }
+
+    public SysRolePermEntity(Long roleId, Long permId) {
+        this.roleId = roleId;
+        this.permId = permId;
+    }
+
     public Long getId() {
         return id;
     }

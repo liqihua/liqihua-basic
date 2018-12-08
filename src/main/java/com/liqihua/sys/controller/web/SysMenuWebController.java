@@ -8,8 +8,10 @@ import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.sys.entity.SysMenuEntity;
+import com.liqihua.sys.entity.SysRoleMenuEntity;
 import com.liqihua.sys.entity.vo.SysMenuVO;
 import com.liqihua.sys.service.SysMenuService;
+import com.liqihua.sys.service.SysRoleMenuService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +35,8 @@ import java.util.stream.Collectors;
 public class SysMenuWebController extends BaseController {
     @Resource
     private SysMenuService sysMenuService;
+    @Resource
+    private SysRoleMenuService sysRoleMenuService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public WebResult save(@RequestParam  String title,
@@ -95,6 +99,10 @@ public class SysMenuWebController extends BaseController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
+        int count = sysRoleMenuService.count(new QueryWrapper<SysRoleMenuEntity>().eq("menu_id",id));
+        if(count > 0){
+            return buildFailedInfo("有角色绑定了该菜菜单，请先解绑");
+        }
         SysMenuEntity menu = sysMenuService.getById(id);
         if(menu == null){
             return buildFailedInfo(ApiConstant.PARAM_ERROR);

@@ -47,6 +47,14 @@ public class SysRoleMenuEntity extends Model<SysRoleMenuEntity> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateDate;
 
+    public SysRoleMenuEntity() {
+    }
+
+    public SysRoleMenuEntity(Long roleId, Long menuId) {
+        this.roleId = roleId;
+        this.menuId = menuId;
+    }
+
     public Long getId() {
         return id;
     }
