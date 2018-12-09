@@ -47,6 +47,14 @@ public class SysRoleUserEntity extends Model<SysRoleUserEntity> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateDate;
 
+    public SysRoleUserEntity() {
+    }
+
+    public SysRoleUserEntity(Long roleId, Long userId) {
+        this.roleId = roleId;
+        this.userId = userId;
+    }
+
     public Long getId() {
         return id;
     }

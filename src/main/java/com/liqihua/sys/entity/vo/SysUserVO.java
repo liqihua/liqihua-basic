@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,39 +28,30 @@ import io.swagger.annotations.ApiModelProperty;
 public class SysUserVO {
 
 
+    @ApiModelProperty("id")
     private Long id;
-
-    @ApiModelProperty(value = "账号")
+    @ApiModelProperty("账号")
     private String username;
-
-    @ApiModelProperty(value = "昵称")
+    @ApiModelProperty("昵称")
     private String nickname;
-
-    @ApiModelProperty(value = "姓名")
+    @ApiModelProperty("姓名")
     private String realName;
-
-    @ApiModelProperty(value = "1：男，0：女")
+    @ApiModelProperty("1：男，0：女")
     private Boolean gender;
-
-    @ApiModelProperty(value = "头像")
+    @ApiModelProperty("头像")
     private String avatar;
-
-    @ApiModelProperty(value = "手机号码")
+    @ApiModelProperty("手机号码")
     private String mobile;
-
-    @ApiModelProperty(value = "备注")
+    @ApiModelProperty("备注")
     private String remarks;
-
-    @ApiModelProperty(value = "1：冻结，0：正常")
+    @ApiModelProperty("1：冻结，0：正常")
     private Boolean locked;
-
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
+    @ApiModelProperty("创建时间")
     private LocalDateTime createDate;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @ApiModelProperty("更新时间")
     private LocalDateTime updateDate;
+    @ApiModelProperty("角色列表")
+    private List<SysRoleVO> roleList;
 
     public Long getId() {
         return id;
@@ -141,7 +133,13 @@ public class SysUserVO {
         this.updateDate = updateDate;
     }
 
+    public List<SysRoleVO> getRoleList() {
+        return roleList;
+    }
 
+    public void setRoleList(List<SysRoleVO> roleList) {
+        this.roleList = roleList;
+    }
 
     @Override
     public String toString() {

@@ -9,8 +9,13 @@ import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.common.utils.SysFileUtil;
+import com.liqihua.sys.entity.SysRoleEntity;
+import com.liqihua.sys.entity.SysRoleUserEntity;
 import com.liqihua.sys.entity.SysUserEntity;
+import com.liqihua.sys.entity.vo.SysRoleVO;
 import com.liqihua.sys.entity.vo.SysUserVO;
+import com.liqihua.sys.service.SysRoleService;
+import com.liqihua.sys.service.SysRoleUserService;
 import com.liqihua.sys.service.SysUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -42,9 +48,27 @@ public class SysUserWebController extends BaseController {
 
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private SysRoleUserService sysRoleUserService;
+    @Resource
+    private SysRoleService sysRoleService;
 
 
-
+    @RequestMapping(value = "/setRoles", method = RequestMethod.POST)
+    public WebResult setRoles(@RequestParam Long userId,
+                              String roleIds) {
+        sysRoleUserService.remove(new QueryWrapper<SysRoleUserEntity>().eq("user_id",userId));
+        if(StrUtil.isNotBlank(roleIds)){
+            String[] roleIdArr = roleIds.split(",");
+            if(roleIdArr != null && roleIdArr.length > 0){
+                for(String _roleId : roleIdArr) {
+                    SysRoleUserEntity ru = new SysRoleUserEntity(Long.valueOf(_roleId),userId);
+                    sysRoleUserService.save(ru);
+                }
+            }
+        }
+        return buildSuccessInfo(null);
+    }
 
 
 
@@ -91,6 +115,7 @@ public class SysUserWebController extends BaseController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
         boolean delete = sysUserService.removeById(id);
+        sysRoleUserService.remove(new QueryWrapper<SysRoleUserEntity>().eq("user_id",id));
         return buildSuccessInfo(delete);
     }
 
@@ -106,6 +131,7 @@ public class SysUserWebController extends BaseController {
                 vo.setAvatar(prefix + vo.getAvatar());
             }
         }
+        vo = makeVO(vo);
         return buildSuccessInfo(vo);
     }
 
@@ -140,6 +166,7 @@ public class SysUserWebController extends BaseController {
             if(StrUtil.isNotBlank(vo.getAvatar()) && vo.getAvatar().startsWith("/")){
                 vo.setAvatar(prefix + vo.getAvatar());
             }
+            vo = makeVO(vo);
         });
         result.setRecords(voList);
         return buildSuccessInfo(result);
@@ -153,6 +180,17 @@ public class SysUserWebController extends BaseController {
         return buildSuccessInfo(prefix + path);
     }
 
-
+    public SysUserVO makeVO(SysUserVO vo) {
+        if(vo != null && vo.getId() != null) {
+            List<SysRoleUserEntity> ruList = sysRoleUserService.list(new QueryWrapper<SysRoleUserEntity>().eq("user_id",vo.getId()));
+            if(ruList != null && ruList.size() > 0) {
+                List<Long> roleIdList = ruList.stream().map(SysRoleUserEntity::getRoleId).collect(Collectors.toList());
+                List<SysRoleEntity> roleList = sysRoleService.list(new QueryWrapper<SysRoleEntity>().in("id",roleIdList));
+                List<SysRoleVO> roleVOList = SysBeanUtil.copyList(roleList,SysRoleVO.class);
+                vo.setRoleList(roleVOList);
+            }
+        }
+        return vo;
+    }
 
 }
