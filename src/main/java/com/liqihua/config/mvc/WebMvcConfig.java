@@ -14,6 +14,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.liqihua.common.utils.SysFileUtil;
 import com.liqihua.config.mvc.interceptor.CorsInterceptor;
+import com.liqihua.config.mvc.interceptor.SysInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -48,6 +49,11 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		return new CorsInterceptor();
 	}
 
+	@Bean
+	SysInterceptor sysInterceptor() {
+		return new SysInterceptor();
+	}
+
 	/**
 	 * 添加拦截器
 	 * @param registry
@@ -56,6 +62,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	public void addInterceptors(InterceptorRegistry registry) {
 		//跨域拦截器
 		registry.addInterceptor(corsInterceptor()).addPathPatterns("/**");
+		registry.addInterceptor(sysInterceptor()).addPathPatterns("/sys/**").excludePathPatterns("/sys/sysLoginWebController/**");
 		super.addInterceptors(registry);
 	}
 

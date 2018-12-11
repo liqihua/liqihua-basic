@@ -23,7 +23,7 @@ public class CorsInterceptor extends HandlerInterceptorAdapter {
         }
 
         response.addHeader("Access-Control-Allow-Methods", "POST,GET");
-        response.addHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Origin, Accept");
+        response.addHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Origin, Accept, token");
         response.addHeader("Access-Control-Max-Age", "3600000");
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Cache-Control", "no-store");
