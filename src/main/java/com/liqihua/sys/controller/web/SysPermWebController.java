@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
+import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.sys.entity.SysMenuEntity;
 import com.liqihua.sys.entity.SysPermEntity;
@@ -75,11 +76,20 @@ public class SysPermWebController extends BaseController {
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public WebResult save(@RequestParam Long menuId,
+    public WebResult save(Long id,
+                          @RequestParam Long menuId,
                           @RequestParam String name,
                           @RequestParam String symbol,
                           String remarks){
-        SysPermEntity entity = new SysPermEntity();
+        SysPermEntity entity = null;
+        if(id != null) {
+            entity = sysPermService.getById(id);
+            if(entity == null) {
+                return buildFailedInfo(ApiConstant.PARAM_ERROR);
+            }
+        }else{
+            entity = new SysPermEntity();
+        }
         entity.setName(name);
         entity.setSymbol(symbol);
         entity.setRemarks(remarks);

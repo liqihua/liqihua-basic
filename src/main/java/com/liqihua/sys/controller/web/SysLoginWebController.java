@@ -86,7 +86,7 @@ public class SysLoginWebController extends BaseController {
             vo.setAvatar(prefix + vo.getAvatar());
         }
 
-        Date expireTime = DateUtil.offsetMinute(new Date(),1);
+        Date expireTime = DateUtil.offsetMinute(new Date(),10);
         String token = JWT.create().withExpiresAt(expireTime)
                 .withAudience("sys")
                 .withClaim("userId",sysUser.getId())
