@@ -47,6 +47,8 @@ public class SysLoginWebController extends BaseController {
 
     @Value("${jwt.secret}")
     private String jwtSecret;
+    @Value("${jwt.expireMinute}")
+    private Integer expireMinute;
     @Value("${mvc.static.prefix}")
     private String prefix;
 
@@ -86,7 +88,7 @@ public class SysLoginWebController extends BaseController {
             vo.setAvatar(prefix + vo.getAvatar());
         }
 
-        Date expireTime = DateUtil.offsetMinute(new Date(),10);
+        Date expireTime = DateUtil.offsetMinute(new Date(),expireMinute);
         String token = JWT.create().withExpiresAt(expireTime)
                 .withAudience("sys")
                 .withClaim("userId",sysUser.getId())
