@@ -14,7 +14,7 @@ mvc:
     prefix: http://127.0.0.1:${server.port}${server.servlet.context-path}
 
 jwt:
-  expireMinute: 60*24*7
+  expireMinute: 10080
   secret: 3MZq0BYyGcXYoXjhS4QbAM+2YdlLCwKRr2gvVJOJ
 
 jdbc:

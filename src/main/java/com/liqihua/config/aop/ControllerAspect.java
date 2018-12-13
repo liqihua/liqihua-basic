@@ -4,6 +4,8 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -110,6 +112,8 @@ public class ControllerAspect {
         } catch (Throwable e) {
             log.error("controllerAround 发生异常:", e);
         }
+        Subject subject = SecurityUtils.getSubject();
+        log.info("--- subject.isAuthenticated():"+subject.isAuthenticated());
         Object object = joinPoint.proceed();
         log.info("返回: {}", object==null?"空":JSONObject.toJSONString(object));
         long endTime = System.currentTimeMillis();

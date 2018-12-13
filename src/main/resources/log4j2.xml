@@ -51,7 +51,7 @@
 	</appenders>
      
 	<loggers>
-        <root level="INFO"><!-- level="DEBUG" 可打印SQL -->
+        <root level="DEBUG"><!-- level="DEBUG" 可打印SQL -->
         	<appender-ref ref="console"/>
         	<appender-ref ref="running"/>
         	<appender-ref ref="rolling_file_debug"/>

@@ -22,10 +22,7 @@ public class ApiConstant {
 	 * 失败
 	 */
 	public final static int BASE_FAIL_CODE = -1;
-	/**
-	 * 权限不足
-	 */
-	public final static int NO_AUTHORIZATION = -2;
+
 	/**
 	 * 该请求是文件类型的HTTP请求
 	 */
@@ -34,6 +31,16 @@ public class ApiConstant {
 	 * 请求过于频繁
 	 */
 	public final static int REQUEST_BUSY = -4;
+
+
+	/**
+	 * 未认证
+	 */
+	public final static int NO_AUTHENCATION = 41201;
+	/**
+	 * 权限不足
+	 */
+	public final static int NO_AUTHORIZATION = 41202;
 
 
 	/**
@@ -76,6 +83,8 @@ public class ApiConstant {
 
 
 
+
+
 	/**
 	 * 用户不存在
 	 */
@@ -100,11 +109,14 @@ public class ApiConstant {
 	 * 记录不存在
 	 */
 	public final static int LOG_NOT_EXIST = 42005;
+
+
 	
 	
 	static{
 		map.put(BASE_SUCCESS_CODE, "success");
 		map.put(BASE_FAIL_CODE, "fail");
+		map.put(NO_AUTHENCATION, "未认证");
 		map.put(NO_AUTHORIZATION, "权限不足");
 		map.put(NOT_A_FILE_REQUEST, "该请求是文件类型的HTTP请求");
 		map.put(REQUEST_BUSY, "请求过于频繁");

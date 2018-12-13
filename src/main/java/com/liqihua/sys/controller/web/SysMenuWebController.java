@@ -12,6 +12,12 @@ import com.liqihua.sys.entity.SysRoleMenuEntity;
 import com.liqihua.sys.entity.vo.SysMenuVO;
 import com.liqihua.sys.service.SysMenuService;
 import com.liqihua.sys.service.SysRoleMenuService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,11 +39,16 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/sys/sysMenuWebController")
 public class SysMenuWebController extends BaseController {
+    private static final Logger LOG = LoggerFactory.getLogger(SysMenuWebController.class);
+
+
+
     @Resource
     private SysMenuService sysMenuService;
     @Resource
     private SysRoleMenuService sysRoleMenuService;
 
+    //@RequiresPermissions("sysMenu-save")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public WebResult save(@RequestParam  String title,
                           @RequestParam String routerName,
@@ -96,7 +107,7 @@ public class SysMenuWebController extends BaseController {
     }
 
 
-
+    //@RequiresPermissions("sysMenu-delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
         int count = sysRoleMenuService.count(new QueryWrapper<SysRoleMenuEntity>().eq("menu_id",id));
@@ -115,22 +126,7 @@ public class SysMenuWebController extends BaseController {
         return buildSuccessInfo(delete);
     }
 
-
-
-
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public WebResult get(@RequestParam Long id){
-        SysMenuEntity entity = sysMenuService.getById(id);
-        SysMenuVO vo = null;
-        if(entity != null){
-            vo = new SysMenuVO();
-            BeanUtils.copyProperties(entity,vo);
-        }
-        return buildSuccessInfo(vo);
-    }
-
-
-
+    //@RequiresPermissions("sysMenu-list")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public WebResult page(@RequestParam Integer page,
                           @RequestParam Integer pageSize,
@@ -156,8 +152,29 @@ public class SysMenuWebController extends BaseController {
 
 
 
+    //@RequiresAuthentication
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public WebResult get(@RequestParam Long id){
+        SysMenuEntity entity = sysMenuService.getById(id);
+        SysMenuVO vo = null;
+        if(entity != null){
+            vo = new SysMenuVO();
+            BeanUtils.copyProperties(entity,vo);
+        }
+        return buildSuccessInfo(vo);
+    }
+
+
+
+
+
+    //@RequiresAuthentication
+    //@RequiresPermissions("sysMenu-list")
     @RequestMapping(value = "/getTree", method = RequestMethod.GET)
     public WebResult getTree(){
+        Subject subject = SecurityUtils.getSubject();
+        //LOG.info("--- sessionId : "+subject.getSession().getId());
+        LOG.info("--- subject.isAuthenticated():"+subject.isAuthenticated());
         List<SysMenuEntity> list = sysMenuService.list(null);
         List<SysMenuVO> voList = SysBeanUtil.copyList(list,SysMenuVO.class);
         List<SysMenuVO> tree = null;

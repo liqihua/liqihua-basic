@@ -49,10 +49,10 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		return new CorsInterceptor();
 	}
 
-	@Bean
+	/*@Bean
 	SysInterceptor sysInterceptor() {
 		return new SysInterceptor();
-	}
+	}*/
 
 	/**
 	 * 添加拦截器
@@ -62,7 +62,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	public void addInterceptors(InterceptorRegistry registry) {
 		//跨域拦截器
 		registry.addInterceptor(corsInterceptor()).addPathPatterns("/**");
-		registry.addInterceptor(sysInterceptor()).addPathPatterns("/sys/**").excludePathPatterns("/sys/sysLoginWebController/**");
+		//registry.addInterceptor(sysInterceptor()).addPathPatterns("/sys/**").excludePathPatterns("/sys/sysLoginWebController/**");
 		super.addInterceptors(registry);
 	}
 

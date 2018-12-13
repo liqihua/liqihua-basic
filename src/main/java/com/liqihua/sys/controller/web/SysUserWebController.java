@@ -17,6 +17,8 @@ import com.liqihua.sys.entity.vo.SysUserVO;
 import com.liqihua.sys.service.SysRoleService;
 import com.liqihua.sys.service.SysRoleUserService;
 import com.liqihua.sys.service.SysUserService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +56,8 @@ public class SysUserWebController extends BaseController {
     private SysRoleService sysRoleService;
 
 
+
+    //@RequiresPermissions("sysUser-setRole")
     @RequestMapping(value = "/setRoles", method = RequestMethod.POST)
     public WebResult setRoles(@RequestParam Long userId,
                               String roleIds) {
@@ -71,7 +75,7 @@ public class SysUserWebController extends BaseController {
     }
 
 
-
+    //@RequiresPermissions("sysUser-save")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public WebResult save(Long id,
                           @RequestParam String username,
@@ -111,7 +115,7 @@ public class SysUserWebController extends BaseController {
     }
 
 
-
+    //@RequiresPermissions("sysUser-delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
         boolean delete = sysUserService.removeById(id);
@@ -120,23 +124,8 @@ public class SysUserWebController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public WebResult get(@RequestParam Long id){
-        SysUserEntity entity = sysUserService.getById(id);
-        SysUserVO vo = null;
-        if(entity != null){
-            vo = new SysUserVO();
-            BeanUtils.copyProperties(entity,vo);
-            if(StrUtil.isNotBlank(vo.getAvatar()) && vo.getAvatar().startsWith("/")){
-                vo.setAvatar(prefix + vo.getAvatar());
-            }
-        }
-        vo = makeVO(vo);
-        return buildSuccessInfo(vo);
-    }
 
-
-
+    @RequiresPermissions("sysUser-list")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public WebResult page(@RequestParam Integer page,
                           @RequestParam Integer pageSize,
@@ -174,11 +163,33 @@ public class SysUserWebController extends BaseController {
 
 
 
+    @RequiresAuthentication
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public WebResult get(@RequestParam Long id){
+        SysUserEntity entity = sysUserService.getById(id);
+        SysUserVO vo = null;
+        if(entity != null){
+            vo = new SysUserVO();
+            BeanUtils.copyProperties(entity,vo);
+            if(StrUtil.isNotBlank(vo.getAvatar()) && vo.getAvatar().startsWith("/")){
+                vo.setAvatar(prefix + vo.getAvatar());
+            }
+        }
+        vo = makeVO(vo);
+        return buildSuccessInfo(vo);
+    }
+
+
+
+
+    //@RequiresAuthentication
     @RequestMapping(value = "/uploadAvatar", method = RequestMethod.POST)
     public WebResult uploadAvatar(@RequestParam MultipartFile avatar){
         String path = SysFileUtil.uploadFile(avatar,null);
         return buildSuccessInfo(prefix + path);
     }
+
+
 
     public SysUserVO makeVO(SysUserVO vo) {
         if(vo != null && vo.getId() != null) {

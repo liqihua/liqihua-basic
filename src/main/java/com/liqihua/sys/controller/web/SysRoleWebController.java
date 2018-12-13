@@ -13,6 +13,8 @@ import com.liqihua.sys.entity.vo.SysMenuVO;
 import com.liqihua.sys.entity.vo.SysPermVO;
 import com.liqihua.sys.entity.vo.SysRoleVO;
 import com.liqihua.sys.service.*;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,6 +48,7 @@ public class SysRoleWebController extends BaseController {
     private SysPermService sysPermService;
 
 
+    //@RequiresPermissions("sysRole-setPerm")
     @RequestMapping(value = "/setPerms", method = RequestMethod.POST)
     public WebResult setPerms(@RequestParam Long roleId,
                               String menuIds,
@@ -76,6 +79,7 @@ public class SysRoleWebController extends BaseController {
     }
 
 
+    //@RequiresPermissions("sysRole-save")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public WebResult save(Long id,
                           @RequestParam String name,
@@ -95,7 +99,7 @@ public class SysRoleWebController extends BaseController {
     }
 
 
-
+    //@RequiresPermissions("sysRole-delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
         boolean delete = sysRoleService.removeById(id);
@@ -105,20 +109,8 @@ public class SysRoleWebController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public WebResult get(@RequestParam Long id){
-        SysRoleEntity entity = sysRoleService.getById(id);
-        if(entity == null){
-            return buildFailedInfo(ApiConstant.PARAM_ERROR);
-        }
-        SysRoleVO vo = new SysRoleVO();
-        BeanUtils.copyProperties(entity,vo);
-        vo = makeVO(vo);
-        return buildSuccessInfo(vo);
-    }
 
-
-
+    //@RequiresPermissions("sysRole-list")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public WebResult page(@RequestParam Integer page,
                           @RequestParam Integer pageSize){
@@ -132,6 +124,21 @@ public class SysRoleWebController extends BaseController {
         result.setRecords(voList);
         return buildSuccessInfo(result);
     }
+
+    //@RequiresAuthentication
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public WebResult get(@RequestParam Long id){
+        SysRoleEntity entity = sysRoleService.getById(id);
+        if(entity == null){
+            return buildFailedInfo(ApiConstant.PARAM_ERROR);
+        }
+        SysRoleVO vo = new SysRoleVO();
+        BeanUtils.copyProperties(entity,vo);
+        vo = makeVO(vo);
+        return buildSuccessInfo(vo);
+    }
+
+
 
 
     public SysRoleVO makeVO(SysRoleVO vo){

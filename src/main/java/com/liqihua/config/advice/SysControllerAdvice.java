@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
+import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
@@ -28,6 +30,8 @@ public class SysControllerAdvice extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(SysControllerAdvice.class);
 
 
+
+
     /**
      * 其他异常
      * @param ex
@@ -41,6 +45,24 @@ public class SysControllerAdvice extends BaseController {
         LOG.error("ExceptionReport|"+ex.getClass().getName()+sw.toString(), this.getClass());
         return buildFailedInfo("服务器发生异常："+ex.getMessage());
     }
+
+
+
+    /*@ExceptionHandler({UnauthenticatedException.class})
+    @ResponseBody
+    public WebResult unauthenticatedException(UnauthenticatedException ex){
+        LOG.error("--- unauthenticatedException:"+ex.getMessage());
+        return buildFailedInfo(ApiConstant.NO_AUTHENCATION);
+    }*/
+
+    @ExceptionHandler({UnauthorizedException.class})
+    @ResponseBody
+    public WebResult unauthorizedException(UnauthorizedException ex){
+        LOG.error("--- unauthorizedException:"+ex.getMessage());
+        return buildFailedInfo(ApiConstant.NO_AUTHORIZATION);
+    }
+
+
 
 
     /**

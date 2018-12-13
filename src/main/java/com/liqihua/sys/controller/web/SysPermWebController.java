@@ -19,6 +19,8 @@ import com.liqihua.sys.service.SysMenuService;
 import com.liqihua.sys.service.SysPermMenuService;
 import com.liqihua.sys.service.SysPermService;
 import com.liqihua.sys.service.SysRolePermService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,31 +52,10 @@ public class SysPermWebController extends BaseController {
     private SysRolePermService sysRolePermService;
 
 
-    @RequestMapping(value = "/getByMenuIds", method = RequestMethod.GET)
-    public WebResult getByMenuIds(@RequestParam String menuIds){
-        String[] arr = menuIds.split(",");
-        List<Long> menuIdList = new LinkedList<>();
-        if(arr != null && arr.length > 0){
-            for(String _menuId : arr) {
-                menuIdList.add(Long.valueOf(_menuId));
-            }
-        }
-        List<SysPermVO> voList = new LinkedList<>();
-        List<SysPermMenuEntity> pmList = sysPermMenuService.list(new QueryWrapper<SysPermMenuEntity>().in("menu_id",menuIdList).orderByAsc("menu_id"));
-        if(pmList != null){
-            pmList.forEach(pm -> {
-                SysPermEntity perm = sysPermService.getById(pm.getPermId());
-                if(perm != null){
-                    SysPermVO vo = new SysPermVO();
-                    BeanUtils.copyProperties(perm,vo);
-                    voList.add(vo);
-                }
-            });
-        }
-        return buildSuccessInfo(voList);
-    }
 
 
+
+    //@RequiresPermissions("sysPerm-save")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public WebResult save(Long id,
                           @RequestParam Long menuId,
@@ -103,7 +84,7 @@ public class SysPermWebController extends BaseController {
     }
 
 
-
+    //@RequiresPermissions("sysPerm-delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
         int count = sysRolePermService.count(new QueryWrapper<SysRolePermEntity>().eq("perm_id",id));
@@ -116,28 +97,9 @@ public class SysPermWebController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public WebResult get(@RequestParam Long id){
-        SysPermEntity entity = sysPermService.getById(id);
-        SysPermVO vo = null;
-        if(entity != null){
-            vo = new SysPermVO();
-            BeanUtils.copyProperties(entity,vo);
-            SysPermMenuEntity pm = sysPermMenuService.getOne(new QueryWrapper<SysPermMenuEntity>().eq("perm_id",entity.getId()));
-            if(pm != null){
-                SysMenuEntity menu = sysMenuService.getById(pm.getMenuId());
-                if(menu != null){
-                    SysMenuVO menuVO = new SysMenuVO();
-                    BeanUtils.copyProperties(menu,menuVO);
-                    vo.setMenu(menuVO);
-                }
-            }
-        }
-        return buildSuccessInfo(vo);
-    }
 
 
-
+    //@RequiresPermissions("sysPerm-list")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public WebResult page(@RequestParam Integer page,
                           @RequestParam Integer pageSize){
@@ -164,6 +126,54 @@ public class SysPermWebController extends BaseController {
         return buildSuccessInfo(result);
     }
 
+
+    //@RequiresAuthentication
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public WebResult get(@RequestParam Long id){
+        SysPermEntity entity = sysPermService.getById(id);
+        SysPermVO vo = null;
+        if(entity != null){
+            vo = new SysPermVO();
+            BeanUtils.copyProperties(entity,vo);
+            SysPermMenuEntity pm = sysPermMenuService.getOne(new QueryWrapper<SysPermMenuEntity>().eq("perm_id",entity.getId()));
+            if(pm != null){
+                SysMenuEntity menu = sysMenuService.getById(pm.getMenuId());
+                if(menu != null){
+                    SysMenuVO menuVO = new SysMenuVO();
+                    BeanUtils.copyProperties(menu,menuVO);
+                    vo.setMenu(menuVO);
+                }
+            }
+        }
+        return buildSuccessInfo(vo);
+    }
+
+
+
+    //@RequiresAuthentication
+    @RequestMapping(value = "/getByMenuIds", method = RequestMethod.GET)
+    public WebResult getByMenuIds(@RequestParam String menuIds){
+        String[] arr = menuIds.split(",");
+        List<Long> menuIdList = new LinkedList<>();
+        if(arr != null && arr.length > 0){
+            for(String _menuId : arr) {
+                menuIdList.add(Long.valueOf(_menuId));
+            }
+        }
+        List<SysPermVO> voList = new LinkedList<>();
+        List<SysPermMenuEntity> pmList = sysPermMenuService.list(new QueryWrapper<SysPermMenuEntity>().in("menu_id",menuIdList).orderByAsc("menu_id"));
+        if(pmList != null){
+            pmList.forEach(pm -> {
+                SysPermEntity perm = sysPermService.getById(pm.getPermId());
+                if(perm != null){
+                    SysPermVO vo = new SysPermVO();
+                    BeanUtils.copyProperties(perm,vo);
+                    voList.add(vo);
+                }
+            });
+        }
+        return buildSuccessInfo(voList);
+    }
 
 
 

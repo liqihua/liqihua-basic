@@ -17,6 +17,10 @@ import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.sys.entity.SysUserEntity;
 import com.liqihua.sys.entity.vo.SysUserVO;
 import com.liqihua.sys.service.SysUserService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.ShiroException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -82,6 +86,16 @@ public class SysLoginWebController extends BaseController {
         if(!password.equals(sysUser.getPassword())){
             return buildFailedInfo(ApiConstant.PASSWORD_ERROR);
         }
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken upToken = new UsernamePasswordToken(username, password);
+        try{
+            subject.login(upToken);
+        }catch(ShiroException e){
+            LOG.info("--- ShiroException:"+e.getMessage());
+            return buildFailedInfo(e.getMessage());
+        }
+        //LOG.info("--- sessionId : "+subject.getSession().getId());
+        LOG.info("--- subject.isAuthenticated():"+subject.isAuthenticated());
         SysUserVO vo = new SysUserVO();
         BeanUtils.copyProperties(sysUser,vo);
         if(StrUtil.isNotBlank(vo.getAvatar()) && !vo.getAvatar().contains("http")){
@@ -132,9 +146,20 @@ public class SysLoginWebController extends BaseController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public WebResult logout(){
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
         return buildSuccessInfo(null);
     }
 
+    @RequestMapping("/shiroUnauthorizedUrl")
+    public WebResult shiroUnauthorizedUrl(){
+        return buildFailedInfo("shiroUnauthorizedUrl");
+    }
+
+    @RequestMapping("/shiroLoginUrl")
+    public WebResult shiroLoginUrl(){
+        return buildFailedInfo("shiroLoginUrl");
+    }
 
 
 
