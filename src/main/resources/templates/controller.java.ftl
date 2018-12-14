@@ -1,6 +1,6 @@
 package ${package.Controller};
 
-import com.liqihua.common.utils.Tool;
+import com.liqihua.common.utils.SysBeanUtil;
 import java.util.List;
 import java.time.LocalTime;
 import java.time.LocalDate;
@@ -121,7 +121,7 @@ public class ${table.controllerName} {
         </#list>
         QueryWrapper queryWrapper = new QueryWrapper<${entity}>(entity);
         IPage result = ${table.serviceName?uncap_first}.page(new Page<${entity}>(page,pageSize),queryWrapper);
-        List<${entity?replace('Entity','VO')}> voList = Tool.copyList(result.getRecords(),${entity?replace('Entity','VO')}.class);
+        List<${entity?replace('Entity','VO')}> voList = SysBeanUtil.copyList(result.getRecords(),${entity?replace('Entity','VO')}.class);
         result.setRecords(voList);
         return buildSuccessInfo(result);
     }

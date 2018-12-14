@@ -36,9 +36,9 @@ public class CodeGenerator {
 
         String author = "liqihua";//作者
         String parent = "com.liqihua";//父级路径
-        String moduleName = "sys";//在哪个包下生成，代码最后会生成在 parent.moduleName 下，如：com.liqihua.project
+        String moduleName = "person";//在哪个包下生成，代码最后会生成在 parent.moduleName 下，如：com.liqihua.project
         String tablePrefix = "";//表前缀，生成的java类名会去掉前缀
-        String[] tables = new String[] { "sys_menu" };//生成哪个表
+        String[] tables = new String[] { "test_person" };//生成哪个表
 
 
         AutoGenerator mpg = new AutoGenerator();
@@ -94,7 +94,7 @@ public class CodeGenerator {
         pc.setModuleName(moduleName);////在哪个包下生成
         pc.setMapper("dao");
         pc.setXml("dao.mapper");
-        pc.setController("controller.api");
+        pc.setController("controller");
 
         mpg.setGlobalConfig(gc);// 全局配置
         mpg.setDataSource(dsc);// 数据源配置
