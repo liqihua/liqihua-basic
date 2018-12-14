@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -96,6 +97,29 @@ public class SysPermWebController extends BaseController {
     }
 
 
+    @RequiresPermissions("sysPerm-list")
+    @RequestMapping(value = "/listGroupByMenuId", method = RequestMethod.GET)
+    public WebResult listGroupByMenuId(){
+        List<SysMenuVO> voList = new LinkedList<>();
+        List<SysPermMenuEntity> pmList = sysPermMenuService.list(null);
+        if(pmList != null && pmList.size() > 0) {
+            List<Long> menuIdList = pmList.stream().map(SysPermMenuEntity::getMenuId).distinct().collect(Collectors.toList());
+            if(menuIdList != null && menuIdList.size() > 0) {
+                List<SysMenuEntity> menuList = sysMenuService.list(new QueryWrapper<SysMenuEntity>().in("id",menuIdList).orderByAsc("rank"));
+                menuList.forEach(menu -> {
+                    SysMenuVO vo = new SysMenuVO();
+                    BeanUtils.copyProperties(menu,vo);
+                    List<Long> permIdList = pmList.stream().filter(pm -> pm.getMenuId().equals(menu.getId())).map(SysPermMenuEntity::getPermId).collect(Collectors.toList());
+                    System.out.println("permIdList:"+permIdList);
+                    List<SysPermEntity> permList = sysPermService.list(new QueryWrapper<SysPermEntity>().in("id",permIdList).orderByAsc("id"));
+                    List<SysPermVO> permVOList = SysBeanUtil.copyList(permList,SysPermVO.class);
+                    vo.setPermList(permVOList);
+                    voList.add(vo);
+                });
+            }
+        }
+        return buildSuccessInfo(voList);
+    }
 
 
     @RequiresPermissions("sysPerm-list")

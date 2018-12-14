@@ -54,8 +54,11 @@ public class SysMenuVO {
     @ApiModelProperty("更新时间")
     private LocalDateTime updateDate;
 
-    @ApiModelProperty("子菜单 ")
+    @ApiModelProperty("子菜单")
     private List<SysMenuVO> children;
+
+    @ApiModelProperty("权限列表")
+    private List<SysPermVO> permList;
 
 
     public Long getId() {
@@ -128,6 +131,14 @@ public class SysMenuVO {
 
     public void setChildren(List<SysMenuVO> children) {
         this.children = children;
+    }
+
+    public List<SysPermVO> getPermList() {
+        return permList;
+    }
+
+    public void setPermList(List<SysPermVO> permList) {
+        this.permList = permList;
     }
 
     @Override

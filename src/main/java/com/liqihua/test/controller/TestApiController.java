@@ -6,7 +6,9 @@ import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.utils.SysFileUtil;
 import com.liqihua.sys.entity.SysMenuEntity;
+import com.liqihua.sys.entity.SysPermMenuEntity;
 import com.liqihua.sys.service.SysMenuService;
+import com.liqihua.sys.service.SysPermMenuService;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,12 +42,16 @@ public class TestApiController extends BaseController{
     private Environment environment;
     @Resource
     private SysMenuService sysMenuService;
+    @Resource
+    private SysPermMenuService sysPermMenuService;
+
 
     @ApiOperation(value = "test1")
     @RequestMapping(value = "/test1", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
     public WebResult test1(@ApiParam(value = "aa",required = false) @RequestParam(value="aa",required = false) String aa){
-        return buildSuccessInfo(aa);
+        QueryWrapper qw = new QueryWrapper<SysPermMenuEntity>().select("menu_id").groupBy("menu_id");
+        return buildSuccessInfo(sysPermMenuService.list(qw));
     }
 
 
