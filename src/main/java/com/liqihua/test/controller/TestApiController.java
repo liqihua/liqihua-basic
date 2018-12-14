@@ -1,4 +1,4 @@
-package com.liqihua.crud.controller.api;
+package com.liqihua.test.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.liqihua.common.basic.BaseController;

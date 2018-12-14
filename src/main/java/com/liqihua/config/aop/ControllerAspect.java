@@ -112,8 +112,6 @@ public class ControllerAspect {
         } catch (Throwable e) {
             log.error("controllerAround 发生异常:", e);
         }
-        Subject subject = SecurityUtils.getSubject();
-        log.info("--- subject.isAuthenticated():"+subject.isAuthenticated());
         Object object = joinPoint.proceed();
         log.info("返回: {}", object==null?"空":JSONObject.toJSONString(object));
         long endTime = System.currentTimeMillis();

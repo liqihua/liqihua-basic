@@ -74,10 +74,10 @@ public class DBConfig {
         PaginationInterceptor pageInterceptor = new PaginationInterceptor();
         pageInterceptor.setDialectType("mysql");
         //SQL 执行性能分析插件
-        PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
+        /*PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
         performanceInterceptor.setMaxTime(10000);
-        performanceInterceptor.setFormat(true);
-        Interceptor[] interceptors = {pageInterceptor,performanceInterceptor};
+        performanceInterceptor.setFormat(true);*/
+        Interceptor[] interceptors = {pageInterceptor/*,performanceInterceptor*/};
         bean.setPlugins(interceptors);
 
         GlobalConfig config = new GlobalConfig();

@@ -33,15 +33,6 @@ public class ShiroConfig {
 		return new SysRealm();
 	}
 
-	/**
-	 * 注册自定义sessionManager
-	 * @return
-	 */
-	/*@Bean
-	public SessionManager sessionManager() {
-		SysSessionManager sessionManager = new SysSessionManager();
-		return sessionManager;
-	}*/
 
     /**
      * 注册shiro的DefaultWebSecurityManager为SecurityManager
@@ -51,12 +42,6 @@ public class ShiroConfig {
     public DefaultWebSecurityManager securityManager(){
 		DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
 		securityManager.setRealm(sysRealm());
-		//securityManager.setSessionManager(sessionManager());
-
-		/*securityManager.setSubjectFactory(new DefaultWebSubjectFactory());
-		SessionStorageEvaluator sessionStorageEvaluator = ((DefaultSubjectDAO) securityManager.getSubjectDAO()).getSessionStorageEvaluator();
-		DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = (DefaultSessionStorageEvaluator) sessionStorageEvaluator;
-		defaultSessionStorageEvaluator.setSessionStorageEnabled(false);*/
 		return securityManager;
     }
 
@@ -74,12 +59,11 @@ public class ShiroConfig {
 
         Map<String, Filter> authcFilters = new HashMap<>();
         authcFilters.put("sysAuthc", new SysAuthcFilter());
-        authcFilters.put("corsFilter", new CorsFilter());
 		bean.setFilters(authcFilters);
 
 		Map<String,String> filterMap = new LinkedHashMap<String,String>();
 		filterMap.put("/sys/sysLoginWebController/**", "anon");
-		filterMap.put("/sys/**", "corsFilter,sysAuthc");
+		filterMap.put("/sys/**", "sysAuthc");
 		bean.setFilterChainDefinitionMap(filterMap);
 		return bean;
 	}

@@ -1,9 +1,7 @@
-package com.liqihua.sys.controller.web;
+package com.liqihua.sys.controller;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -94,8 +92,6 @@ public class SysLoginWebController extends BaseController {
             LOG.info("--- ShiroException:"+e.getMessage());
             return buildFailedInfo(e.getMessage());
         }
-        //LOG.info("--- sessionId : "+subject.getSession().getId());
-        LOG.info("--- subject.isAuthenticated():"+subject.isAuthenticated());
         SysUserVO vo = new SysUserVO();
         BeanUtils.copyProperties(sysUser,vo);
         if(StrUtil.isNotBlank(vo.getAvatar()) && !vo.getAvatar().contains("http")){

@@ -1,6 +1,8 @@
 package com.liqihua.config.mvc.interceptor;
 
 import cn.hutool.core.util.StrUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,11 +12,13 @@ import javax.servlet.http.HttpServletResponse;
  * 允许跨域的拦截器
  */
 public class CorsInterceptor extends HandlerInterceptorAdapter {
+    private static final Logger LOG = LoggerFactory.getLogger(CorsInterceptor.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // LOG.info("--- preHandle " + request.getMethod());
         String origin = request.getHeader("Origin");
-        if(StrUtil.isNotBlank(origin)){
+        if(StrUtil.isBlank(origin)){
             response.addHeader("Access-Control-Allow-Origin", "*");
             response.addHeader("Access-Control-Allow-Credentials", "false");
         }else{

@@ -1,4 +1,4 @@
-package com.liqihua.sys.controller.web;
+package com.liqihua.sys.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -48,7 +48,7 @@ public class SysRoleWebController extends BaseController {
     private SysPermService sysPermService;
 
 
-    //@RequiresPermissions("sysRole-setPerm")
+    @RequiresPermissions("sysRole-setPerm")
     @RequestMapping(value = "/setPerms", method = RequestMethod.POST)
     public WebResult setPerms(@RequestParam Long roleId,
                               String menuIds,
@@ -79,7 +79,7 @@ public class SysRoleWebController extends BaseController {
     }
 
 
-    //@RequiresPermissions("sysRole-save")
+    @RequiresPermissions("sysRole-save")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public WebResult save(Long id,
                           @RequestParam String name,
@@ -99,7 +99,7 @@ public class SysRoleWebController extends BaseController {
     }
 
 
-    //@RequiresPermissions("sysRole-delete")
+    @RequiresPermissions("sysRole-delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
         boolean delete = sysRoleService.removeById(id);
@@ -110,7 +110,7 @@ public class SysRoleWebController extends BaseController {
 
 
 
-    //@RequiresPermissions("sysRole-list")
+    @RequiresPermissions("sysRole-list")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public WebResult page(@RequestParam Integer page,
                           @RequestParam Integer pageSize){
@@ -125,7 +125,7 @@ public class SysRoleWebController extends BaseController {
         return buildSuccessInfo(result);
     }
 
-    //@RequiresAuthentication
+    @RequiresAuthentication
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public WebResult get(@RequestParam Long id){
         SysRoleEntity entity = sysRoleService.getById(id);

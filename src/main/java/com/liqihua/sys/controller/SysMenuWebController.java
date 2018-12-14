@@ -1,4 +1,4 @@
-package com.liqihua.sys.controller.web;
+package com.liqihua.sys.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -48,7 +48,7 @@ public class SysMenuWebController extends BaseController {
     @Resource
     private SysRoleMenuService sysRoleMenuService;
 
-    //@RequiresPermissions("sysMenu-save")
+    @RequiresPermissions("sysMenu-save")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public WebResult save(@RequestParam  String title,
                           @RequestParam String routerName,
@@ -107,7 +107,7 @@ public class SysMenuWebController extends BaseController {
     }
 
 
-    //@RequiresPermissions("sysMenu-delete")
+    @RequiresPermissions("sysMenu-delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
         int count = sysRoleMenuService.count(new QueryWrapper<SysRoleMenuEntity>().eq("menu_id",id));
@@ -126,7 +126,7 @@ public class SysMenuWebController extends BaseController {
         return buildSuccessInfo(delete);
     }
 
-    //@RequiresPermissions("sysMenu-list")
+    @RequiresPermissions("sysMenu-list")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public WebResult page(@RequestParam Integer page,
                           @RequestParam Integer pageSize,
@@ -152,7 +152,7 @@ public class SysMenuWebController extends BaseController {
 
 
 
-    //@RequiresAuthentication
+    @RequiresAuthentication
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public WebResult get(@RequestParam Long id){
         SysMenuEntity entity = sysMenuService.getById(id);
@@ -168,13 +168,10 @@ public class SysMenuWebController extends BaseController {
 
 
 
-    //@RequiresAuthentication
-    //@RequiresPermissions("sysMenu-list")
+    @RequiresAuthentication
     @RequestMapping(value = "/getTree", method = RequestMethod.GET)
     public WebResult getTree(){
         Subject subject = SecurityUtils.getSubject();
-        //LOG.info("--- sessionId : "+subject.getSession().getId());
-        LOG.info("--- subject.isAuthenticated():"+subject.isAuthenticated());
         List<SysMenuEntity> list = sysMenuService.list(null);
         List<SysMenuVO> voList = SysBeanUtil.copyList(list,SysMenuVO.class);
         List<SysMenuVO> tree = null;

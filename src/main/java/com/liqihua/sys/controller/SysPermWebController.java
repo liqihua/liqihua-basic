@@ -1,6 +1,5 @@
-package com.liqihua.sys.controller.web;
+package com.liqihua.sys.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -55,7 +54,7 @@ public class SysPermWebController extends BaseController {
 
 
 
-    //@RequiresPermissions("sysPerm-save")
+    @RequiresPermissions("sysPerm-save")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public WebResult save(Long id,
                           @RequestParam Long menuId,
@@ -84,7 +83,7 @@ public class SysPermWebController extends BaseController {
     }
 
 
-    //@RequiresPermissions("sysPerm-delete")
+    @RequiresPermissions("sysPerm-delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
         int count = sysRolePermService.count(new QueryWrapper<SysRolePermEntity>().eq("perm_id",id));
@@ -99,7 +98,7 @@ public class SysPermWebController extends BaseController {
 
 
 
-    //@RequiresPermissions("sysPerm-list")
+    @RequiresPermissions("sysPerm-list")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public WebResult page(@RequestParam Integer page,
                           @RequestParam Integer pageSize){
@@ -127,7 +126,7 @@ public class SysPermWebController extends BaseController {
     }
 
 
-    //@RequiresAuthentication
+    @RequiresAuthentication
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public WebResult get(@RequestParam Long id){
         SysPermEntity entity = sysPermService.getById(id);
@@ -150,7 +149,7 @@ public class SysPermWebController extends BaseController {
 
 
 
-    //@RequiresAuthentication
+    @RequiresAuthentication
     @RequestMapping(value = "/getByMenuIds", method = RequestMethod.GET)
     public WebResult getByMenuIds(@RequestParam String menuIds){
         String[] arr = menuIds.split(",");

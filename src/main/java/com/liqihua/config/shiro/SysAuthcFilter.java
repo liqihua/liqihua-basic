@@ -51,9 +51,7 @@ public class SysAuthcFilter extends AccessControlFilter{
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object object) throws Exception {
-        LOG.info("--- SysAuthcFilter isAccessAllowed()");
-        LOG.info("object:\n"+ JSON.toJSONString(object));
-
+        // LOG.info("--- SysAuthcFilter isAccessAllowed()");
         if(StrUtil.isBlank(jwtSecret)) {
             if(environment == null){
                 environment = SpringContextHolder.getBean(Environment.class);
@@ -67,28 +65,22 @@ public class SysAuthcFilter extends AccessControlFilter{
         HttpServletRequest request = (HttpServletRequest)servletRequest;
         HttpServletResponse response = (HttpServletResponse)servletResponse;
 
-        /*String method = request.getMethod();
-        if(method.equalsIgnoreCase("OPTIONS")){
-            LOG.info("--- OPTIONS");
-            return true;
-        }*/
-
         String token = request.getHeader("token");
-        //LOG.info("token:"+token);
         if(StrUtil.isBlank(token)) {
             noLogin(response);
             return false;
         }
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(jwtSecret)).withAudience("sys").build();
         try {
-            verifier.verify(token);
-
-            SysUserEntity sysUser = sysUserService.getById(4);
+            DecodedJWT jwt = verifier.verify(token);
+            Long userId = jwt.getClaim("userId").asLong();
+            SysUserEntity sysUser = sysUserService.getById(userId);
             SimplePrincipalCollection principalCollection = new SimplePrincipalCollection(sysUser, sysUser.getUsername());
             SecurityManager securityManager = SecurityUtils.getSecurityManager();
             WebDelegatingSubject webDelegatingSubject = new WebDelegatingSubject(principalCollection, true, request.getRemoteHost(), null, false, request,response, securityManager);
             ThreadContext.bind(webDelegatingSubject);
         }catch (JWTVerificationException e) {
+            LOG.error("JWTVerificationException : " + e.getMessage());
             noLogin(response);
             return false;
         }
@@ -104,17 +96,7 @@ public class SysAuthcFilter extends AccessControlFilter{
      */
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        LOG.info("--- SysAuthcFilter onAccessDenied()");
-
-        /*HttpServletRequest request = (HttpServletRequest)servletRequest;
-        HttpServletResponse response = (HttpServletResponse)servletResponse;
-
-        String method = request.getMethod();
-        if(method.equalsIgnoreCase("OPTIONS")){
-            LOG.info("--- OPTIONS");
-            return true;
-        }*/
-
+        // LOG.info("--- SysAuthcFilter onAccessDenied()");
         return true;
     }
 

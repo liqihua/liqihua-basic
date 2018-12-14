@@ -1,4 +1,4 @@
-package com.liqihua.sys.controller.web;
+package com.liqihua.sys.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -57,7 +57,7 @@ public class SysUserWebController extends BaseController {
 
 
 
-    //@RequiresPermissions("sysUser-setRole")
+    @RequiresPermissions("sysUser-setRole")
     @RequestMapping(value = "/setRoles", method = RequestMethod.POST)
     public WebResult setRoles(@RequestParam Long userId,
                               String roleIds) {
@@ -75,7 +75,7 @@ public class SysUserWebController extends BaseController {
     }
 
 
-    //@RequiresPermissions("sysUser-save")
+    @RequiresPermissions("sysUser-save")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public WebResult save(Long id,
                           @RequestParam String username,
@@ -115,7 +115,7 @@ public class SysUserWebController extends BaseController {
     }
 
 
-    //@RequiresPermissions("sysUser-delete")
+    @RequiresPermissions("sysUser-delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
         boolean delete = sysUserService.removeById(id);
@@ -182,7 +182,7 @@ public class SysUserWebController extends BaseController {
 
 
 
-    //@RequiresAuthentication
+    @RequiresAuthentication
     @RequestMapping(value = "/uploadAvatar", method = RequestMethod.POST)
     public WebResult uploadAvatar(@RequestParam MultipartFile avatar){
         String path = SysFileUtil.uploadFile(avatar,null);

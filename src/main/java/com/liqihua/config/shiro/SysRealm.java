@@ -2,7 +2,6 @@ package com.liqihua.config.shiro;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.liqihua.sys.controller.web.SysLoginWebController;
 import com.liqihua.sys.entity.*;
 import com.liqihua.sys.service.*;
 import org.apache.shiro.authc.*;
@@ -34,7 +33,7 @@ public class SysRealm extends AuthorizingRealm {
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		LOG.info("--- SysRealm doGetAuthorizationInfo() ");
+		// LOG.info("--- SysRealm doGetAuthorizationInfo() ");
 		SysUserEntity sysUser = (SysUserEntity)principals.getPrimaryPrincipal();
 		if(sysUser == null){
 			return null;
@@ -61,8 +60,8 @@ public class SysRealm extends AuthorizingRealm {
 			}
 		}
 
-		LOG.info("roles:\n"+ JSON.toJSONString(roles));
-		LOG.info("perms:\n"+ JSON.toJSONString(perms));
+		// LOG.info("roles:\n"+ JSON.toJSONString(roles));
+		// LOG.info("perms:\n"+ JSON.toJSONString(perms));
 
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		info.setRoles(roles);
@@ -72,7 +71,7 @@ public class SysRealm extends AuthorizingRealm {
 
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		LOG.info("--- SysRealm doGetAuthenticationInfo() ");
+		// LOG.info("--- SysRealm doGetAuthenticationInfo() ");
 		String username = token.getPrincipal().toString();
 		String password = new String((char[])token.getCredentials());
 		SysUserEntity sysUser = sysUserService.getOne(new QueryWrapper<SysUserEntity>().eq("username",username).eq("password",password));
