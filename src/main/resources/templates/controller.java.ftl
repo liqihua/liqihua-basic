@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,9 +59,32 @@ public class ${table.controllerName} {
 
 
 
+    @RequiresPermissions("${entity?replace('Entity','')?uncap_first}-list")
+    @ApiOperation(value = "分页查询")
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = ${entity?replace('Entity','VO')}.class)})
+    public WebResult page(@ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
+                          @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize,
+    <#list table.fields as field>
+        <#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>
+            <#if field.propertyType == 'LocalDateTime' >@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")</#if><#if field.propertyType == 'LocalDate' >@DateTimeFormat(pattern = "yyyy-MM-dd")</#if><#if field.propertyType == 'LocalTime' >@DateTimeFormat(pattern = "HH:mm:ss")</#if> ${field.propertyType} ${field.propertyName}<#if (field_index != table.fields?size-3)>,<#else>){</#if>
+        </#if>
+    </#list>
+    ${entity} entity = new ${entity}();
+    <#list table.fields as field>
+        <#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>
+        entity.set${field.capitalName}(${field.propertyName});
+        </#if>
+    </#list>
+        QueryWrapper queryWrapper = new QueryWrapper<${entity}>(entity);
+        IPage result = ${table.serviceName?uncap_first}.page(new Page<${entity}>(page,pageSize),queryWrapper);
+        List<${entity?replace('Entity','VO')}> voList = SysBeanUtil.copyList(result.getRecords(),${entity?replace('Entity','VO')}.class);
+        result.setRecords(voList);
+        return buildSuccessInfo(result);
+    }
 
 
-
+    @RequiresPermissions("${entity?replace('Entity','')?uncap_first}-save")
     @ApiOperation(value = "保存")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = ${entity?replace('Entity','VO')}.class)})
@@ -78,7 +103,7 @@ public class ${table.controllerName} {
     }
 
 
-
+    @RequiresPermissions("${entity?replace('Entity','')?uncap_first}-delete")
     @ApiOperation(value = "删除")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = Boolean.class)})
@@ -88,6 +113,7 @@ public class ${table.controllerName} {
     }
 
 
+    @RequiresAuthentication
     @ApiOperation(value = "获取详情")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = ${entity?replace('Entity','VO')}.class)})
@@ -100,32 +126,6 @@ public class ${table.controllerName} {
         }
         return buildSuccessInfo(vo);
     }
-
-
-
-    @ApiOperation(value = "分页查询")
-    @RequestMapping(value = "/page", method = RequestMethod.GET)
-    @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = ${entity?replace('Entity','VO')}.class)})
-    public WebResult page(@ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
-                          @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize,
-                          <#list table.fields as field>
-                          <#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>
-                          <#if field.propertyType == 'LocalDateTime' >@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")</#if><#if field.propertyType == 'LocalDate' >@DateTimeFormat(pattern = "yyyy-MM-dd")</#if><#if field.propertyType == 'LocalTime' >@DateTimeFormat(pattern = "HH:mm:ss")</#if> ${field.propertyType} ${field.propertyName}<#if (field_index != table.fields?size-3)>,<#else>){</#if>
-                          </#if>
-                          </#list>
-        ${entity} entity = new ${entity}();
-        <#list table.fields as field>
-        <#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>
-        entity.set${field.capitalName}(${field.propertyName});
-        </#if>
-        </#list>
-        QueryWrapper queryWrapper = new QueryWrapper<${entity}>(entity);
-        IPage result = ${table.serviceName?uncap_first}.page(new Page<${entity}>(page,pageSize),queryWrapper);
-        List<${entity?replace('Entity','VO')}> voList = SysBeanUtil.copyList(result.getRecords(),${entity?replace('Entity','VO')}.class);
-        result.setRecords(voList);
-        return buildSuccessInfo(result);
-    }
-
 
 
 
