@@ -71,6 +71,10 @@ public class SysUserWebController extends BaseController {
                 }
             }
         }
+        /**
+         * 刷新用户权限和角色
+         */
+        sysUserService.refreshRealm();
         return buildSuccessInfo(null);
     }
 

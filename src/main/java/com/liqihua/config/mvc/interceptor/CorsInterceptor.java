@@ -16,12 +16,7 @@ public class CorsInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        LOG.info("--- CorsInterceptor request.getMethod():" + request.getMethod());
-        /*if(request.getMethod().equalsIgnoreCase("options")){
-            response.setStatus(204);
-            response.getWriter().print("");
-            return false;
-        }*/
+        // LOG.info("--- CorsInterceptor request.getMethod():" + request.getMethod());
         String origin = request.getHeader("Origin");
         if(StrUtil.isBlank(origin)){
             response.addHeader("Access-Control-Allow-Origin", "*");

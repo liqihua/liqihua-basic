@@ -46,6 +46,8 @@ public class SysRoleWebController extends BaseController {
     private SysMenuService sysMenuService;
     @Resource
     private SysPermService sysPermService;
+    @Resource
+    private SysUserService sysUserService;
 
 
     @RequiresPermissions("sysRole-setPerm")
@@ -75,6 +77,10 @@ public class SysRoleWebController extends BaseController {
                 }
             }
         }
+        /**
+         * 刷新用户权限和角色
+         */
+        sysUserService.refreshRealm();
         return buildSuccessInfo(null);
     }
 

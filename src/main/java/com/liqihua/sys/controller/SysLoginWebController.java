@@ -6,9 +6,9 @@ import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.constant.Constants;
-import com.liqihua.sys.entity.SysUserEntity;
+import com.liqihua.sys.entity.*;
 import com.liqihua.sys.entity.vo.SysUserVO;
-import com.liqihua.sys.service.SysUserService;
+import com.liqihua.sys.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -45,19 +45,20 @@ public class SysLoginWebController extends BaseController {
 
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private SysRoleService sysRoleService;
+    @Resource
+    private SysRoleUserService sysRoleUserService;
+    @Resource
+    private SysRolePermService sysRolePermService;
+    @Resource
+    private SysPermService sysPermService;
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public WebResult login(HttpServletRequest request,
                            @RequestParam String username,
                            @RequestParam String password){
-        SysUserEntity sysUser = sysUserService.getOne(new QueryWrapper<SysUserEntity>().eq("username",username));
-        if(sysUser == null){
-            return buildFailedInfo(ApiConstant.USER_NOT_EXIST);
-        }
-        if(!password.equals(sysUser.getPassword())){
-            return buildFailedInfo(ApiConstant.PASSWORD_ERROR);
-        }
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken upToken = new UsernamePasswordToken(username, password);
         try{
@@ -68,15 +69,20 @@ public class SysLoginWebController extends BaseController {
         }
         // LOG.info("--- login sessionId:"+ subject.getSession().getId());
         // LOG.info("cookies:"+ JSON.toJSONString(request.getCookies()));
-
-
+        SysUserEntity sysUser = (SysUserEntity)subject.getPrincipal();
         SysUserVO vo = new SysUserVO();
         BeanUtils.copyProperties(sysUser,vo);
         if(StrUtil.isNotBlank(vo.getAvatar()) && !vo.getAvatar().contains("http")){
             vo.setAvatar(prefix + vo.getAvatar());
         }
-
-        request.getSession().setAttribute(Constants.KEY_SESSION_USER_INFO,vo);
+        /**
+         * 把用户信息放session里
+         */
+        request.getSession().setAttribute(Constants.KEY_SESSION_SYS_USER_INFO,vo);
+        /**
+         * 刷新用户权限和角色
+         */
+        sysUserService.refreshRealm();
 
         Map<String, Object> map = new HashMap<>();
         map.put("user",vo);
@@ -87,7 +93,7 @@ public class SysLoginWebController extends BaseController {
 
     @RequestMapping(value = "/getInfo", method = RequestMethod.GET)
     public WebResult getInfo(HttpServletRequest request){
-        return buildSuccessInfo(request.getSession().getAttribute(Constants.KEY_SESSION_USER_INFO));
+        return buildSuccessInfo(request.getSession().getAttribute(Constants.KEY_SESSION_SYS_USER_INFO));
     }
 
 

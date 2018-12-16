@@ -2,13 +2,16 @@ package com.liqihua.config.shiro;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.liqihua.common.constant.Constants;
 import com.liqihua.sys.entity.*;
 import com.liqihua.sys.service.*;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,9 +41,10 @@ public class SysRealm extends AuthorizingRealm {
 		if(sysUser == null){
 			return null;
 		}
-		Set<String> roles = new HashSet<>();
-		Set<String> perms = new HashSet<>();
-		List<SysRoleUserEntity> ruList = sysRoleUserService.list(new QueryWrapper<SysRoleUserEntity>().eq("user_id",sysUser.getId()));
+		Subject subject = SecurityUtils.getSubject();
+		Set<String> roles = (Set<String>) subject.getSession().getAttribute(Constants.KEY_SESSION_SYS_USER_ROLES);
+		Set<String> perms = (Set<String>) subject.getSession().getAttribute(Constants.KEY_SESSION_SYS_USER_PERMS);
+		/*List<SysRoleUserEntity> ruList = sysRoleUserService.list(new QueryWrapper<SysRoleUserEntity>().eq("user_id",sysUser.getId()));
 		if(ruList != null && ruList.size() > 0) {
 			List<Long> roleIdList = ruList.stream().map(SysRoleUserEntity::getRoleId).collect(Collectors.toList());
 			List<SysRoleEntity> roleList = sysRoleService.list(new QueryWrapper<SysRoleEntity>().in("id",roleIdList));
@@ -58,7 +62,7 @@ public class SysRealm extends AuthorizingRealm {
 					}
 				}
 			}
-		}
+		}*/
 
 		// LOG.info("roles:\n"+ JSON.toJSONString(roles));
 		// LOG.info("perms:\n"+ JSON.toJSONString(perms));

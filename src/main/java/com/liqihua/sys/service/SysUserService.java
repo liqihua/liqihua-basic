@@ -13,4 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SysUserService extends IService<SysUserEntity> {
 
+    /**
+     * 刷新当前用户的角色和权限
+     */
+    public void refreshRealm();
+
 }
