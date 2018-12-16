@@ -45,14 +45,6 @@ public class SysLoginWebController extends BaseController {
 
     @Resource
     private SysUserService sysUserService;
-    @Resource
-    private SysRoleService sysRoleService;
-    @Resource
-    private SysRoleUserService sysRoleUserService;
-    @Resource
-    private SysRolePermService sysRolePermService;
-    @Resource
-    private SysPermService sysPermService;
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
