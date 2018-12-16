@@ -8,9 +8,11 @@ import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.sys.entity.SysMenuEntity;
+import com.liqihua.sys.entity.SysPermMenuEntity;
 import com.liqihua.sys.entity.SysRoleMenuEntity;
 import com.liqihua.sys.entity.vo.SysMenuVO;
 import com.liqihua.sys.service.SysMenuService;
+import com.liqihua.sys.service.SysPermMenuService;
 import com.liqihua.sys.service.SysRoleMenuService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -47,6 +49,8 @@ public class SysMenuWebController extends BaseController {
     private SysMenuService sysMenuService;
     @Resource
     private SysRoleMenuService sysRoleMenuService;
+    @Resource
+    private SysPermMenuService sysPermMenuService;
 
     @RequiresPermissions("sysMenu-save")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -114,14 +118,24 @@ public class SysMenuWebController extends BaseController {
         if(count > 0){
             return buildFailedInfo("有角色绑定了该菜菜单，请先解绑");
         }
+        count = sysPermMenuService.count(new QueryWrapper<SysPermMenuEntity>().eq("menu_id",id));
+        if(count > 0) {
+            return buildFailedInfo("该菜单下有权限未删除，请先该删除属于该菜单的权限");
+        }
+        count = sysMenuService.count(new QueryWrapper<SysMenuEntity>().eq("pid",id));
+        if(count > 0){
+            return buildFailedInfo("该菜单下还有子菜单，请先删除属于该菜单的子菜单");
+        }
         SysMenuEntity menu = sysMenuService.getById(id);
         if(menu == null){
             return buildFailedInfo(ApiConstant.PARAM_ERROR);
         }
-        List<SysMenuEntity> children = sysMenuService.list(new QueryWrapper<SysMenuEntity>().eq("pid",menu.getId()));
+        /*List<SysMenuEntity> children = sysMenuService.list(new QueryWrapper<SysMenuEntity>().eq("pid",menu.getId()));
         if(children != null){
             deleteChildren(children);
-        }
+        }*/
+        sysRoleMenuService.remove(new QueryWrapper<SysRoleMenuEntity>().eq("menu_id",id));
+        sysPermMenuService.remove(new QueryWrapper<SysPermMenuEntity>().eq("menu_id",id));
         boolean delete = sysMenuService.removeById(id);
         return buildSuccessInfo(delete);
     }

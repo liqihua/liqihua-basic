@@ -14,10 +14,7 @@ import com.liqihua.sys.entity.SysRolePermEntity;
 import com.liqihua.sys.entity.vo.SysMenuVO;
 import com.liqihua.sys.entity.vo.SysPermMenuVO;
 import com.liqihua.sys.entity.vo.SysPermVO;
-import com.liqihua.sys.service.SysMenuService;
-import com.liqihua.sys.service.SysPermMenuService;
-import com.liqihua.sys.service.SysPermService;
-import com.liqihua.sys.service.SysRolePermService;
+import com.liqihua.sys.service.*;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
@@ -50,7 +47,8 @@ public class SysPermWebController extends BaseController {
     private SysMenuService sysMenuService;
     @Resource
     private SysRolePermService sysRolePermService;
-
+    @Resource
+    private SysUserService sysUserService;
 
 
 
@@ -80,6 +78,10 @@ public class SysPermWebController extends BaseController {
         sysPermMenuService.save(pm);
         SysPermVO vo = new SysPermVO();
         BeanUtils.copyProperties(entity,vo);
+        /**
+         * 刷新用户权限和角色
+         */
+        sysUserService.refreshRealm();
         return buildSuccessInfo(vo);
     }
 

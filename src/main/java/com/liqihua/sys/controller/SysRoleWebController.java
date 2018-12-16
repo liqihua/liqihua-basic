@@ -48,6 +48,8 @@ public class SysRoleWebController extends BaseController {
     private SysPermService sysPermService;
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private SysRoleUserService sysRoleUserService;
 
 
     @RequiresPermissions("sysRole-setPerm")
@@ -101,6 +103,10 @@ public class SysRoleWebController extends BaseController {
         sysRoleService.saveOrUpdate(entity);
         SysRoleVO vo = new SysRoleVO();
         BeanUtils.copyProperties(entity,vo);
+        /**
+         * 刷新用户权限和角色
+         */
+        sysUserService.refreshRealm();
         return buildSuccessInfo(vo);
     }
 
@@ -108,9 +114,22 @@ public class SysRoleWebController extends BaseController {
     @RequiresPermissions("sysRole-delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public WebResult delete(@RequestParam Long id){
+        int count = sysRoleMenuService.count(new QueryWrapper<SysRoleMenuEntity>().eq("role_id",id));
+        if(count > 0){
+            return buildFailedInfo("有菜单绑定了该角色，请先解绑");
+        }
+        count = sysRolePermService.count(new QueryWrapper<SysRolePermEntity>().eq("role_id",id));
+        if(count > 0){
+            return buildFailedInfo("有权限绑定了该角色，请先解绑");
+        }
+        count = sysRoleUserService.count(new QueryWrapper<SysRoleUserEntity>().eq("role_id",id));
+        if(count > 0){
+            return buildFailedInfo("有用户绑定了该角色，请先解绑");
+        }
         boolean delete = sysRoleService.removeById(id);
         sysRoleMenuService.remove(new QueryWrapper<SysRoleMenuEntity>().eq("role_id",id));
         sysRolePermService.remove(new QueryWrapper<SysRolePermEntity>().eq("role_id",id));
+        sysRoleUserService.remove(new QueryWrapper<SysRoleUserEntity>().eq("role_id",id));
         return buildSuccessInfo(delete);
     }
 
