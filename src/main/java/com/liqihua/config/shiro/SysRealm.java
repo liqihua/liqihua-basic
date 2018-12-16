@@ -44,25 +44,6 @@ public class SysRealm extends AuthorizingRealm {
 		Subject subject = SecurityUtils.getSubject();
 		Set<String> roles = (Set<String>) subject.getSession().getAttribute(Constants.KEY_SESSION_SYS_USER_ROLES);
 		Set<String> perms = (Set<String>) subject.getSession().getAttribute(Constants.KEY_SESSION_SYS_USER_PERMS);
-		/*List<SysRoleUserEntity> ruList = sysRoleUserService.list(new QueryWrapper<SysRoleUserEntity>().eq("user_id",sysUser.getId()));
-		if(ruList != null && ruList.size() > 0) {
-			List<Long> roleIdList = ruList.stream().map(SysRoleUserEntity::getRoleId).collect(Collectors.toList());
-			List<SysRoleEntity> roleList = sysRoleService.list(new QueryWrapper<SysRoleEntity>().in("id",roleIdList));
-			if(roleList != null && roleList.size() > 0){
-				roles = roleList.stream().map(SysRoleEntity::getName).collect(Collectors.toSet());
-			}
-
-			List<SysRolePermEntity> rpList = sysRolePermService.list(new QueryWrapper<SysRolePermEntity>().in("role_id",roleIdList));
-			if(rpList != null && rpList.size() > 0) {
-				List<Long> permIdList = rpList.stream().map(SysRolePermEntity::getPermId).collect(Collectors.toList());
-				if(permIdList != null && permIdList.size() > 0){
-					List<SysPermEntity> permList = sysPermService.list(new QueryWrapper<SysPermEntity>().in("id",permIdList));
-					if(permList != null && permList.size() > 0){
-						perms = permList.stream().map(SysPermEntity::getSymbol).collect(Collectors.toSet());
-					}
-				}
-			}
-		}*/
 
 		// LOG.info("roles:\n"+ JSON.toJSONString(roles));
 		// LOG.info("perms:\n"+ JSON.toJSONString(perms));
