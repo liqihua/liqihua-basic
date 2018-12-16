@@ -110,7 +110,6 @@ public class SysPermWebController extends BaseController {
                     SysMenuVO vo = new SysMenuVO();
                     BeanUtils.copyProperties(menu,vo);
                     List<Long> permIdList = pmList.stream().filter(pm -> pm.getMenuId().equals(menu.getId())).map(SysPermMenuEntity::getPermId).collect(Collectors.toList());
-                    System.out.println("permIdList:"+permIdList);
                     List<SysPermEntity> permList = sysPermService.list(new QueryWrapper<SysPermEntity>().in("id",permIdList).orderByAsc("id"));
                     List<SysPermVO> permVOList = SysBeanUtil.copyList(permList,SysPermVO.class);
                     vo.setPermList(permVOList);

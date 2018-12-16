@@ -47,14 +47,23 @@ public class SysControllerAdvice extends BaseController {
     }
 
 
-
-    /*@ExceptionHandler({UnauthenticatedException.class})
+    /**
+     * shiro-未认证
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler({UnauthenticatedException.class})
     @ResponseBody
     public WebResult unauthenticatedException(UnauthenticatedException ex){
         LOG.error("--- unauthenticatedException:"+ex.getMessage());
         return buildFailedInfo(ApiConstant.NO_AUTHENCATION);
-    }*/
+    }
 
+    /**
+     * shiro-权限不足
+     * @param ex
+     * @return
+     */
     @ExceptionHandler({UnauthorizedException.class})
     @ResponseBody
     public WebResult unauthorizedException(UnauthorizedException ex){
@@ -76,7 +85,7 @@ public class SysControllerAdvice extends BaseController {
 
 
     /**
-     *400错误->参数类型异常
+     * 400错误->参数类型异常
      */
     @ExceptionHandler({TypeMismatchException.class})
     @ResponseBody

@@ -16,7 +16,12 @@ public class CorsInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // LOG.info("--- preHandle " + request.getMethod());
+        LOG.info("--- CorsInterceptor request.getMethod():" + request.getMethod());
+        /*if(request.getMethod().equalsIgnoreCase("options")){
+            response.setStatus(204);
+            response.getWriter().print("");
+            return false;
+        }*/
         String origin = request.getHeader("Origin");
         if(StrUtil.isBlank(origin)){
             response.addHeader("Access-Control-Allow-Origin", "*");
@@ -26,7 +31,7 @@ public class CorsInterceptor extends HandlerInterceptorAdapter {
             response.addHeader("Access-Control-Allow-Credentials", "true");
         }
 
-        response.addHeader("Access-Control-Allow-Methods", "POST,GET");
+        response.addHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
         response.addHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Origin, Accept, token");
         response.addHeader("Access-Control-Max-Age", "3600000");
         response.setHeader("Cache-Control", "no-cache");

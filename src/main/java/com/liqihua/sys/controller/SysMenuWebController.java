@@ -171,7 +171,6 @@ public class SysMenuWebController extends BaseController {
     @RequiresAuthentication
     @RequestMapping(value = "/getTree", method = RequestMethod.GET)
     public WebResult getTree(){
-        Subject subject = SecurityUtils.getSubject();
         List<SysMenuEntity> list = sysMenuService.list(null);
         List<SysMenuVO> voList = SysBeanUtil.copyList(list,SysMenuVO.class);
         List<SysMenuVO> tree = null;

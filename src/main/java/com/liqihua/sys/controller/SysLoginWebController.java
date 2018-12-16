@@ -1,17 +1,11 @@
 package com.liqihua.sys.controller;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
+import com.liqihua.common.constant.Constants;
 import com.liqihua.sys.entity.SysUserEntity;
 import com.liqihua.sys.entity.vo.SysUserVO;
 import com.liqihua.sys.service.SysUserService;
@@ -30,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,35 +40,16 @@ import java.util.Map;
 public class SysLoginWebController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(SysLoginWebController.class);
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
-    @Value("${jwt.expireMinute}")
-    private Integer expireMinute;
     @Value("${mvc.static.prefix}")
     private String prefix;
 
     @Resource
     private SysUserService sysUserService;
 
-    /*public static void main(String[] args) {
-        String userId = "abc";
-        String secret = "123yyuuii";
-        Date expireTime = DateUtil.offsetMinute(new Date(),1);
-        String token = JWT.create().withAudience("sys").withExpiresAt(expireTime).withClaim("userId",userId).sign(Algorithm.HMAC256(secret));
-
-
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret)).withAudience("sys").build();
-        DecodedJWT jwt = verifier.verify(token);
-        System.out.println(JSON.toJSONString(jwt));
-        Claim claim = jwt.getClaim("userId");
-        String str = claim.asString();
-        System.out.println(JSON.toJSONString(claim));
-        System.out.println(str);
-    }*/
-
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public WebResult login(@RequestParam String username,
+    public WebResult login(HttpServletRequest request,
+                           @RequestParam String username,
                            @RequestParam String password){
         SysUserEntity sysUser = sysUserService.getOne(new QueryWrapper<SysUserEntity>().eq("username",username));
         if(sysUser == null){
@@ -92,49 +66,28 @@ public class SysLoginWebController extends BaseController {
             LOG.info("--- ShiroException:"+e.getMessage());
             return buildFailedInfo(e.getMessage());
         }
+        // LOG.info("--- login sessionId:"+ subject.getSession().getId());
+        // LOG.info("cookies:"+ JSON.toJSONString(request.getCookies()));
+
+
         SysUserVO vo = new SysUserVO();
         BeanUtils.copyProperties(sysUser,vo);
         if(StrUtil.isNotBlank(vo.getAvatar()) && !vo.getAvatar().contains("http")){
             vo.setAvatar(prefix + vo.getAvatar());
         }
 
-        Date expireTime = DateUtil.offsetMinute(new Date(),expireMinute);
-        String token = JWT.create().withExpiresAt(expireTime)
-                .withAudience("sys")
-                .withClaim("userId",sysUser.getId())
-                .sign(Algorithm.HMAC256(jwtSecret));
+        request.getSession().setAttribute(Constants.KEY_SESSION_USER_INFO,vo);
 
         Map<String, Object> map = new HashMap<>();
         map.put("user",vo);
-        map.put("token",token);
+        map.put("token",subject.getSession().getId());
         return buildSuccessInfo(map);
     }
 
 
     @RequestMapping(value = "/getInfo", method = RequestMethod.GET)
     public WebResult getInfo(HttpServletRequest request){
-        String token = request.getHeader("token");
-        if(StrUtil.isBlank(token)) {
-            return buildFailedInfo(ApiConstant.NO_LOGIN);
-        }
-        try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(jwtSecret)).withAudience("sys").build();
-            DecodedJWT jwt = verifier.verify(token);
-            Claim claim = jwt.getClaim("userId");
-            Long userId = claim.asLong();
-            SysUserEntity sysUser = sysUserService.getById(userId);
-            if(sysUser == null) {
-                return buildFailedInfo(ApiConstant.USER_NOT_EXIST);
-            }
-            SysUserVO vo = new SysUserVO();
-            BeanUtils.copyProperties(sysUser,vo);
-            if(StrUtil.isNotBlank(vo.getAvatar()) && !vo.getAvatar().contains("http")){
-                vo.setAvatar(prefix + vo.getAvatar());
-            }
-            return buildSuccessInfo(vo);
-        }catch (JWTVerificationException e){
-            return buildFailedInfo(ApiConstant.NO_LOGIN);
-        }
+        return buildSuccessInfo(request.getSession().getAttribute(Constants.KEY_SESSION_USER_INFO));
     }
 
 
