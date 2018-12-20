@@ -17,8 +17,10 @@ import com.liqihua.sys.entity.vo.SysUserVO;
 import com.liqihua.sys.service.SysRoleService;
 import com.liqihua.sys.service.SysRoleUserService;
 import com.liqihua.sys.service.SysUserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -124,6 +126,11 @@ public class SysUserWebController extends BaseController {
     public WebResult delete(@RequestParam Long id){
         boolean delete = sysUserService.removeById(id);
         sysRoleUserService.remove(new QueryWrapper<SysRoleUserEntity>().eq("user_id",id));
+        Subject subject = SecurityUtils.getSubject();
+        SysUserEntity sysUser = (SysUserEntity)subject.getPrincipal();
+        if(id.equals(sysUser.getId())){
+            subject.logout();
+        }
         return buildSuccessInfo(delete);
     }
 

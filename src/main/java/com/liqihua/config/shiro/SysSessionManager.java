@@ -151,7 +151,7 @@ public class SysSessionManager extends DefaultSessionManager implements WebSessi
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             if (StrUtil.isNotBlank(sessionId)) {
                 httpResponse.setHeader(this.HEADER_TOKEN, sessionId);
-                LOG.info("Current session ID is {}", sessionId);
+                LOG.debug("Current session ID is {}", sessionId);
             }
             return sessionId;
         }

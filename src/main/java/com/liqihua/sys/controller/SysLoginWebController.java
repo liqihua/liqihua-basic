@@ -6,7 +6,9 @@ import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.constant.Constants;
+import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.sys.entity.*;
+import com.liqihua.sys.entity.vo.SysMenuVO;
 import com.liqihua.sys.entity.vo.SysUserVO;
 import com.liqihua.sys.service.*;
 import org.apache.shiro.SecurityUtils;
@@ -45,6 +47,12 @@ public class SysLoginWebController extends BaseController {
 
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private SysRoleUserService sysRoleUserService;
+    @Resource
+    private SysRoleMenuService sysRoleMenuService;
+    @Resource
+    private SysMenuService sysMenuService;
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -59,8 +67,8 @@ public class SysLoginWebController extends BaseController {
             LOG.info("--- ShiroException:"+e.getMessage());
             return buildFailedInfo(e.getMessage());
         }
-        // LOG.info("--- login sessionId:"+ subject.getSession().getId());
-        // LOG.info("cookies:"+ JSON.toJSONString(request.getCookies()));
+        LOG.info("--- login sessionId-subject:"+ subject.getSession().getId());
+        LOG.info("--- login sessionId-request:"+request.getSession().getId());
         SysUserEntity sysUser = (SysUserEntity)subject.getPrincipal();
         SysUserVO vo = new SysUserVO();
         BeanUtils.copyProperties(sysUser,vo);
@@ -79,6 +87,18 @@ public class SysLoginWebController extends BaseController {
         Map<String, Object> map = new HashMap<>();
         map.put("user",vo);
         map.put("token",subject.getSession().getId());
+
+        List<SysRoleUserEntity> ruList = sysRoleUserService.list(new QueryWrapper<SysRoleUserEntity>().eq("user_id",sysUser.getId()));
+        if(ruList != null && ruList.size() > 0){
+            List<Long> roleIdList = ruList.stream().map(SysRoleUserEntity::getRoleId).collect(Collectors.toList());
+            List<SysRoleMenuEntity> rmList = sysRoleMenuService.list(new QueryWrapper<SysRoleMenuEntity>().in("role_id",roleIdList));
+            if(rmList != null && rmList.size() > 0){
+                List<Long> menuIdList = rmList.stream().map(SysRoleMenuEntity::getMenuId).collect(Collectors.toList());
+                List<SysMenuEntity> menuList = sysMenuService.list(new QueryWrapper<SysMenuEntity>().in("id",menuIdList));
+                List<SysMenuVO> menuVOList = SysBeanUtil.copyList(menuList,SysMenuVO.class);
+                map.put("menuList",menuVOList);
+            }
+        }
         return buildSuccessInfo(map);
     }
 
