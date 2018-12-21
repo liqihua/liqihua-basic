@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
+import com.liqihua.common.constant.Constants;
 import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.common.utils.SysFileUtil;
 import com.liqihua.sys.entity.SysRoleEntity;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 

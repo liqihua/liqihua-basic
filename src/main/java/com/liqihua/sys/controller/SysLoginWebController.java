@@ -14,6 +14,7 @@ import com.liqihua.sys.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,11 +79,13 @@ public class SysLoginWebController extends BaseController {
         /**
          * 把用户信息放session里
          */
-        request.getSession().setAttribute(Constants.KEY_SESSION_SYS_USER_INFO,vo);
+        subject.getSession().setAttribute(Constants.KEY_SESSION_SYS_USER_INFO,vo);
+
         /**
          * 刷新用户权限和角色
          */
         sysUserService.refreshRealm();
+
 
         Map<String, Object> map = new HashMap<>();
         map.put("user",vo);
@@ -97,15 +100,29 @@ public class SysLoginWebController extends BaseController {
                 List<SysMenuEntity> menuList = sysMenuService.list(new QueryWrapper<SysMenuEntity>().in("id",menuIdList));
                 List<SysMenuVO> menuVOList = SysBeanUtil.copyList(menuList,SysMenuVO.class);
                 map.put("menuList",menuVOList);
+                /**
+                 * 把用户菜单放session里
+                 */
+                subject.getSession().setAttribute(Constants.KEY_SESSION_SYS_USER_MENU,menuVOList);
             }
         }
         return buildSuccessInfo(map);
     }
 
 
-    @RequestMapping(value = "/getInfo", method = RequestMethod.GET)
-    public WebResult getInfo(HttpServletRequest request){
-        return buildSuccessInfo(request.getSession().getAttribute(Constants.KEY_SESSION_SYS_USER_INFO));
+    @RequiresAuthentication
+    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
+    public WebResult getUserInfo(){
+        Subject subject = SecurityUtils.getSubject();
+        return buildSuccessInfo(subject.getSession().getAttribute(Constants.KEY_SESSION_SYS_USER_INFO));
+    }
+
+
+    @RequiresAuthentication
+    @RequestMapping(value = "/getUserMenu", method = RequestMethod.GET)
+    public WebResult getUserMenu(){
+        Subject subject = SecurityUtils.getSubject();
+        return buildSuccessInfo(subject.getSession().getAttribute(Constants.KEY_SESSION_SYS_USER_MENU));
     }
 
 
