@@ -1,10 +1,9 @@
 package com.liqihua.config.shiro;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.liqihua.common.constant.Constants;
-import com.liqihua.sys.entity.*;
-import com.liqihua.sys.service.*;
+import com.liqihua.modules.sys.entity.SysUserEntity;
+import com.liqihua.modules.sys.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -16,8 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 public class SysRealm extends AuthorizingRealm {
 	private static final Logger LOG = LoggerFactory.getLogger(SysRealm.class);

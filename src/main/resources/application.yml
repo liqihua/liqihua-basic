@@ -15,8 +15,11 @@ mvc:
 
 jdbc:
   driverClassName: com.mysql.cj.jdbc.Driver
-  url: jdbc:mysql://127.0.0.1:3306/liqihua_admin?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Hongkong
+#  url: jdbc:mysql://127.0.0.1:3306/liqihua_admin?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Hongkong
+#  username: root
+#  password: 123
+  url: jdbc:mysql://120.79.149.22:61223/test1223?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Hongkong&useSSL=false
   username: root
-  password: 123
+  password: movMOV2018@)!*
 
 
