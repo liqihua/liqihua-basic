@@ -57,7 +57,7 @@ public class SysMenuWebController extends BaseController {
                           @RequestParam Boolean hide,
                           Long id,
                           Long pid,
-                          Integer rank){
+                          Integer rankNum){
         SysMenuEntity entity = null;
         if(id != null){
             entity = sysMenuService.getById(id);
@@ -71,7 +71,7 @@ public class SysMenuWebController extends BaseController {
         entity.setTitle(title);
         entity.setRouterName(routerName);
         entity.setHide(hide);
-        entity.setRank(rank);
+        entity.setRankNum(rankNum);
 
         /**
          * 计算菜单级别，默认一级菜单
@@ -147,14 +147,14 @@ public class SysMenuWebController extends BaseController {
                           String routerName,
                           Integer level,
                           Boolean hide,
-                          Integer rank){
+                          Integer rankNum){
         SysMenuEntity entity = new SysMenuEntity();
         entity.setPid(pid);
         entity.setTitle(title);
         entity.setRouterName(routerName);
         entity.setLevel(level);
         entity.setHide(hide);
-        entity.setRank(rank);
+        entity.setRankNum(rankNum);
         QueryWrapper queryWrapper = new QueryWrapper<SysMenuEntity>(entity);
         IPage result = sysMenuService.page(new Page<SysMenuEntity>(page,pageSize),queryWrapper);
         List<SysMenuVO> voList = SysBeanUtil.copyList(result.getRecords(),SysMenuVO.class);
@@ -187,7 +187,7 @@ public class SysMenuWebController extends BaseController {
         List<SysMenuVO> voList = SysBeanUtil.copyList(list,SysMenuVO.class);
         List<SysMenuVO> tree = null;
         if(voList != null){
-            tree = voList.stream().filter(vo -> 1 == vo.getLevel()).sorted((vo1,vo2) -> vo1.getRank() - vo2.getRank()).collect(Collectors.toList());
+            tree = voList.stream().filter(vo -> 1 == vo.getLevel()).sorted((vo1,vo2) -> vo1.getRankNum() - vo2.getRankNum()).collect(Collectors.toList());
             tree = makeTree(tree,voList);
         }
         return buildSuccessInfo(tree);
@@ -204,7 +204,7 @@ public class SysMenuWebController extends BaseController {
      */
     public List<SysMenuVO> makeTree(List<SysMenuVO> parentList,List<SysMenuVO> voList){
         parentList.forEach(parent -> {
-            List<SysMenuVO> children = voList.stream().filter(vo -> parent.getId().equals(vo.getPid())).sorted((vo1,vo2) -> vo1.getRank() - vo2.getRank()).collect(Collectors.toList());
+            List<SysMenuVO> children = voList.stream().filter(vo -> parent.getId().equals(vo.getPid())).sorted((vo1,vo2) -> vo1.getRankNum() - vo2.getRankNum()).collect(Collectors.toList());
             if(children != null){
                 children = makeTree(children,voList);
                 parent.setChildren(children);

@@ -39,7 +39,7 @@ public class SysMenuVO {
     private Boolean hide;
 
     @ApiModelProperty("排序")
-    private Integer rank;
+    private Integer rankNum;
 
     @ApiModelProperty("创建时间")
     private LocalDateTime createDate;
@@ -96,13 +96,15 @@ public class SysMenuVO {
     public void setHide(Boolean hide) {
         this.hide = hide;
     }
-    public Integer getRank() {
-        return rank;
+
+    public Integer getRankNum() {
+        return rankNum;
     }
 
-    public void setRank(Integer rank) {
-        this.rank = rank;
+    public void setRankNum(Integer rankNum) {
+        this.rankNum = rankNum;
     }
+
     public LocalDateTime getCreateDate() {
         return createDate;
     }
@@ -143,7 +145,7 @@ public class SysMenuVO {
         ", routerName=" + routerName +
         ", level=" + level +
         ", hide=" + hide +
-        ", rank=" + rank +
+        ", rankNum=" + rankNum +
         ", createDate=" + createDate +
         ", updateDate=" + updateDate +
         "}";

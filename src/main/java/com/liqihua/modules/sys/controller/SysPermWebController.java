@@ -107,7 +107,7 @@ public class SysPermWebController extends BaseController {
         if(pmList != null && pmList.size() > 0) {
             List<Long> menuIdList = pmList.stream().map(SysPermMenuEntity::getMenuId).distinct().collect(Collectors.toList());
             if(menuIdList != null && menuIdList.size() > 0) {
-                List<SysMenuEntity> menuList = sysMenuService.list(new QueryWrapper<SysMenuEntity>().in("id",menuIdList).orderByAsc("rank"));
+                List<SysMenuEntity> menuList = sysMenuService.list(new QueryWrapper<SysMenuEntity>().in("id",menuIdList).orderByAsc("rank_num"));
                 menuList.forEach(menu -> {
                     SysMenuVO vo = new SysMenuVO();
                     BeanUtils.copyProperties(menu,vo);

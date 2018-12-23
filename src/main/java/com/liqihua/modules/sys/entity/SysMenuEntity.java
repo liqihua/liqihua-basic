@@ -53,7 +53,7 @@ public class SysMenuEntity extends Model<SysMenuEntity> {
     /**
      * 排序
      */
-    private Integer rank;
+    private Integer rankNum;
 
     /**
      * 创建时间
@@ -109,13 +109,15 @@ public class SysMenuEntity extends Model<SysMenuEntity> {
     public void setHide(Boolean hide) {
         this.hide = hide;
     }
-    public Integer getRank() {
-        return rank;
+
+    public Integer getRankNum() {
+        return rankNum;
     }
 
-    public void setRank(Integer rank) {
-        this.rank = rank;
+    public void setRankNum(Integer rankNum) {
+        this.rankNum = rankNum;
     }
+
     public LocalDateTime getCreateDate() {
         return createDate;
     }
@@ -145,7 +147,7 @@ public class SysMenuEntity extends Model<SysMenuEntity> {
         ", routerName=" + routerName +
         ", level=" + level +
         ", hide=" + hide +
-        ", rank=" + rank +
+        ", rankNum=" + rankNum +
         ", createDate=" + createDate +
         ", updateDate=" + updateDate +
         "}";
