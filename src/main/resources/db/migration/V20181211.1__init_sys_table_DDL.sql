@@ -1,9 +1,9 @@
 SET FOREIGN_KEY_CHECKS=0;
 
+
 -- ----------------------------
 -- Table structure for sys_menu
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `pid` bigint(20) unsigned DEFAULT NULL COMMENT '父级id',
@@ -11,18 +11,16 @@ CREATE TABLE `sys_menu` (
   `router_name` varchar(255) NOT NULL COMMENT 'vue的路由名称',
   `level` tinyint(3) unsigned NOT NULL COMMENT '1：一级菜单，2：二级菜单，3：三级菜单，...',
   `hide` bit(1) NOT NULL COMMENT '1：隐藏，0：显示',
-  `rank` int(3) unsigned DEFAULT NULL COMMENT '排序',
+  `rank_num` int(3) unsigned DEFAULT NULL COMMENT '排序',
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COMMENT='菜单';
-
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COMMENT='菜单';
 
 
 -- ----------------------------
 -- Table structure for sys_perm
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_perm`;
 CREATE TABLE `sys_perm` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '权限名称',
@@ -38,7 +36,6 @@ CREATE TABLE `sys_perm` (
 -- ----------------------------
 -- Table structure for sys_perm_menu
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_perm_menu`;
 CREATE TABLE `sys_perm_menu` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `menu_id` bigint(20) unsigned NOT NULL COMMENT '菜单id',
@@ -52,7 +49,6 @@ CREATE TABLE `sys_perm_menu` (
 -- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '角色名称',
@@ -60,14 +56,12 @@ CREATE TABLE `sys_role` (
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='角色';
-
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='角色';
 
 
 -- ----------------------------
 -- Table structure for sys_role_menu
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `role_id` bigint(20) unsigned NOT NULL COMMENT '角色id',
@@ -75,14 +69,12 @@ CREATE TABLE `sys_role_menu` (
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='角色菜单树形关系';
-
+) ENGINE=InnoDB AUTO_INCREMENT=208 DEFAULT CHARSET=utf8mb4 COMMENT='角色菜单树形关系';
 
 
 -- ----------------------------
 -- Table structure for sys_role_perm
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_role_perm`;
 CREATE TABLE `sys_role_perm` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `role_id` bigint(20) unsigned NOT NULL COMMENT '角色id',
@@ -90,14 +82,12 @@ CREATE TABLE `sys_role_perm` (
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COMMENT='角色权限树形关系';
-
+) ENGINE=InnoDB AUTO_INCREMENT=277 DEFAULT CHARSET=utf8mb4 COMMENT='角色权限树形关系';
 
 
 -- ----------------------------
 -- Table structure for sys_role_user
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_role_user`;
 CREATE TABLE `sys_role_user` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `role_id` bigint(20) unsigned NOT NULL COMMENT '角色id',
@@ -105,13 +95,12 @@ CREATE TABLE `sys_role_user` (
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户角色关系';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户角色关系';
 
 
 -- ----------------------------
 -- Table structure for sys_user
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL COMMENT '账号',
@@ -126,7 +115,7 @@ CREATE TABLE `sys_user` (
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT=' 用户';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT=' 用户';
 
 
 -- ----------------------------

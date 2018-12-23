@@ -1,4 +1,4 @@
-package generator;
+package devtool.generator;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.FieldFill;
