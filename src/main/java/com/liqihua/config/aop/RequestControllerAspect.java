@@ -4,12 +4,9 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +16,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.Console;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -33,16 +29,9 @@ import java.util.Enumeration;
 
 @Aspect
 @Component
-public class ControllerAspect {
+public class RequestControllerAspect {
 
-    private static final Logger log = LoggerFactory.getLogger(ControllerAspect.class);
-
-    /**
-     * 定义一个controller切点
-     */
-    @Pointcut("execution (* com..*.*Controller.*(..))")
-    public void controllerAspect() {
-    }
+    private static final Logger log = LoggerFactory.getLogger(RequestControllerAspect.class);
 
     /**
      * controller层aop处理
@@ -50,7 +39,7 @@ public class ControllerAspect {
      * @return
      * @throws Throwable
      */
-	@Around("controllerAspect()")
+	@Around("execution (* com..*.*Controller.*(..))")
     public Object controllerAround(ProceedingJoinPoint joinPoint) throws Throwable{
         /**
          * 请求日志打印
