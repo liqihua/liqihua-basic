@@ -9,9 +9,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 /**
+ * 针对controller层requestBody的spring validator校验统一返回格式
  * @author liqihua
  * @since 2018/4/23
- * 针对controller层requestBody的spring validator校验统一返回格式
  */
 @Aspect
 @Component

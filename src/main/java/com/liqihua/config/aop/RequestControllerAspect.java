@@ -22,11 +22,11 @@ import java.lang.reflect.Parameter;
 import java.util.Enumeration;
 
 /**
- * 
+ * 监控controller的请求
+ * 对@RequestParam 为 true 的参数进行值校验
  * @author liqihua
  * @since 2018/11/19
  */
-
 @Aspect
 @Component
 public class RequestControllerAspect {
