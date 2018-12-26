@@ -14,7 +14,9 @@ import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author liqihua
@@ -35,7 +37,7 @@ public class CodeGenerator {
 
 
         String author = "liqihua";//作者
-        String parent = "com.liqihua";//父级路径
+        String parent = "com.liqihua.modules";//父级路径
         String moduleName = "person";//在哪个包下生成，代码最后会生成在 parent.moduleName 下，如：com.liqihua.project
         String tablePrefix = "";//表前缀，生成的java类名会去掉前缀
         String[] tables = new String[] { "test_person" };//生成哪个表
@@ -120,7 +122,15 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
-                String fileName = dir  + pc.getParent().replace(".","/") +/* pc.getModuleName() +*/ "/" + pc.getEntity() + "/vo/" + tableInfo.getEntityName().replace("Entity","VO") + StringPool.DOT_JAVA;
+                String fileName = dir  + pc.getParent().replace(".","/") + "/" + pc.getEntity() + "/vo/" + tableInfo.getEntityName().replace("Entity","VO") + StringPool.DOT_JAVA;
+                return fileName;
+            }
+        });
+        focList.add(new FileOutConfig("/templates/form.vue.ftl") {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                // 自定义输入文件名称
+                String fileName = dir + tableInfo.getEntityName().replace("Entity","") + "/form.vue";
                 return fileName;
             }
         });

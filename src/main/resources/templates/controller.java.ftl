@@ -63,14 +63,14 @@ public class ${table.controllerName} {
     @ApiOperation(value = "分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = ${entity?replace('Entity','VO')}.class)})
-    public WebResult page(@ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
-                          @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize,
-    <#list table.fields as field>
-        <#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>
-            <#if field.propertyType == 'LocalDateTime' >@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")</#if><#if field.propertyType == 'LocalDate' >@DateTimeFormat(pattern = "yyyy-MM-dd")</#if><#if field.propertyType == 'LocalTime' >@DateTimeFormat(pattern = "HH:mm:ss")</#if> ${field.propertyType} ${field.propertyName}<#if (field_index != table.fields?size-3)>,<#else>){</#if>
-        </#if>
-    </#list>
-    ${entity} entity = new ${entity}();
+    public WebResult page(@ApiParam(value = "页码，1为第一页",required = true) @RequestParam Integer page,
+                          @ApiParam(value = "每页数量",required = true) @RequestParam Integer pageSize,
+                          <#list table.fields as field>
+                          <#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>
+                          @ApiParam(value = "${field.comment}") @RequestParam(required=false) <#if field.propertyType == 'LocalDateTime' >@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")</#if><#if field.propertyType == 'LocalDate' >@DateTimeFormat(pattern = "yyyy-MM-dd")</#if><#if field.propertyType == 'LocalTime' >@DateTimeFormat(pattern = "HH:mm:ss")</#if> ${field.propertyType} ${field.propertyName}<#if (field_index != table.fields?size-3)>,<#else>){</#if>
+                          </#if>
+                          </#list>
+        ${entity} entity = new ${entity}();
     <#list table.fields as field>
         <#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>
         entity.set${field.capitalName}(${field.propertyName});
@@ -88,9 +88,15 @@ public class ${table.controllerName} {
     @ApiOperation(value = "保存")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = ${entity?replace('Entity','VO')}.class)})
-    public WebResult save(<#list table.fields as field><#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>@ApiParam(value = "${field.comment}") <#if field.propertyType == 'LocalDateTime' >@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")</#if><#if field.propertyType == 'LocalDate' >@DateTimeFormat(pattern = "yyyy-MM-dd")</#if><#if field.propertyType == 'LocalTime' >@DateTimeFormat(pattern = "HH:mm:ss")</#if> ${field.propertyType} ${field.propertyName}<#if (field_index != table.fields?size-3)>,</#if>
+    public WebResult save(@ApiParam(value = "id") @RequestParam(required=false) Long id,
+                          <#list table.fields as field><#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>@ApiParam(value = "${field.comment}") @RequestParam(required=false) <#if field.propertyType == 'LocalDateTime' >@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")</#if><#if field.propertyType == 'LocalDate' >@DateTimeFormat(pattern = "yyyy-MM-dd")</#if><#if field.propertyType == 'LocalTime' >@DateTimeFormat(pattern = "HH:mm:ss")</#if> ${field.propertyType} ${field.propertyName}<#if (field_index != table.fields?size-3)>,</#if>
                           </#if></#list>){
-        ${entity} entity = new ${entity}();
+        ${entity} entity = null;
+        if(id != null){
+            entity = ${table.serviceName?uncap_first}.getById(id);
+        }else{
+            entity = new ${entity}();
+        }
         <#list table.fields as field>
         <#if field.propertyName != 'id' && field.propertyName != 'createDate' && field.propertyName != 'updateDate'>
         entity.set${field.capitalName}(${field.propertyName});
