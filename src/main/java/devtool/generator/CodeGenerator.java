@@ -1,5 +1,6 @@
 package devtool.generator;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
@@ -104,10 +105,9 @@ public class CodeGenerator {
         mpg.setPackageInfo(pc);// 包配置
 
 
-
-
-
-        // 自定义配置
+        /**
+         * 自定义配置
+         */
         InjectionConfig cfg = new InjectionConfig() {
             @Override
             public void initMap() {
@@ -116,8 +116,13 @@ public class CodeGenerator {
                 setMap(map);*/
             }
         };
-
+        /**
+         * 添加文件
+         */
         List<FileOutConfig> focList = new ArrayList<>();
+        /**
+         * vo类
+         */
         focList.add(new FileOutConfig("/templates/vo.java.ftl") {
             @Override
             public String outputFile(TableInfo tableInfo) {
@@ -126,11 +131,25 @@ public class CodeGenerator {
                 return fileName;
             }
         });
+        /**
+         * vue的form
+         */
         focList.add(new FileOutConfig("/templates/form.vue.ftl") {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
-                String fileName = dir + tableInfo.getEntityName().replace("Entity","") + "/form.vue";
+                String fileName = dir + StrUtil.lowerFirst(tableInfo.getEntityName().replace("Entity","")) + "/form.vue";
+                return fileName;
+            }
+        });
+        /**
+         * vue的list
+         */
+        focList.add(new FileOutConfig("/templates/list.vue.ftl") {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                // 自定义输入文件名称
+                String fileName = dir + StrUtil.lowerFirst(tableInfo.getEntityName().replace("Entity","")) + "/list.vue";
                 return fileName;
             }
         });

@@ -19,11 +19,11 @@
                     <#elseif field.type == 'datetime'>
                     <el-date-picker v-model="form.${field.propertyName}" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择时间"/>
                     <#elseif field.type == 'time'>
-                    <el-time-picker v-model="form.${field.propertyName}" :picker-options="{ selectableRange: '00:00:00 - 23:59:59' }" placeholder="选择时间"/>
+                    <el-time-picker v-model="form.${field.propertyName}" :picker-options="{ selectableRange: '00:00:00 - 23:59:59' }" value-format="HH:mm:ss" placeholder="选择时间"/>
                     <#elseif field.type?contains("text")>
                     <el-input v-model="form.${field.propertyName}" type="textarea"/>
                     <#else>
-                    <el-input v-model="form.${field.propertyName}" type="text"/>
+                    <el-input v-model="form.${field.propertyName}" type="text" clearable/>
                     </#if>
                 </el-col>
             </el-form-item>
@@ -38,6 +38,10 @@
 </template>
 
 <script>
+import { makeParam } from '@/utils/strutil'
+import request from '@/utils/request'
+
+const listPath = '/pro/${table.entityName?replace("Entity","")?uncap_first}/list'
 
 export default {
     data() {
@@ -60,19 +64,52 @@ export default {
         }
     },
     created() {
-
+        if (this.$route.params && this.$route.params.id) {
+            this.loading = true
+            request({
+                url: '/api/${entity?uncap_first?replace('Entity','ApiController')}/get',
+                method: 'get',
+                params: { id: this.$route.params.id }
+            }).then(response => {
+                this.loading = false
+                this.form = response.data
+            }).catch(error => {
+                console.log(error)
+                this.loading = false
+            })
+        }
     },
     methods: {
         tabClick(tab) {
             if(tab.name == 'list') {
-                this.$router.push('/${table.entityName?replace("Entity","")?uncap_first}/list')
+                this.$router.push(listPath)
             }
         },
         onSubmit() {
-
+            this.$refs.form.validate(valid => {
+                if(valid) {
+                    this.loading = true
+                    var param = makeParam(this.form)
+                    return request({
+                        url: '/api/${entity?uncap_first?replace('Entity','ApiController')}/save',
+                        method: 'post',
+                        data: param
+                    }).then(() => {
+                        this.loading = false
+                        this.$message({
+                            message: '保存成功',
+                            type: 'success'
+                        })
+                        this.$router.push(listPath)
+                    }).catch(error => {
+                            console.log(error)
+                        this.loading = false
+                    })
+                }
+            })
         },
         onCancel() {
-            this.$router.push("/${table.entityName?replace("Entity","")?uncap_first}/list");
+            this.$router.push(listPath);
         }
     }
 }

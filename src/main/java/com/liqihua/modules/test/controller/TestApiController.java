@@ -5,6 +5,8 @@ import com.liqihua.common.basic.BaseController;
 import com.liqihua.common.basic.WebResult;
 import com.liqihua.common.constant.ApiConstant;
 import com.liqihua.common.utils.SysFileUtil;
+import com.liqihua.modules.person.entity.TestPersonEntity;
+import com.liqihua.modules.person.service.TestPersonService;
 import com.liqihua.modules.sys.entity.SysMenuEntity;
 import com.liqihua.modules.sys.entity.SysPermMenuEntity;
 import com.liqihua.modules.sys.service.SysMenuService;
@@ -44,6 +46,8 @@ public class TestApiController extends BaseController{
     private SysMenuService sysMenuService;
     @Resource
     private SysPermMenuService sysPermMenuService;
+    @Resource
+    private TestPersonService testPersonService;
 
 
     @ApiOperation(value = "test1")
@@ -61,12 +65,21 @@ public class TestApiController extends BaseController{
     @RequestMapping(value = "/test2", method = RequestMethod.GET)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
     public WebResult test2(){
-        QueryWrapper<SysMenuEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id",3);
-        queryWrapper.eq("title","aabb");
-        queryWrapper.select("pid");
-        List<SysMenuEntity> list = sysMenuService.list(queryWrapper);
-        return buildSuccessInfo(list);
+        for(int i=91; i<380; i++){
+            TestPersonEntity entity = new TestPersonEntity();
+            entity.setAge(i);
+            entity.setAvatar("avatar-"+i);
+            entity.setGender(true);
+            entity.setIntro("intro-"+i);
+            entity.setName("name-"+i);
+            entity.setPassword("password-"+i);
+            entity.setBirthday(LocalDate.now());
+            entity.setSleepTime(LocalTime.now());
+            entity.setWorkTime(LocalDateTime.now());
+            testPersonService.save(entity);
+            LOG.info("save:"+entity.toString());
+        }
+        return buildSuccessInfo(null);
     }
 
 
