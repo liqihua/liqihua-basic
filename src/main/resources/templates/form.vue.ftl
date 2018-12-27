@@ -102,7 +102,7 @@ export default {
                         })
                         this.$router.push(listPath)
                     }).catch(error => {
-                            console.log(error)
+                        console.log(error)
                         this.loading = false
                     })
                 }
