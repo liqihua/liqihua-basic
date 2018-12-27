@@ -32,20 +32,17 @@ import ${superControllerClassPackage};
 </#if>
 
 /**
- * <p>
- * ${table.comment!} 前端控制器
- * </p>
- *
+ * ${table.comment!}
  * @author ${author}
  * @since ${date}
  */
-@Api(value="api-${table.controllerName}",description="${entity?replace('Entity','')}")
+@Api(value="sys-${table.controllerName}",description="${table.comment!}")
 <#if restControllerStyle>
 @RestController
 <#else>
 @Controller
 </#if>
-@RequestMapping("/api/${entity?uncap_first?replace('Entity','ApiController')}")
+@RequestMapping("/sys/${entity?uncap_first?replace('Entity','WebController')}")
 <#if kotlin>
 class ${table.controllerName}<#if superControllerClass??> : ${superControllerClass}()</#if>
 <#else>

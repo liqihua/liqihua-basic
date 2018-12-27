@@ -48,7 +48,7 @@ export default {
         doPage() {
             this.loading = true
             request({
-                url: '/api/${entity?uncap_first?replace('Entity','ApiController')}/page',
+                url: '/sys/${entity?uncap_first?replace('Entity','WebController')}/page',
                 method: 'get',
                 params: { page:this.page, pageSize:this.pageSize }
             }).then(response => {
@@ -68,7 +68,7 @@ export default {
             }).then(() => {
                 this.loading = true
                 request({
-                    url: '/api/${entity?uncap_first?replace('Entity','ApiController')}/delete',
+                    url: '/sys/${entity?uncap_first?replace('Entity','WebController')}/delete',
                     method: 'post',
                     data: 'id=' + id
                 }).then(response => {

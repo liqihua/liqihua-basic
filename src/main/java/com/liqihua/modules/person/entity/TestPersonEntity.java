@@ -17,13 +17,16 @@ import java.io.Serializable;
  * </p>
  *
  * @author liqihua
- * @since 2018-12-26
+ * @since 2018-12-27
  */
 @TableName("test_person")
 public class TestPersonEntity extends Model<TestPersonEntity> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 

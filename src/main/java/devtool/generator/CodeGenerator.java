@@ -60,7 +60,7 @@ public class CodeGenerator {
          * 设置各个层的类名
          */
         gc.setServiceName("%sService");
-        gc.setControllerName("%sApiController");
+        gc.setControllerName("%sWebController");
         gc.setEntityName("%sEntity");
         gc.setMapperName("%sDao");
         gc.setXmlName("%sDao");

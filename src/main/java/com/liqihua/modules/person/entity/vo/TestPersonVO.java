@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiModelProperty;
  * </p>
  *
  * @author liqihua
- * @since 2018-12-26
+ * @since 2018-12-27
  */
 
 
@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class TestPersonVO {
 
 
+    @ApiModelProperty("id")
     private Long id;
 
     @ApiModelProperty("头像")

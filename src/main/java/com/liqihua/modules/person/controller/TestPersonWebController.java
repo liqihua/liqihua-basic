@@ -26,17 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.liqihua.common.basic.BaseController;
 
 /**
- * <p>
- * 测试人员 前端控制器
- * </p>
- *
+ * 测试人员
  * @author liqihua
- * @since 2018-12-26
+ * @since 2018-12-27
  */
-@Api(value="api-TestPersonApiController",description="TestPerson")
+@Api(value="sys-TestPersonWebController",description="测试人员")
 @RestController
-@RequestMapping("/api/testPersonApiController")
-public class TestPersonApiController extends BaseController {
+@RequestMapping("/sys/testPersonWebController")
+public class TestPersonWebController extends BaseController {
     @Resource
     private TestPersonService testPersonService;
 

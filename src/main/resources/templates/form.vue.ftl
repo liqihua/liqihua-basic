@@ -67,7 +67,7 @@ export default {
         if (this.$route.params && this.$route.params.id) {
             this.loading = true
             request({
-                url: '/api/${entity?uncap_first?replace('Entity','ApiController')}/get',
+                url: '/sys/${entity?uncap_first?replace('Entity','WebController')}/get',
                 method: 'get',
                 params: { id: this.$route.params.id }
             }).then(response => {
@@ -91,7 +91,7 @@ export default {
                     this.loading = true
                     var param = makeParam(this.form)
                     return request({
-                        url: '/api/${entity?uncap_first?replace('Entity','ApiController')}/save',
+                        url: '/sys/${entity?uncap_first?replace('Entity','WebController')}/save',
                         method: 'post',
                         data: param
                     }).then(() => {

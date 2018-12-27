@@ -65,7 +65,7 @@ public class TestApiController extends BaseController{
     @RequestMapping(value = "/test2", method = RequestMethod.GET)
     @ApiResponses({@ApiResponse(code = ApiConstant.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
     public WebResult test2(){
-        for(int i=91; i<380; i++){
+        for(int i=0; i<666; i++){
             TestPersonEntity entity = new TestPersonEntity();
             entity.setAge(i);
             entity.setAvatar("avatar-"+i);
