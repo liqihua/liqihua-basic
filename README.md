@@ -74,16 +74,16 @@
  默认超级账号是admin，密码是admin  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image015.png)  
  可以看到，刚刚新添加的路由，在左侧菜单中并没有显示出来  
+  这是因为没有配菜单和权限。  
   ### 四、添加菜单
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image016.png)  
- 这是因为没有配菜单和权限。  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image017.png)  
  需要注意的是，路由名称要和刚刚添加的路由里面那个name一致  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image018.png)  
  ### 五、添加权限
  给这个菜单添加增删查改的权限  
- ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image019.png)  
  需要注意的是，权限符号要和刚刚生成的controller函数头部的权限符号一致，controller的每个函数都自动生成了一个权限符号  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image019.png)  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image020.png)  
  继续添加保存的权限  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image021.png)  
