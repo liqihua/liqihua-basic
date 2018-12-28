@@ -79,10 +79,11 @@
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image016.png)  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image017.png)  
  需要注意的是，路由名称要和刚刚添加的路由里面那个name一致  
- ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image018.png)  
+ 
  ### 五、添加权限
  给这个菜单添加增删查改的权限  
  需要注意的是，权限符号要和刚刚生成的controller函数头部的权限符号一致，controller的每个函数都自动生成了一个权限符号  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image018.png)  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image019.png)  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image020.png)  
  继续添加保存的权限  
