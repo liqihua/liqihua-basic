@@ -1,5 +1,30 @@
 # liqihua-admin
-本地创建一个空的数据库
-找到项目的application.yml文件，修改里面的数据库连接为自己的连接
-启动项目，可以看到，基础表已经初始化好，如下
-
+本地创建一个空的数据库  
+找到项目的application.yml文件，修改里面的数据库连接为自己的连接  
+启动项目，可以看到，基础表已经初始化好，如下  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image001.png)  
+ 其中test_person是演示用表，可以删除  
+下面，来生成这个表的代码  
+找到CodeGenerator这个代码工具类  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image002.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image003.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image004.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image005.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image006.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image007.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image008.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image009.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image010.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image011.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image012.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image013.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image014.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image015.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image016.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image017.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image018.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image019.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image020.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image021.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image022.png)  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image023.png)  
