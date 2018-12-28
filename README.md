@@ -1,4 +1,12 @@
-# liqihua-admin
+# liqihua-admin是liqihua-basic的一个分支  
+### 1.通过扩展mybatis plus的generator，生成controller、vo、vue的常规列表页和表单页  
+### 2.shiro权限控制  
+### 3.swagger文档  
+### 4.使用Srping AOP打印请求日志  
+### 5.使用Spring 的@ControllerAdvice注解做全局异常处理  
+
+#  如何使用  
+### 一、数据库配置
 本地创建一个空的数据库  
 找到项目的application.yml文件，修改里面的数据库连接为自己的连接  
 启动项目，可以看到，基础表已经初始化好，如下  
