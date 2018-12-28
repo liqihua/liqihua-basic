@@ -1,16 +1,18 @@
-# liqihua-admin是liqihua-basic的一个分支  
-### 1.通过扩展mybatis plus的generator，生成controller、vo、vue的常规列表页和表单页  
-### 2.shiro权限控制  
-### 3.swagger文档  
-### 4.使用Srping AOP打印请求日志  
-### 5.使用Spring 的@ControllerAdvice注解做全局异常处理  
+# liqihua-admin是liqihua-basic的一个分支
+### 1.通过扩展mybatis plus的generator，生成controller、vo、vue的常规列表页和表单页
+### 2.shiro权限控制
+### 3.swagger文档
+### 4.使用Srping AOP打印请求日志
+### 5.使用Spring 的@ControllerAdvice注解做全局异常处理
+### 6.使用flyway初始化基础表、基础权限、菜单数据
 
-#  如何使用  
-### 一、数据库配置
+#  如何使用
+### 一、创建一个空的数据库
 本地创建一个空的数据库  
 找到项目的application.yml文件，修改里面的数据库连接为自己的连接  
 启动项目，可以看到，基础表已经初始化好，如下  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image001.png)  
+ ### 二、代码生成
  其中test_person是演示用表，可以删除  
 下面，来生成这个表的代码  
 找到CodeGenerator这个代码工具类  
@@ -19,15 +21,19 @@
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image003.png)  
  右击——Run make()，打开目录，可以看到代码已经生成  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image004.png)  
+ ### 三、拷贝代码到项目里
  把java代码拷贝到项目里  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image005.png)  
  拷贝person到modules里  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image006.png)  
  拷贝后  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image007.png)  
+ ### 四、启动项目
  重启项目，打开http://localhost:9001/liqihua/api_doc/api.html，可以看到，增删查改已经生成好了  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image008.png)  
- 前端部分，基于vue-cli。地址：https://github.com/liqihua/liqihua-admin-vue.git  
+ # 前端vue部分
+ 前端部分，基于vue-admin-template。  
+ 地址：https://github.com/liqihua/liqihua-admin-vue.git  
 自己配好node环境、把前端代码跑起来  
 回到刚刚生成代码的那个目录  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image009.png)  
