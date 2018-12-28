@@ -1,7 +1,5 @@
-# liqihua-basic
-springboot基础框架搭建  
-
-依靠mybatis-plus，自动生成entity、dao、mapper、service、controller，以及自定义的含swagger注解的vo等等java项目必要的东西  
-
-我们来看看[快速使用](https://github.com/liqihua/liqihua-basic/wiki/%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8)
+# liqihua-admin
+本地创建一个空的数据库
+找到项目的application.yml文件，修改里面的数据库连接为自己的连接
+启动项目，可以看到，基础表已经初始化好，如下
 
