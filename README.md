@@ -65,12 +65,12 @@
   component: () => import('@/views/testPerson/form'),  
   hidden: true  
 }  
- ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image013.png)  
  可以copy上面的代码，写好以后的路由是这样的  
- ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image014.png)  
- ### 三、运行代码
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image013.png)  
+  ### 三、运行代码
  npm run build  
  打开前端地址，默认是http://localhost:9528/  
+ ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image014.png)  
  默认超级账号是admin，密码是admin  
  ![image](https://github.com/liqihua/readme_images/blob/master/liqihua-basic/image015.png)  
  可以看到，刚刚新添加的路由，在左侧菜单中并没有显示出来  
