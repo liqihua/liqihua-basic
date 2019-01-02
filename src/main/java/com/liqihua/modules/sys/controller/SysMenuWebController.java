@@ -14,6 +14,7 @@ import com.liqihua.modules.sys.entity.vo.SysMenuVO;
 import com.liqihua.modules.sys.service.SysMenuService;
 import com.liqihua.modules.sys.service.SysPermMenuService;
 import com.liqihua.modules.sys.service.SysRoleMenuService;
+import com.liqihua.modules.sys.service.SysUserService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -42,7 +43,8 @@ public class SysMenuWebController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(SysMenuWebController.class);
 
 
-
+    @Resource
+    private SysUserService sysUserService;
     @Resource
     private SysMenuService sysMenuService;
     @Resource
@@ -103,6 +105,10 @@ public class SysMenuWebController extends BaseController {
         }
         entity.setLevel(level);
         sysMenuService.saveOrUpdate(entity);
+        /**
+         * 刷新用户菜单列表
+         */
+        sysUserService.refreshUserMenu();
         SysMenuVO vo = new SysMenuVO();
         BeanUtils.copyProperties(entity,vo);
         return buildSuccessInfo(vo);
@@ -183,7 +189,7 @@ public class SysMenuWebController extends BaseController {
     @RequiresAuthentication
     @RequestMapping(value = "/getTree", method = RequestMethod.GET)
     public WebResult getTree(){
-        List<SysMenuEntity> list = sysMenuService.list(null);
+        List<SysMenuEntity> list = sysMenuService.list(new QueryWrapper<SysMenuEntity>().eq("hide",false));
         List<SysMenuVO> voList = SysBeanUtil.copyList(list,SysMenuVO.class);
         List<SysMenuVO> tree = null;
         if(voList != null){

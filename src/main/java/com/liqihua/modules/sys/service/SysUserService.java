@@ -18,4 +18,7 @@ public interface SysUserService extends IService<SysUserEntity> {
      */
     public void refreshRealm();
 
+
+    public void refreshUserMenu();
+
 }

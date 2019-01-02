@@ -2,8 +2,10 @@ package com.liqihua.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.liqihua.common.constant.Constants;
+import com.liqihua.common.utils.SysBeanUtil;
 import com.liqihua.modules.sys.dao.*;
 import com.liqihua.modules.sys.entity.*;
+import com.liqihua.modules.sys.entity.vo.SysMenuVO;
 import com.liqihua.modules.sys.service.SysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.shiro.SecurityUtils;
@@ -25,14 +27,19 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> implements SysUserService {
-    @Resource
-    SysRoleUserDao sysRoleUserDao;
+
     @Resource
     SysRoleDao sysRoleDao;
     @Resource
+    SysRoleUserDao sysRoleUserDao;
+    @Resource
     SysRolePermDao sysRolePermDao;
     @Resource
+    SysRoleMenuDao sysRoleMenuDao;
+    @Resource
     SysPermDao sysPermDao;
+    @Resource
+    SysMenuDao sysMenuDao;
 
 
 
@@ -71,7 +78,25 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         }
     }
 
-
+    @Override
+    public void refreshUserMenu() {
+        Subject subject = SecurityUtils.getSubject();
+        SysUserEntity sysUser = (SysUserEntity)subject.getPrincipal();
+        List<SysRoleUserEntity> ruList = sysRoleUserDao.selectList(new QueryWrapper<SysRoleUserEntity>().eq("user_id",sysUser.getId()));
+        if(ruList != null && ruList.size() > 0){
+            List<Long> roleIdList = ruList.stream().map(SysRoleUserEntity::getRoleId).collect(Collectors.toList());
+            List<SysRoleMenuEntity> rmList = sysRoleMenuDao.selectList(new QueryWrapper<SysRoleMenuEntity>().in("role_id",roleIdList));
+            if(rmList != null && rmList.size() > 0){
+                List<Long> menuIdList = rmList.stream().map(SysRoleMenuEntity::getMenuId).collect(Collectors.toList());
+                List<SysMenuEntity> menuList = sysMenuDao.selectList(new QueryWrapper<SysMenuEntity>().in("id",menuIdList).eq("hide",false));
+                List<SysMenuVO> menuVOList = SysBeanUtil.copyList(menuList,SysMenuVO.class);
+                /**
+                 * 把用户菜单放session里
+                 */
+                subject.getSession().setAttribute(Constants.KEY_SESSION_SYS_USER_MENU,menuVOList);
+            }
+        }
+    }
 
 
 }

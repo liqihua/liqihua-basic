@@ -105,8 +105,10 @@ public class SysUserWebController extends BaseController {
         if(StrUtil.isNotBlank(avatar)){
             avatar = avatar.replace(prefix,"");
         }
+        if(StrUtil.isNotBlank(password)){
+            entity.setPassword(password);
+        }
         entity.setUsername(username);
-        entity.setPassword(password);
         entity.setNickname(nickname);
         entity.setRealName(realName);
         entity.setGender(gender);
