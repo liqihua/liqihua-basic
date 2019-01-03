@@ -105,6 +105,14 @@ public class SysMenuWebController extends BaseController {
         }
         entity.setLevel(level);
         sysMenuService.saveOrUpdate(entity);
+
+        if(entity.getHide()){
+            hideChildren(entity);
+        }else{
+            showParent(entity);
+        }
+
+
         /**
          * 刷新用户菜单列表
          */
@@ -234,6 +242,41 @@ public class SysMenuWebController extends BaseController {
             });
         }
     }
+
+
+    /**
+     * 递归设置子菜单hide为true
+     * 如果一个父菜单被隐藏，那么它的所有子级菜单都应该被隐藏
+     * @param menu
+     */
+    public void hideChildren(SysMenuEntity menu){
+        List<SysMenuEntity> children = sysMenuService.list(new QueryWrapper<SysMenuEntity>().eq("pid",menu.getId()));
+        if(children != null && children.size() > 0){
+            children.forEach(c -> {
+                c.setHide(true);
+                sysMenuService.updateById(c);
+                hideChildren(c);
+            });
+        }
+    }
+
+
+    /**
+     * 递归设置父菜单hide为false
+     * 如果一个子菜单设置为显示，那么它的所有父级菜单都应该被设置显示
+     * @param menu
+     */
+    public void showParent(SysMenuEntity menu){
+        if(menu.getPid() != null){
+            SysMenuEntity parent = sysMenuService.getById(menu.getPid());
+            if(parent != null){
+                parent.setHide(false);
+                sysMenuService.updateById(parent);
+                showParent(parent);
+            }
+        }
+    }
+
 
 
 }
