@@ -61,5 +61,6 @@
         	<appender-ref ref="rolling_file_info_json"/>
         	<appender-ref ref="rolling_file_error_json"/>
         </root>
+		<logger name="org.redisson" level="INFO"/>
 	</loggers>
 </configuration>

@@ -5,11 +5,13 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.redisson.api.RedissonClient;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,9 +28,16 @@ public class ShiroConfig {
 		return new SysRealm();
 	}
 
+
 	@Bean
-	public SessionManager sessionManager() {
+	public SysSessionDAO sessionDAO(RedissonClient redissonClient){
+		return new SysSessionDAO(redissonClient);
+	}
+
+	@Bean
+	public SessionManager sessionManager(SysSessionDAO sessionDAO) {
 		SysSessionManager sessionManager = new SysSessionManager();
+		sessionManager.setSessionDAO(sessionDAO);
 		return sessionManager;
 	}
 
@@ -38,9 +47,9 @@ public class ShiroConfig {
      * @return
      */
 	@Bean
-    public DefaultWebSecurityManager securityManager(){
+    public DefaultWebSecurityManager securityManager(SessionManager sessionManager){
 		DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
-		securityManager.setSessionManager(sessionManager());
+		securityManager.setSessionManager(sessionManager);
 		securityManager.setRealm(sysRealm());
 		return securityManager;
     }
@@ -51,9 +60,9 @@ public class ShiroConfig {
      * @return
      */
 	@Bean
-	public ShiroFilterFactoryBean shiroFilterFactoryBean(){
+	public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager){
 		ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
-		bean.setSecurityManager(securityManager());
+		bean.setSecurityManager(securityManager);
 		bean.setUnauthorizedUrl("/shiroUnauthorizedUrl");
 		bean.setLoginUrl("/shiroLoginUrl");
 		/**

@@ -28,7 +28,7 @@ public class SysSessionManager extends DefaultSessionManager implements WebSessi
 
     @Override
     protected void onStart(Session session, SessionContext context) {
-        // LOG.info("-- onStart");
+        LOG.info("-- onStart");
         if (!WebUtils.isHttp(context)) {
             LOG.debug("SessionContext argument is not HTTP compatible or does not have an HTTP request/response pair. No session ID cookie will be set.");
         } else {
@@ -46,7 +46,7 @@ public class SysSessionManager extends DefaultSessionManager implements WebSessi
      */
     @Override
     public Serializable getSessionId(SessionKey key) {
-        // LOG.info("--- getSessionId");
+        LOG.info("--- getSessionId");
         Serializable id = super.getSessionId(key);
         if (id == null && WebUtils.isWeb(key)) {
             ServletRequest request = WebUtils.getRequest(key);
@@ -65,7 +65,7 @@ public class SysSessionManager extends DefaultSessionManager implements WebSessi
      */
     @Override
     protected Session createExposedSession(Session session, SessionContext context) {
-        // LOG.info("--- createExposedSession 1");
+        LOG.info("--- createExposedSession 1");
         if (!WebUtils.isWeb(context)) {
             return super.createExposedSession(session, context);
         } else {
@@ -78,7 +78,7 @@ public class SysSessionManager extends DefaultSessionManager implements WebSessi
 
     @Override
     protected Session createExposedSession(Session session, SessionKey key) {
-        // LOG.info("--- createExposedSession 2");
+        LOG.info("--- createExposedSession 2");
         if (!WebUtils.isWeb(key)) {
             return super.createExposedSession(session, key);
         } else {
@@ -91,21 +91,21 @@ public class SysSessionManager extends DefaultSessionManager implements WebSessi
 
     @Override
     protected void onExpiration(Session s, ExpiredSessionException ese, SessionKey key) {
-        // LOG.info("--- onExpiration");
+        LOG.info("--- onExpiration");
         super.onExpiration(s, ese, key);
         this.onInvalidation(key);
     }
 
     @Override
     protected void onInvalidation(Session session, InvalidSessionException ise, SessionKey key) {
-        // LOG.info("--- onInvalidation");
+        LOG.info("--- onInvalidation");
         super.onInvalidation(session, ise, key);
         this.onInvalidation(key);
     }
 
     @Override
     protected void onStop(Session session, SessionKey key) {
-        // LOG.info("--- onStop");
+        LOG.info("--- onStop");
         super.onStop(session, key);
         if (WebUtils.isHttp(key)) {
             HttpServletRequest request = WebUtils.getHttpRequest(key);
@@ -119,7 +119,7 @@ public class SysSessionManager extends DefaultSessionManager implements WebSessi
 
     @Override
     public boolean isServletContainerSessions() {
-        // LOG.info("--- isServletContainerSessions");
+        LOG.info("--- isServletContainerSessions");
         return false;
     }
 

@@ -3,6 +3,7 @@ package com.liqihua.modules.sys.entity.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 
 
 @ApiModel(value="SysMenuVO")
-public class SysMenuVO {
+public class SysMenuVO implements Serializable {
 
 
     private Long id;

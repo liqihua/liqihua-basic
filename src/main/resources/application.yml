@@ -19,4 +19,8 @@ jdbc:
   username: root
   password: 123
 
+redisson:
+  conf:
+    location: classpath:redisson.json
+
 
