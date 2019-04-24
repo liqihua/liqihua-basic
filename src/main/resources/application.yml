@@ -17,6 +17,6 @@ jdbc:
   driverClassName: com.mysql.cj.jdbc.Driver
   url: jdbc:mysql://127.0.0.1:3306/liqihua_admin?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Hongkong
   username: root
-  password: 123
+  password: 1234
 
 

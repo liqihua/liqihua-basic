@@ -25,9 +25,8 @@ import io.swagger.annotations.ApiModelProperty;
  */
 
 
-@ApiModel(value="TestPersonVO")
+@ApiModel("TestPersonVO")
 public class TestPersonVO {
-
 
     @ApiModelProperty("id")
     private Long id;

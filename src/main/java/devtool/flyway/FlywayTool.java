@@ -14,7 +14,7 @@ import org.junit.Test;
 public class FlywayTool {
     static String URL = "jdbc:mysql://127.0.0.1:3306/liqihua_admin?useUnicode=true&characterEncoding=utf8&serverTimezone=Hongkong";
     static String USER = "root";
-    static String PASSWORD = "123";
+    static String PASSWORD = "1234";
 
 
     /**
