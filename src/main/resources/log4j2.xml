@@ -18,17 +18,17 @@
 		</File>
      
 		<RollingFile name="rolling_file_debug" fileName="${DIR}/debug.log" filePattern="${DIR}/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log">
-        	<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="ACCEPT"/>
+        	<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
 			<PatternLayout pattern="${PATTERN}"/>
 			<TimeBasedTriggeringPolicy modulate="true" interval="1"/>
 		</RollingFile>
 		<RollingFile name="rolling_file_info" fileName="${DIR}/info.log" filePattern="${DIR}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
-			<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="ACCEPT"/>
+			<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
 			<PatternLayout pattern="${PATTERN}"/>
 			<TimeBasedTriggeringPolicy modulate="true" interval="1"/>
 		</RollingFile>
 		<RollingFile name="rolling_file_warn" fileName="${DIR}/warn.log" filePattern="${DIR}/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
-			<ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="ACCEPT"/>
+			<ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
 			<PatternLayout pattern="${PATTERN}"/>
 			<TimeBasedTriggeringPolicy modulate="true" interval="1"/>
 		</RollingFile>
@@ -39,7 +39,7 @@
 		</RollingFile>
 
 		<RollingFile name="rolling_file_info_json" fileName="${DIR}/info.log.json" filePattern="${DIR}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log.json">
-			<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="ACCEPT"/>
+			<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
 			<JsonLayout/>
 			<TimeBasedTriggeringPolicy modulate="true" interval="1"/>
 		</RollingFile>
