@@ -34,7 +34,7 @@ public class CodeGenerator {
         String url = "jdbc:mysql://127.0.0.1:3306/liqihua_admin?characterEncoding=utf8&serverTimezone=Hongkong";
         String username = "root";
         String password = "1234";
-        String dir = "H://";//代码生成在哪个位置，一般是项目工作目录以外的位置，以防错误覆盖
+        String dir = "F://";//代码生成在哪个位置，一般是项目工作目录以外的位置，以防错误覆盖
 
 
         String author = "liqihua";//作者
@@ -152,6 +152,17 @@ public class CodeGenerator {
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
                 String fileName = dir + StrUtil.lowerFirst(tableInfo.getEntityName().replace("Entity","")) + "/list.vue";
+                return fileName;
+            }
+        });
+        /**
+         * vue的router
+         */
+        focList.add(new FileOutConfig("/templates/router.json.ftl") {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                // 自定义输入文件名称
+                String fileName = dir + StrUtil.lowerFirst(tableInfo.getEntityName().replace("Entity","")) + "/router.json";
                 return fileName;
             }
         });
