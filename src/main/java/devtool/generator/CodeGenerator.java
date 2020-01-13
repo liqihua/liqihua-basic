@@ -33,8 +33,8 @@ public class CodeGenerator {
     public void make(){
         String url = "jdbc:mysql://127.0.0.1:3306/liqihua_admin?characterEncoding=utf8&serverTimezone=Hongkong";
         String username = "root";
-        String password = "123";
-        String dir = "H://";//代码生成在哪个位置，一般是项目工作目录以外的位置，以防错误覆盖
+        String password = "1234";
+        String dir = "F://";//代码生成在哪个位置，一般是项目工作目录以外的位置，以防错误覆盖
 
 
         String author = "liqihua";//作者
@@ -55,6 +55,7 @@ public class CodeGenerator {
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(false);// XML columList
         gc.setAuthor(author);//设置作者
+        gc.setSwagger2(true);//开启swagger注解
 
         /**
          * 设置各个层的类名
@@ -90,6 +91,7 @@ public class CodeGenerator {
         strategy.setTablePrefix(new String[] { tablePrefix });// 表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategy.setInclude(tables);//生成哪个表的代码
+        strategy.setEntityLombokModel(true);//开启lombok
 
         // 包配置
         PackageConfig pc = new PackageConfig();
@@ -150,6 +152,17 @@ public class CodeGenerator {
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
                 String fileName = dir + StrUtil.lowerFirst(tableInfo.getEntityName().replace("Entity","")) + "/list.vue";
+                return fileName;
+            }
+        });
+        /**
+         * vue的router
+         */
+        focList.add(new FileOutConfig("/templates/router.json.ftl") {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                // 自定义输入文件名称
+                String fileName = dir + StrUtil.lowerFirst(tableInfo.getEntityName().replace("Entity","")) + "/router.json";
                 return fileName;
             }
         });
