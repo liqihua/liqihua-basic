@@ -55,7 +55,7 @@ public class CodeGenerator {
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(false);// XML columList
         gc.setAuthor(author);//设置作者
-        gc.setSwagger2(true);//开启swagger注解
+        //gc.setSwagger2(true);//开启swagger注解
 
         /**
          * 设置各个层的类名

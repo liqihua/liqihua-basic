@@ -156,18 +156,25 @@
 			<artifactId>shiro-spring</artifactId>
 			<version>${version.shiro}</version>
 		</dependency>
-		<!-- redisson -->
-		<dependency>
-			<groupId>org.redisson</groupId>
-			<artifactId>redisson</artifactId>
-			<version>3.6.4</version>
-		</dependency>
-		<!-- redisson序列化编码工具 -->
-		<dependency>
-			<groupId>de.ruedigermoeller</groupId>
-			<artifactId>fst</artifactId>
-			<version>2.57</version>
-		</dependency>
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.6.4</version>
+        </dependency>
+        <!-- redisson序列化编码工具 -->
+        <dependency>
+            <groupId>de.ruedigermoeller</groupId>
+            <artifactId>fst</artifactId>
+            <version>2.57</version>
+        </dependency>
 	</dependencies>
 
 	<build>
