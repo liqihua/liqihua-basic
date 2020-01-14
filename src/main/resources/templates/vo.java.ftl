@@ -23,15 +23,7 @@ import lombok.experimental.Accessors;
  */
 <#if entityLombokModel>
 @Data
-    <#if superEntityClass??>
-@EqualsAndHashCode(callSuper = true)
-    <#else>
-@EqualsAndHashCode(callSuper = false)
-    </#if>
-@Accessors(chain = true)
 </#if>
-
-
 @ApiModel(value="${entity?replace('Entity','VO')}")
 public class ${entity?replace('Entity','VO')} {
 

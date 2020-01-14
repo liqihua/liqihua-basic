@@ -89,7 +89,7 @@ export default {
             this.$refs.form.validate(valid => {
                 if(valid) {
                     this.loading = true
-                    var param = makeParam(this.form)
+                    let param = makeParam(this.form)
                     return request({
                         url: '/sys/${entity?uncap_first?replace('Entity','WebController')}/save',
                         method: 'post',

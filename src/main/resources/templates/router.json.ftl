@@ -2,7 +2,7 @@
   path: '${table.entityName?replace("Entity","")?uncap_first}/list',
   name: '${table.entityName?replace("Entity","")?uncap_first}/list',
   component: () => import('@/views/${table.entityName?replace("Entity","")?uncap_first}/list'),
-  meta: { title: '教师管理', icon: 'menu' }
+  meta: { title: '${table.comment}管理', icon: 'menu' }
 },
 {
   path: '${table.entityName?replace("Entity","")?uncap_first}/add',
