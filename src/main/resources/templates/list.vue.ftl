@@ -56,7 +56,7 @@ export default {
                 this.total = response.data.total
                 this.loading = false
             }).catch(error => {
-                    console.log(error)
+                console.log(error)
                 this.loading = false
             })
         },
