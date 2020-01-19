@@ -2,7 +2,7 @@
     <div v-loading="loading" class="app-container">
         <el-tabs value="add" @tab-click="tabClick">
             <el-tab-pane label="${table.comment}列表" name="list"/>
-            <el-tab-pane label="新增${table.comment}" name="add"/>
+            <el-tab-pane label="编辑${table.comment}" name="add"/>
         </el-tabs>
         <el-form ref="form" :model="form" :rules="rules" label-width="120px">
             <#list table.fields as field>
@@ -90,7 +90,7 @@ export default {
                 if(valid) {
                     this.loading = true
                     let param = makeParam(this.form)
-                    return request({
+                    request({
                         url: '/sys/${entity?uncap_first?replace('Entity','WebController')}/save',
                         method: 'post',
                         data: param
