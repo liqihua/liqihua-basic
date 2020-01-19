@@ -90,7 +90,7 @@ export default {
                 if(valid) {
                     this.loading = true
                     let param = makeParam(this.form)
-                    return request({
+                    request({
                         url: '/sys/${entity?uncap_first?replace('Entity','WebController')}/save',
                         method: 'post',
                         data: param
