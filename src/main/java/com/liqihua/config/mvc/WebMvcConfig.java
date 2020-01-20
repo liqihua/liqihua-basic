@@ -116,7 +116,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
 
 		objectMapper.registerModule(javaTimeModule).registerModule(new ParameterNamesModule());
-
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 
 
 		/**
