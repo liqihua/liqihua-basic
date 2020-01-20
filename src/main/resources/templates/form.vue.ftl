@@ -10,10 +10,7 @@
             <el-form-item label="${field.comment}" prop="${field.propertyName}">
                 <el-col :span="6">
                     <#if field.type?contains("bit") >
-                    <el-radio-group v-model="form.${field.propertyName}">
-                        <el-radio :label="true">true</el-radio>
-                        <el-radio :label="false">false</el-radio>
-                    </el-radio-group>
+                    <el-switch v-model="form.${field.propertyName}"/>
                     <#elseif field.type == 'date'>
                     <el-date-picker v-model="form.${field.propertyName}" type="date" value-format="yyyy-MM-dd" placeholder="选择日期"/>
                     <#elseif field.type == 'datetime'>
