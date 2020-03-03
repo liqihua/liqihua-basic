@@ -25,18 +25,13 @@ public class RequestBodyValidateAspect extends BaseController {
      * @return
      */
     @Around("execution (* com..*.*Controller.*(..)) && args(..,bindingResult)")
-    public Object validatorAround(ProceedingJoinPoint point, BindingResult bindingResult){
+    public Object validatorAround(ProceedingJoinPoint point, BindingResult bindingResult) throws Throwable {
         if(bindingResult.hasErrors()){
             FieldError fieldError = bindingResult.getFieldError();
             return buildFailedInfo(fieldError.getField()+fieldError.getDefaultMessage());
         }else{
-            try {
-                return point.proceed();
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-            }
+            return point.proceed();
         }
-        return null;
     }
 
 
