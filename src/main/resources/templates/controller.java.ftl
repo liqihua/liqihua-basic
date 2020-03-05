@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Resource;
+import springfox.documentation.annotations.ApiIgnore;
 import ${package.Entity}.${entity};
 import ${package.Entity}.vo.${entity?replace('Entity','VO')};
 import ${package.Service}.${table.serviceName};
@@ -36,6 +37,7 @@ import ${superControllerClassPackage};
  * @author ${author}
  * @since ${date}
  */
+@ApiIgnore
 @Api(value="sys-${table.controllerName}",description="${table.comment!}")
 <#if restControllerStyle>
 @RestController
