@@ -83,7 +83,8 @@ window.onload = function() {
 	    plugins: [
 	      SwaggerUIBundle.plugins.DownloadUrl
 	    ],
-	    layout: "StandaloneLayout"
+	    layout: "StandaloneLayout",
+        docExpansion: "none" //none：默认收起，list：默认展开
 	})
 	window.ui = ui
 	$(".topbar").hide();
